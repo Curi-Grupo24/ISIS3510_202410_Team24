@@ -1,0 +1,4 @@
+#Mon Feb 26 17:19:14 COT 2024
+base.0=/Users/dianasilva/Documents/moviles/ISIS3510_202410_Team24/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

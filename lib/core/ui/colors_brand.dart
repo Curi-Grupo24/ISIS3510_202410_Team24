@@ -1,14 +1,28 @@
 import 'dart:ui';
 
 class Colors {
-  static const Map<int, Color> purpleBrand = <int, Color>{
-    20: Color(0xff553ee8),
-    30: Color(0xFF6936DD),
-    50: Color(0xff4A27D4),
-    60: Color(0xFF481ABB),
+  static const Map<int, Color> sunset = <int, Color>{
+    5: Color.fromRGBO(255, 239, 187, 1),
+    10: Color.fromRGBO(255, 220, 103, 1),
+    20: Color.fromRGBO(255, 207, 45, 1),
+    30: Color.fromRGBO(242, 177, 44, 1),
+    40: Color.fromRGBO(243, 150, 46, 1),
+    50: Color.fromRGBO(246, 139, 19, 1),
+    60: Color.fromRGBO(229, 123, 5, 1),
+    70: Color.fromRGBO(205, 108, 0, 1),
   };
 
-  static const Map<int, Color> bitterSweet = <int, Color>{
+  static const Map<int, Color> jelly = <int, Color>{
+    10: Color.fromRGBO(178, 98, 156, 1),
+    40: Color.fromRGBO(115, 33, 92, 1),
+  };
+
+  static const Map<int, Color> ocean = <int, Color>{
+    40: Color.fromRGBO(41, 183, 180, 1),
+    50: Color.fromRGBO(25, 154, 152, 1),
+  };
+
+  static const Map<int, Color> blooming = <int, Color>{
     0: Color.fromRGBO(255, 221, 221, 1),
     5: Color.fromRGBO(255, 182, 182, 1),
     10: Color.fromRGBO(255, 108, 108, 1),

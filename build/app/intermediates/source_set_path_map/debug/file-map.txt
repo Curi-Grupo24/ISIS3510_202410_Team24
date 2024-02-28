@@ -10,3 +10,4 @@ com.example.curi_app-rs-8 /Users/fabiancortes/Documents/moviles/ISIS3510_202410_
 com.example.curi_app-mergeDebugResources-9 /Users/fabiancortes/Documents/moviles/ISIS3510_202410_Team24/build/app/intermediates/incremental/debug/mergeDebugResources/merged.dir
 com.example.curi_app-mergeDebugResources-10 /Users/fabiancortes/Documents/moviles/ISIS3510_202410_Team24/build/app/intermediates/incremental/debug/mergeDebugResources/stripped.dir
 com.example.curi_app-merged_res-11 /Users/fabiancortes/Documents/moviles/ISIS3510_202410_Team24/build/app/intermediates/merged_res/debug
+com.example.curi_app-packaged_res-12 /Users/fabiancortes/Documents/moviles/ISIS3510_202410_Team24/build/shared_preferences_android/intermediates/packaged_res/debug

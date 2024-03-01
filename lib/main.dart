@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         translations: Internationalization(),
-        home: const SafeArea(child: Login()),
+        home: const Login(),
         debugShowCheckedModeBanner: false,
       );
 }

@@ -23,29 +23,27 @@ class UITheme {
       background: Colors.gray[20]!,
       error: Colors.blooming[20]!,
       shadow: Colors.black[0],
-      outline: Colors.gray[60],
-      onSurface: Colors.gray[80]!,
       onSurfaceVariant: Colors.gray[40],
       inversePrimary: Colors.sunset[50],
       inverseSurface: Colors.gray[20],
       surfaceTint: Colors.sunset[5],
     ),
     textTheme: TextTheme(
-      headlineLarge: Headings.h1.copyWith(color: Colors.gray[80]),
-      headlineMedium: Headings.h2.copyWith(color: Colors.gray[80]),
-      headlineSmall: Headings.h3.copyWith(color: Colors.gray[80]),
-      titleLarge: Headings.h4.copyWith(color: Colors.gray[80]),
-      titleMedium: Headings.h5.copyWith(color: Colors.gray[80]),
-      titleSmall: Headings.h6.copyWith(color: Colors.gray[80]),
-      bodyLarge: Paragraphs.large.copyWith(color: Colors.gray[80]),
-      bodyMedium: Paragraphs.medium.copyWith(color: Colors.gray[80]),
-      bodySmall: Paragraphs.small.copyWith(color: Colors.gray[80]),
-      labelLarge: Headings.h4.copyWith(color: Colors.gray[80]),
-      labelMedium: Headings.h7.copyWith(color: Colors.gray[80]),
-      labelSmall: Headings.h8.copyWith(color: Colors.gray[80]),
-      displayLarge: Paragraphs.small.copyWith(color: Colors.gray[80]),
-      displayMedium: Paragraphs.small.copyWith(color: Colors.gray[80]),
-      displaySmall: Paragraphs.disclaimer.copyWith(color: Colors.gray[80]),
+      headlineLarge: Headings.h1.copyWith(color: Colors.gray[50]),
+      headlineMedium: Headings.h2.copyWith(color: Colors.gray[50]),
+      headlineSmall: Headings.h3.copyWith(color: Colors.gray[50]),
+      titleLarge: Headings.h4.copyWith(color: Colors.gray[50]),
+      titleMedium: Headings.h5.copyWith(color: Colors.gray[50]),
+      titleSmall: Headings.h6.copyWith(color: Colors.gray[50]),
+      bodyLarge: Paragraphs.large.copyWith(color: Colors.gray[50]),
+      bodyMedium: Paragraphs.medium.copyWith(color: Colors.gray[50]),
+      bodySmall: Paragraphs.small.copyWith(color: Colors.gray[50]),
+      labelLarge: Headings.h4.copyWith(color: Colors.gray[50]),
+      labelMedium: Headings.h7.copyWith(color: Colors.gray[50]),
+      labelSmall: Headings.h8.copyWith(color: Colors.gray[50]),
+      displayLarge: Paragraphs.small.copyWith(color: Colors.gray[50]),
+      displayMedium: Paragraphs.small.copyWith(color: Colors.gray[50]),
+      displaySmall: Paragraphs.disclaimer.copyWith(color: Colors.gray[50]),
     ),
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: Colors.sunset[20],
@@ -89,11 +87,11 @@ class UITheme {
         foregroundColor: MaterialStateProperty.resolveWith<Color>(
           (Set<MaterialState> states) {
             if (states.contains(MaterialState.hovered)) {
-              return Colors.gray[80]!.withOpacity(0.8);
+              return Colors.gray[50]!.withOpacity(0.8);
             } else if (states.contains(MaterialState.disabled)) {
               return Colors.gray[60]!;
             }
-            return Colors.gray[80]!;
+            return Colors.gray[50]!;
           },
         ),
       ),
@@ -119,18 +117,18 @@ class UITheme {
         foregroundColor: MaterialStateProperty.resolveWith<Color>(
           (Set<MaterialState> states) {
             if (states.contains(MaterialState.hovered)) {
-              return Colors.gray[80]!.withOpacity(0.8);
+              return Colors.gray[50]!.withOpacity(0.8);
             } else if (states.contains(MaterialState.disabled)) {
               return Colors.gray[60]!;
             }
-            return Colors.gray[80]!;
+            return Colors.gray[50]!;
           },
         ),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
       helperStyle: Paragraphs.disclaimer.copyWith(
-        color: Colors.gray[80],
+        color: Colors.gray[50],
         letterSpacing: 0.5,
       ),
       focusedBorder: UnderlineInputBorder(

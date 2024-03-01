@@ -20,10 +20,9 @@ class Headings {
   static TextStyle h8 = _base.copyWith(fontSize: 12, height: 16 / 12);
 
   static TextStyle get _base => const TextStyle(
-        fontFamily: 'Poppins',
+        fontFamily: 'Roboto',
         fontWeight: FontWeight.w600,
         letterSpacing: 0,
-        package: 'jarvis_ui',
       );
 }
 
@@ -48,6 +47,5 @@ class Paragraphs {
         fontFamily: 'Roboto',
         fontWeight: FontWeight.w400,
         letterSpacing: 0,
-        package: 'jarvis_ui',
       );
 }

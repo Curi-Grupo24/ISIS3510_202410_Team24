@@ -37,12 +37,13 @@ class Colors {
     20: Color.fromRGBO(245, 248, 250, 1),
     30: Color.fromRGBO(239, 243, 249, 1),
     40: Color.fromRGBO(221, 224, 232, 1),
-    50: Color.fromRGBO(153, 172, 194, 1),
+    50: Color.fromRGBO(184, 187, 191, 1),
     60: Color.fromRGBO(122, 147, 171, 1),
     70: Color.fromRGBO(78, 108, 136, 1),
     80: Color.fromRGBO(44, 67, 89, 1),
-    90: Color.fromRGBO(32, 45, 57, 1),
+    90: Color.fromRGBO(26, 28, 33, 1),
   };
+
   static const Map<int, Color> neutralGray = <int, Color>{
     0: Color.fromRGBO(231, 231, 231, 1),
     10: Color.fromRGBO(208, 208, 208, 1),

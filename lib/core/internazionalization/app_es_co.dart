@@ -1,3 +1,3 @@
 Map<String, String> appEsCo = <String, String>{
-  'hi': 'Holi,',
+  'welcome_to': 'Bienvenido a',
 };

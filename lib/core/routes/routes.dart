@@ -10,5 +10,11 @@ List<GetPage<dynamic>> get getRoutes {
       page: Login.new,
       middlewares: <GetMiddleware>[GetMiddleware()],
     ),
+    GetPage<dynamic>(
+      name: '/register',
+      page: RegisterView.new,
+      transitionDuration: transitionDuration,
+      middlewares: <GetMiddleware>[GetMiddleware()],
+    ),
   ];
 }

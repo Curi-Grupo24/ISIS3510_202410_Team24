@@ -14,13 +14,13 @@ class _RegisterViewState extends State<RegisterView> {
   TextEditingController? controllerName = TextEditingController();
   TextEditingController? controllerStudentCode = TextEditingController();
   TextEditingController? controllerPhone = TextEditingController();
-
-
   String actualState = 'Selecciona Carrera';
+  bool isSelectedCheckbox = false;
 
   @override
   void initState() {
-    actualState='Selecciona Carrera';
+    actualState = 'Selecciona Carrera';
+    isSelectedCheckbox = false;
     super.initState();
   }
 
@@ -136,6 +136,62 @@ class _RegisterViewState extends State<RegisterView> {
 
                   Spacing.spacingV32,
                   //checkbox de términos y condiciones.
+                  Row(
+                    children: <Widget>[
+                      Checkbox(
+                        value: isSelectedCheckbox,
+                        onChanged: (bool? isSelected) {
+                          setState(() {
+                            isSelectedCheckbox = isSelected ?? false;
+                          });
+                        },
+                        fillColor:
+                            MaterialStateProperty.all<Color>(Colors.white[0]!),
+                        activeColor: Colors.ocean[40],
+                        checkColor: Colors.ocean[40],
+                      ),
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'Acepto los '.tr,
+                                style: TextStyle(
+                                  color: Colors.gray[80],
+                                  fontSize: 16,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Términos y condiciones '.tr,
+                                style: TextStyle(
+                                  color: Colors.ocean[40],
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Get.dialog(
+                                  const TermsAndConditionsPage(),
+                                  barrierDismissible: true,
+                                  barrierColor: Colors.gray[90]!
+                                      .withOpacity(.7),
+                                  useSafeArea: false,
+                                );
+                              },
+                              ),
+                              TextSpan(
+                                text: 'de uso de la aplicación'.tr,
+                                style: TextStyle(
+                                  color: Colors.gray[80],
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   Spacing.spacingV32,
                   SunsetButton(
                     text: 'Registrarme'.tr,
@@ -148,7 +204,6 @@ class _RegisterViewState extends State<RegisterView> {
           ),
         ),
       );
-
 
   Future<dynamic> showModalStates() {
     List<String> possibleStates = <String>[
@@ -207,7 +262,7 @@ class _RegisterViewState extends State<RegisterView> {
                       child: TextButton(
                         onPressed: () {
                           setState(() {
-                            actualState=carreersState;
+                            actualState = carreersState;
                           });
                           Get.back();
                         },

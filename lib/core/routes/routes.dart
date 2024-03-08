@@ -16,5 +16,11 @@ List<GetPage<dynamic>> get getRoutes {
       transitionDuration: transitionDuration,
       middlewares: <GetMiddleware>[GetMiddleware()],
     ),
+    GetPage<dynamic>(
+      name: '/forgot_password',
+      page: ForgotPasswordView.new,
+      transitionDuration: transitionDuration,
+      middlewares: <GetMiddleware>[GetMiddleware()],
+    ),
   ];
 }

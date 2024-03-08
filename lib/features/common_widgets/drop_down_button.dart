@@ -36,7 +36,7 @@ class DropDownButtonCarreer extends StatelessWidget {
                           actualState,
                           style: TextStyle(
                             fontSize: UILayout.medium,
-                            color: Colors.gray[90],
+                            color: Colors.gray[80],
                             fontWeight: FontWeight.w400,
                           ),
                         ),

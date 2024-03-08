@@ -8,7 +8,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController? controller;
+  TextEditingController useernameMailController =  TextEditingController();
+  TextEditingController? passwordControler = TextEditingController();
   bool isErrorMail = false;
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -33,7 +34,7 @@ class _LoginState extends State<Login> {
                   ),
                   Spacing.spacingV48,
                   Input(
-                    controller: controller,
+                    controller: useernameMailController,
                     hintText: 'username_mail'.tr,
                   ),
                   Spacing.spacingV16,
@@ -42,7 +43,7 @@ class _LoginState extends State<Login> {
                       Icons.remove_red_eye,
                       color: Colors.gray[80],
                     ),
-                    controller: controller,
+                    controller: passwordControler,
                     hintText: 'password'.tr,
                     isPassword: true,
                   ),

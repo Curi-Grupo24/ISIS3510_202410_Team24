@@ -8,7 +8,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController useernameMailController =  TextEditingController();
+  TextEditingController useernameMailController = TextEditingController();
   TextEditingController? passwordControler = TextEditingController();
   bool isErrorMail = false;
   @override
@@ -48,18 +48,25 @@ class _LoginState extends State<Login> {
                     isPassword: true,
                   ),
                   Spacing.spacingV8,
-                  Text(
-                    'forgot_your_password'.tr,
-                    style: TextStyle(
-                      color: Colors.gray[80],
-                      fontWeight: FontWeight.normal,
-                      fontSize: 14,
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed('/forgot_password');
+                    },
+                    child: Text(
+                      'forgot_your_password'.tr,
+                      style: TextStyle(
+                        color: Colors.gray[80],
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                   Spacing.spacingV24,
                   SunsetButton(
                     text: 'log_in'.tr,
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed('/dashboard_home');
+                    },
                   ),
                   Spacing.spacingV16,
                   GestureDetector(

@@ -1,6 +1,7 @@
 import 'package:get/route_manager.dart';
 
 import '../../features/auth/presentation/pages/pages.dart';
+import '../../features/dashboard/presentation/pages/pages.dart';
 
 List<GetPage<dynamic>> get getRoutes {
   const Duration transitionDuration = Duration(milliseconds: 350);
@@ -22,5 +23,12 @@ List<GetPage<dynamic>> get getRoutes {
       transitionDuration: transitionDuration,
       middlewares: <GetMiddleware>[GetMiddleware()],
     ),
+    GetPage<dynamic>(
+      name: '/dashboard_home',
+      page: DashboardHome.new,
+      transitionDuration: transitionDuration,
+      middlewares: <GetMiddleware>[GetMiddleware()],
+    ),
+
   ];
 }

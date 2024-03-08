@@ -39,3 +39,6 @@ flutter:
         - asset: assets/fonts/roboto/Roboto-Light.ttf
         - asset: assets/fonts/roboto/Roboto-Medium.ttf
         - asset: assets/fonts/roboto/Roboto-Regular.ttf
+  assets:
+    - assets/
+    - assets/images/image_asset1.png

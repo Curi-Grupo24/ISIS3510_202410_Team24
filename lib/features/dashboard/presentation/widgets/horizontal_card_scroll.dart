@@ -6,6 +6,7 @@ class HorizontalCardScroll extends StatelessWidget {
     required this.aproxCardWidth,
     required this.textScaleFactor,
     required this.title,
+    required this.onTapViewMore,
     super.key,
   });
 
@@ -13,6 +14,7 @@ class HorizontalCardScroll extends StatelessWidget {
   final double aproxCardWidth;
   final double textScaleFactor;
   final String title;
+  final void Function()? onTapViewMore;
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
@@ -35,9 +37,7 @@ class HorizontalCardScroll extends StatelessWidget {
                   ),
                   Spacing.spacingV8,
                   InkWell(
-                    onTap: () {
-                      Get.toNamed('/classes_list');
-                    },
+                    onTap: onTapViewMore,
                     child: Text(
                       'ver todos'.tr,
                       style: Headings.mH5.copyWith(

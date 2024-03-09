@@ -42,10 +42,15 @@ class _DashboardHomeState extends State<DashboardHome> {
         actions: <Widget>[
           Row(
             children: <Widget>[
-              Icon(
-                Icons.notifications,
-                size: 24,
-                color: Colors.gray[70],
+              GestureDetector(
+                onTap: (){
+                  Get.toNamed('/notifications_home');
+                },
+                child: Icon(
+                  Icons.notifications,
+                  size: 24,
+                  color: Colors.gray[70],
+                ),
               ),
               const SizedBox(
                 width: 8,

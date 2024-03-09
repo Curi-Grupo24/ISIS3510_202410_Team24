@@ -29,8 +29,8 @@ class _LoginState extends State<Login> {
                     style: Headings.h4.copyWith(color: Colors.gray[90]),
                   ),
                   Spacing.spacingV24,
-                  Text(
-                    "espacio para logo",
+                  const Text(
+                    'espacio para logo',
                   ),
                   Spacing.spacingV48,
                   Input(

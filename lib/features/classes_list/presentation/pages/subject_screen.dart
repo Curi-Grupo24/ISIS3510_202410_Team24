@@ -24,7 +24,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
             'Tus materias',
             style: TextStyle(
               fontFamily: 'Roboto',
-              fontSize: 24,
+              fontSize: UILayout.medium,
               fontWeight: FontWeight.w800,
               color: Color(0xFF111007),
             ),

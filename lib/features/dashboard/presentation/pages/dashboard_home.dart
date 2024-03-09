@@ -50,13 +50,19 @@ class _DashboardHomeState extends State<DashboardHome> {
               const SizedBox(
                 width: 8,
               ),
-              CircleAvatar(
-                backgroundColor: Colors.ocean[40],
-                radius: UILayout.large,
-                child: const CircleAvatar(
-                  radius: UILayout.xlarge,
-                  backgroundImage: NetworkImage(
-                    'https://picsum.photos/id/237/200/300',
+              GestureDetector(
+                onTap: (){
+                  Get.toNamed('profile_user');
+                },
+                child: CircleAvatar(
+                  
+                  backgroundColor: Colors.ocean[40],
+                  radius: UILayout.large,
+                  child: const CircleAvatar(
+                    radius: UILayout.xlarge,
+                    backgroundImage: NetworkImage(
+                      'https://picsum.photos/id/237/200/300',
+                    ),
                   ),
                 ),
               ),

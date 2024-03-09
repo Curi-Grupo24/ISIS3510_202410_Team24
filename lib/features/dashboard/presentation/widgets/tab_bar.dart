@@ -36,8 +36,8 @@ class _DashboardTabBarState extends State<DashboardTabBar> {
   }
 
   List<Widget> get tabs {
-    final int currentIndex =4;
-    final List<Widget> _tabs = widget.tabs.map((DashboardTabData tabData) => 
+    int currentIndex =4;
+    List<Widget> _tabs = widget.tabs.map((DashboardTabData tabData) => 
     DashboardTab(
         tabData,
         index: currentIndex,

@@ -41,7 +41,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 Spacing.spacingV24,
                 const Center(
                   child: Text(
-                    "espacio para logo",
+                    'espacio para logo',
                   ),
                 ),
                 Spacing.spacingV48,

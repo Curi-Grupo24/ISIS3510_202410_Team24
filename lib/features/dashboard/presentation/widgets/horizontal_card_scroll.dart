@@ -22,7 +22,7 @@ class HorizontalCardScroll extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(UILayout.medium),
+              padding: const EdgeInsets.all(UILayout.medium),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -35,7 +35,9 @@ class HorizontalCardScroll extends StatelessWidget {
                   ),
                   Spacing.spacingV8,
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed('/classes_list');
+                    },
                     child: Text(
                       'ver todos'.tr,
                       style: Headings.mH5.copyWith(

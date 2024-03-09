@@ -4,7 +4,7 @@ import 'dart:math' as math;
 import 'dart:math';
 
 import 'package:flutter/material.dart' hide Colors;
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/models/card_bash_type.dart';

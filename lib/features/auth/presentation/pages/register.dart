@@ -62,9 +62,9 @@ class _RegisterViewState extends State<RegisterView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Center(
+                  const Center(
                     child: Text(
-                      "espacio para logo",
+                      'espacio para logo',
                     ),
                   ),
                   Spacing.spacingV48,

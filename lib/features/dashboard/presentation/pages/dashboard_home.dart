@@ -94,6 +94,9 @@ class _DashboardHomeState extends State<DashboardHome> {
             ),
             HorizontalCardScroll(
               title: 'Mis materias',
+              onTapViewMore: () {
+                 Get.toNamed('/classes_list');
+              },
               sortedCards: sortedCards1,
               aproxCardWidth: aproxCardWidth,
               textScaleFactor: textScaleFactor,
@@ -101,6 +104,9 @@ class _DashboardHomeState extends State<DashboardHome> {
             Spacing.spacingV12,
             HorizontalCardScroll(
               title: 'En las  que soy monitor',
+              onTapViewMore: () {
+                 Get.toNamed('/classes_list');
+              },
               sortedCards: sortedCards2,
               aproxCardWidth: aproxCardWidth,
               textScaleFactor: textScaleFactor,
@@ -150,6 +156,12 @@ class _DashboardHomeState extends State<DashboardHome> {
               ),
             ),
             Spacing.spacingV24,
+            SunsetButton(
+              text: 'Enroll',
+              onPressed: () {
+                Get.toNamed('/enroll_monitor_home');
+              },
+            ),
           ],
         ),
       ),

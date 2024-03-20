@@ -9,7 +9,7 @@ class UITheme {
     unselectedWidgetColor: Colors.gray[50],
     useMaterial3: false,
     disabledColor: Colors.gray[20],
-    scaffoldBackgroundColor: Colors.gray[10],
+    scaffoldBackgroundColor: Colors.gray[0],
     colorScheme: ColorScheme.light(
       primary: Colors.sunset[20]!,
       secondary: Colors.sunset[30]!,

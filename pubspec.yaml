@@ -11,6 +11,7 @@ dependencies:
   bloc: ^8.1.2
   cupertino_icons: ^1.0.2
   dartz: ^0.10.1
+  el_tooltip: ^2.0.0
   flutter:
     sdk: flutter
   flutter_localizations: 
@@ -19,7 +20,9 @@ dependencies:
   get_it: ^7.6.0
   internet_connection_checker: ^1.0.0+1
   intl: any
+  percent_indicator: ^4.2.2
   shared_preferences: ^2.1.1
+  carousel_slider: ^4.1.1
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -38,3 +41,8 @@ flutter:
         - asset: assets/fonts/roboto/Roboto-Light.ttf
         - asset: assets/fonts/roboto/Roboto-Medium.ttf
         - asset: assets/fonts/roboto/Roboto-Regular.ttf
+  assets:
+    - assets/
+    - assets/images/image_asset1.png
+    - assets/images/pana.png
+    - assets/images/onboarding_enroll_image.png

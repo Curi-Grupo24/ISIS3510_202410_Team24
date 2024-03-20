@@ -8,7 +8,11 @@ import 'features/auth/presentation/pages/pages.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  runApp(
+    const SafeArea(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -32,7 +36,7 @@ class MyApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         translations: Internationalization(),
-        home: const SafeArea(child: Login()),
+        home: const Login(),
         debugShowCheckedModeBanner: false,
       );
 }

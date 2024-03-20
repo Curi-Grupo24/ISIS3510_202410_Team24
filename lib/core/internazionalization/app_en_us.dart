@@ -1,3 +1,3 @@
 Map<String, String> appEnUs = <String, String>{
-  'hi': 'Holi,',
+  'welcome_to': 'Holi,',
 };

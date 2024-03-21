@@ -8,20 +8,35 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  TextEditingController? controllerEmail = TextEditingController();
-  TextEditingController? controllerPassword = TextEditingController();
-  TextEditingController? controllerConfirmPassword = TextEditingController();
-  TextEditingController? controllerName = TextEditingController();
-  TextEditingController? controllerStudentCode = TextEditingController();
-  TextEditingController? controllerPhone = TextEditingController();
+  TextEditingController controllerEmail = TextEditingController();
+  TextEditingController controllerPassword = TextEditingController();
+  TextEditingController controllerConfirmPassword = TextEditingController();
+  TextEditingController controllerName = TextEditingController();
+  TextEditingController controllerStudentCode = TextEditingController();
+  TextEditingController controllerPhone = TextEditingController();
   String actualState = 'Selecciona Carrera';
   bool isSelectedCheckbox = false;
+  final RegisterBloc registerBloc = sl<RegisterBloc>();
+
+  @override
+  void dispose() {
+    controllerEmail.dispose();
+    controllerPassword.dispose();
+    controllerName.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     actualState = 'Selecciona Carrera';
     isSelectedCheckbox = false;
     super.initState();
+  }
+
+  Future<void> signup() async {
+    String mail = controllerEmail.text;
+    String password = controllerPassword.text;
+    registerBloc.add(RegisterAccount(email: mail, password: password));
   }
 
   @override
@@ -51,157 +66,172 @@ class _RegisterViewState extends State<RegisterView> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const Center(
-                    child: Text(
-                      'espacio para logo',
+        body: BlocBuilder<RegisterBloc, RegisterState>(
+          bloc: registerBloc,
+          builder: (BuildContext context, RegisterState state) {
+            if (state is RegisterLoading) {
+              return 
+                SpinKitRotatingCircle(
+                  color: Colors.sunset[20],
+                  size: 50,
+                );
+            } 
+            else {
+              return SingleChildScrollView(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
                     ),
-                  ),
-                  Spacing.spacingV48,
-                  Text(
-                    'Registro'.tr,
-                    style: Paragraphs.large.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.gray[90],
-                    ),
-                  ),
-                  Spacing.spacingV16,
-                  Input(
-                    controller: controllerEmail,
-                    hintText: 'Correo Uniandes'.tr,
-                    suffix: TooltipOcean(
-                      text: 'Debes iniciar sesión con tu cuenta uniandes.'.tr,
-                    ),
-                  ),
-                  Spacing.spacingV16,
-                  Input(
-                    suffix: TooltipOcean(
-                      text:
-                          'La contraseña debe tener mínimo 8 caracteres y máximo 16, estar compuesta por lo menos de una minúscula, una mayúscula, un número y/o un carácter especial entre *, -, #.'
-                              .tr,
-                    ),
-                    controller: controllerPassword,
-                    hintText: 'password'.tr,
-                    isPassword: true,
-                  ),
-                  Spacing.spacingV16,
-                  Input(
-                    controller: controllerConfirmPassword,
-                    hintText: 'Confirmar contraseña'.tr,
-                    isPassword: true,
-                  ),
-                  Spacing.spacingV16,
-                  Input(
-                    controller: controllerName,
-                    hintText: 'Nombre'.tr,
-                  ),
-                  Spacing.spacingV16,
-
-                  Input(
-                    controller: controllerPhone,
-                    hintText: 'Celular'.tr,
-                  ),
-                  Spacing.spacingV16,
-                  DropDownButtonCarreer(
-                    actualState: actualState,
-                    onPressed: showModalStates,
-                    isDefaultState: actualState != 'Selecciona Carrera',
-                    onPressedCrossIcon: () {
-                      setState(() {
-                        actualState = 'Selecciona Carrera';
-                      });
-                    },
-                  ),
-
-                  Spacing.spacingV8,
-                  Spacing.spacingV16,
-                  Input(
-                    controller: controllerStudentCode,
-                    hintText: 'Código estudiantil'.tr,
-                    keyboardType: TextInputType.number,
-                    formatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                  ),
-
-                  Spacing.spacingV32,
-                  //checkbox de términos y condiciones.
-                  Row(
-                    children: <Widget>[
-                      Checkbox(
-                        value: isSelectedCheckbox,
-                        onChanged: (bool? isSelected) {
-                          setState(() {
-                            isSelectedCheckbox = isSelected ?? false;
-                          });
-                        },
-                        fillColor:
-                            MaterialStateProperty.all<Color>(Colors.white[0]!),
-                        activeColor: Colors.ocean[40],
-                        checkColor: Colors.ocean[40],
-                      ),
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: 'Acepto los '.tr,
-                                style: TextStyle(
-                                  color: Colors.gray[80],
-                                  fontSize: 16,
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'Términos y condiciones '.tr,
-                                style: TextStyle(
-                                  color: Colors.ocean[40],
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Get.dialog(
-                                  const TermsAndConditionsPage(),
-                                  barrierDismissible: true,
-                                  barrierColor: Colors.gray[90]!
-                                      .withOpacity(.7),
-                                  useSafeArea: false,
-                                );
-                              },
-                              ),
-                              TextSpan(
-                                text: 'de uso de la aplicación'.tr,
-                                style: TextStyle(
-                                  color: Colors.gray[80],
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const Center(
+                          child: Text(
+                            'espacio para logo',
                           ),
                         ),
-                      ),
-                    ],
+                        Spacing.spacingV48,
+                        Text(
+                          'Registro'.tr,
+                          style: Paragraphs.large.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.gray[90],
+                          ),
+                        ),
+                        Spacing.spacingV16,
+                        Input(
+                          controller: controllerEmail,
+                          hintText: 'Correo Uniandes'.tr,
+                          suffix: TooltipOcean(
+                            text: 'Debes iniciar sesión con tu cuenta uniandes.'
+                                .tr,
+                          ),
+                        ),
+                        Spacing.spacingV16,
+                        Input(
+                          suffix: TooltipOcean(
+                            text:
+                                'La contraseña debe tener mínimo 8 caracteres y máximo 16, estar compuesta por lo menos de una minúscula, una mayúscula, un número y/o un carácter especial entre *, -, #.'
+                                    .tr,
+                          ),
+                          controller: controllerPassword,
+                          hintText: 'password'.tr,
+                          isPassword: true,
+                        ),
+                        Spacing.spacingV16,
+                        Input(
+                          controller: controllerConfirmPassword,
+                          hintText: 'Confirmar contraseña'.tr,
+                          isPassword: true,
+                        ),
+                        Spacing.spacingV16,
+                        Input(
+                          controller: controllerName,
+                          hintText: 'Nombre'.tr,
+                        ),
+                        Spacing.spacingV16,
+
+                        Input(
+                          controller: controllerPhone,
+                          hintText: 'Celular'.tr,
+                        ),
+                        Spacing.spacingV16,
+                        DropDownButtonCarreer(
+                          actualState: actualState,
+                          onPressed: showModalStates,
+                          isDefaultState: actualState != 'Selecciona Carrera',
+                          onPressedCrossIcon: () {
+                            setState(() {
+                              actualState = 'Selecciona Carrera';
+                            });
+                          },
+                        ),
+
+                        Spacing.spacingV8,
+                        Spacing.spacingV16,
+                        Input(
+                          controller: controllerStudentCode,
+                          hintText: 'Código estudiantil'.tr,
+                          keyboardType: TextInputType.number,
+                          formatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                        ),
+
+                        Spacing.spacingV32,
+                        //checkbox de términos y condiciones.
+                        Row(
+                          children: <Widget>[
+                            Checkbox(
+                              value: isSelectedCheckbox,
+                              onChanged: (bool? isSelected) {
+                                setState(() {
+                                  isSelectedCheckbox = isSelected ?? false;
+                                });
+                              },
+                              fillColor: MaterialStateProperty.all<Color>(
+                                  Colors.white[0]!),
+                              activeColor: Colors.ocean[40],
+                              checkColor: Colors.ocean[40],
+                            ),
+                            Expanded(
+                              child: RichText(
+                                text: TextSpan(
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: 'Acepto los '.tr,
+                                      style: TextStyle(
+                                        color: Colors.gray[80],
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: 'Términos y condiciones '.tr,
+                                      style: TextStyle(
+                                        color: Colors.ocean[40],
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Get.dialog(
+                                            const TermsAndConditionsPage(),
+                                            barrierDismissible: true,
+                                            barrierColor: Colors.gray[90]!
+                                                .withOpacity(.7),
+                                            useSafeArea: false,
+                                          );
+                                        },
+                                    ),
+                                    TextSpan(
+                                      text: 'de uso de la aplicación'.tr,
+                                      style: TextStyle(
+                                        color: Colors.gray[80],
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Spacing.spacingV32,
+                        SunsetButton(
+                          text: 'Registrarme'.tr,
+                          onPressed: signup,
+                        ),
+                        Spacing.spacingV32,
+                      ],
+                    ),
                   ),
-                  Spacing.spacingV32,
-                  SunsetButton(
-                    text: 'Registrarme'.tr,
-                    onPressed: () {},
-                  ),
-                  Spacing.spacingV32,
-                ],
-              ),
-            ),
-          ),
+                ),
+              );
+            }
+          },
         ),
       );
 

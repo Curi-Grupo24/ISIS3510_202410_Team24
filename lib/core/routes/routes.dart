@@ -3,9 +3,9 @@ import 'package:get/route_manager.dart';
 import '../../features/auth/presentation/pages/pages.dart';
 import '../../features/classes_list/presentation/pages/pages.dart';
 import '../../features/dashboard/presentation/pages/pages.dart';
+import '../../features/enroll_as_monitor/presentation/pages/pages.dart';
 import '../../features/notifications/presentation/pages/notifications_home.dart';
 import '../../features/profile_user/presentation/pages/pages.dart';
-import '../../features/enroll_as_monitor/presentation/pages/pages.dart';
 
 List<GetPage<dynamic>> get getRoutes {
   const Duration transitionDuration = Duration(milliseconds: 350);

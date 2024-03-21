@@ -1,5 +1,6 @@
 library com.curi.app.profileuser.pages;
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide Colors;
 import 'package:get/get.dart';
 

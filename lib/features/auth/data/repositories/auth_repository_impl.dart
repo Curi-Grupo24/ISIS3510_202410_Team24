@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../domain/repositories/auth_repository.dart';
@@ -6,23 +7,34 @@ class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
-  Future<User?> signup({required String email, required String password}) async {
+  Future<Either<String, User?>> signup(
+      {required String email, required String password}) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password,) ;
-          return credential.user;
+        email: email,
+        password: password,
+      );
+      return Right(credential.user);
     } catch (e) {
-      print('error: $e');
-      //
+      return const Left<String, User?>(
+        'No se pudo Crear el usuario, intentelo más tarde',
+      );
     }
-    return null;
-  }
-  
-  @override
-  Future<User?> login({required String email, required String password}) {
-    
-    throw UnimplementedError();
   }
 
-  
+  @override
+  Future<Either<String, User?>> login(
+      {required String email, required String password}) async {
+    try {
+      UserCredential credential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return Right<String, User?>(credential.user);
+    } catch (e) {
+      return const Left<String, User?>(
+        'No se pudo iniciar sesión, intentelo más tarde',
+      );
+    }
+  }
 }

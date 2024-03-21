@@ -7,12 +7,14 @@ import 'core/routes/routes.dart';
 import 'core/ui/theme.dart';
 import 'features/auth/presentation/pages/pages.dart';
 import 'firebase_options.dart';
+import 'injection_container.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  di.init();
   runApp(
     const SafeArea(
       child: MyApp(),

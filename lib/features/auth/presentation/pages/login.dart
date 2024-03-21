@@ -9,8 +9,22 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   TextEditingController useernameMailController = TextEditingController();
-  TextEditingController? passwordControler = TextEditingController();
+  TextEditingController passwordControler = TextEditingController();
   bool isErrorMail = false;
+  final AuthRepositoryImpl _auth = AuthRepositoryImpl();
+
+  Future<void> signin()async {
+    String mail = useernameMailController.text;
+    String password = passwordControler.text;
+
+    // User? user = await _auth.login(email: mail, password: password);
+    // if (user != null) {
+    //   print('el usuario inició sesión correctamente');
+    //   Get.toNamed('/dashboard_home');
+    // } else {
+    //   print('No se pudo iniciar sesión');
+    // }
+  }
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SingleChildScrollView(
@@ -64,9 +78,7 @@ class _LoginState extends State<Login> {
                   Spacing.spacingV24,
                   SunsetButton(
                     text: 'log_in'.tr,
-                    onPressed: () {
-                      Get.toNamed('/dashboard_home');
-                    },
+                    onPressed: signin,
                   ),
                   Spacing.spacingV16,
                   GestureDetector(

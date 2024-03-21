@@ -17,14 +17,6 @@ class _LoginState extends State<Login> {
     String mail = useernameMailController.text;
     String password = passwordControler.text;
     loginBloc.add(LoginAccount(email: mail, password: password));
-
-    // User? user = await _auth.login(email: mail, password: password);
-    // if (user != null) {
-    //   print('el usuario inició sesión correctamente');
-    //   Get.toNamed('/dashboard_home');
-    // } else {
-    //   print('No se pudo iniciar sesión');
-    // }
   }
 
   @override

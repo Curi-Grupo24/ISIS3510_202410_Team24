@@ -1,11 +1,14 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../../domain/repositories/auth_repository.dart';
+import 'users_repository_impl.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  String uid = '';
 
   @override
   Future<Either<String, User?>> signup({
@@ -29,9 +32,12 @@ class AuthRepositoryImpl implements AuthRepository {
         'name': name,
         'phone': phone,
         'career': career,
-        'studentCode': studentCode
+        'studentCode': studentCode,
+        'type': 'student'
       });
-
+      uid = credential.user!.uid;
+      UsersRepositoryImpl userData = UsersRepositoryImpl();
+      await userData.getUser(uid);
       return Right(credential.user);
     } catch (e) {
       return const Left<String, User?>(
@@ -50,6 +56,7 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
+      uid = credential.user!.uid;
       return Right<String, User?>(credential.user);
     } catch (e) {
       return const Left<String, User?>(

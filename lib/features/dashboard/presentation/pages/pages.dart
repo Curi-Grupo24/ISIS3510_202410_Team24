@@ -3,6 +3,8 @@ library com.curi.app.dashboard.pages;
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart' hide Colors;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 
@@ -14,6 +16,7 @@ import '../../../auth/data/repositories/auth_repository_impl.dart';
 import '../../../auth/data/repositories/users_repository_impl.dart';
 import '../../../auth/domain/repositories/auth_repository.dart';
 import '../../../common_widgets/widgets.dart';
+import '../bloc/dashboard_bloc/dashboard_bloc.dart';
 import '../widgets/widgets.dart';
 
 part './dashboard_home.dart';

@@ -8,6 +8,10 @@ import 'features/auth/domain/usecases/login_account.dart';
 import 'features/auth/domain/usecases/register_account.dart';
 import 'features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'features/auth/presentation/bloc/register_bloc/register_bloc.dart';
+import 'features/dashboard/data/repositories/dashboard_repository_impl.dart';
+import 'features/dashboard/domain/repositories/dashboard_repository.dart';
+import 'features/dashboard/domain/usecases/get_user_info.dart';
+import 'features/dashboard/presentation/bloc/dashboard_bloc/dashboard_bloc.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -19,6 +23,9 @@ void init() {
   sl.registerLazySingleton<LoginBloc>(
     () => LoginBloc(),
   );
+  sl.registerLazySingleton<DashboardBloc>(
+    () => DashboardBloc(),
+  );
 
   //Use Cases
   sl.registerLazySingleton(
@@ -27,10 +34,18 @@ void init() {
   sl.registerLazySingleton(
     () => LoginAccountUseCase(repository: sl()),
   );
+  sl.registerLazySingleton(
+    () => GetUserInfoUseCase(repository: sl()),
+  );
 
   //Repositories
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
+        // datasource: sl(),
+        ),
+  );
+  sl.registerLazySingleton<DashboardRepository>(
+    () => DashboardRepositoryImpl(
         // datasource: sl(),
         ),
   );

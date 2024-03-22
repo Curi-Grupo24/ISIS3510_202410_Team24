@@ -10,9 +10,16 @@ class RegisterAccountUseCase {
   Future<Either<String, User?>> call({
     required String email,
     required String password,
+    required String name,
+    required String phone,
+    required String career,
+    required String studentCode,
   }) async =>
       repository.signup(
-        email: email,
-        password: password,
-      );
+          email: email,
+          password: password,
+          name: name,
+          phone: phone,
+          career: career,
+          studentCode: studentCode);
 }

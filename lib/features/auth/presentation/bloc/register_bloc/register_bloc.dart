@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -17,8 +19,14 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       //
       emit(const RegisterLoading());
       RegisterAccountUseCase usecase = sl<RegisterAccountUseCase>();
-      await usecase(email: event.email, password: event.password)
-          .then((Either<String, User?> value) {
+      await usecase(
+        email: event.email,
+        password: event.password,
+        name: event.name,
+        career: event.career,
+        phone: event.phone,
+        studentCode: event.studentCode,
+      ).then((Either<String, User?> value) {
         value.fold(
           (String l) => emit(
             RegisterError(

@@ -36,7 +36,18 @@ class _RegisterViewState extends State<RegisterView> {
   Future<void> signup() async {
     String mail = controllerEmail.text;
     String password = controllerPassword.text;
-    registerBloc.add(RegisterAccount(email: mail, password: password));
+    String name = controllerName.text;
+    String career = actualState;
+    String phone = controllerPhone.text;
+    String studentCode = controllerStudentCode.text;
+    registerBloc.add(RegisterAccount(
+      email: mail,
+      password: password,
+      name: name,
+      career: career,
+      phone: phone,
+      studentCode: studentCode,
+    ));
   }
 
   @override
@@ -70,13 +81,11 @@ class _RegisterViewState extends State<RegisterView> {
           bloc: registerBloc,
           builder: (BuildContext context, RegisterState state) {
             if (state is RegisterLoading) {
-              return 
-                SpinKitRotatingCircle(
-                  color: Colors.sunset[20],
-                  size: 50,
-                );
-            } 
-            else {
+              return SpinKitRotatingCircle(
+                color: Colors.sunset[20],
+                size: 50,
+              );
+            } else {
               return SingleChildScrollView(
                 child: Align(
                   alignment: Alignment.topCenter,

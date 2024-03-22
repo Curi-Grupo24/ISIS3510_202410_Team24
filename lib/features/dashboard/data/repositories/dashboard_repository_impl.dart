@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 
 import '../../domain/repositories/dashboard_repository.dart';
 
@@ -13,13 +14,12 @@ class DashboardRepositoryImpl implements DashboardRepository {
   }
 
   @override
-  Future<String> getUserName(String uid) async {
+  Future<Either<String, String>> getUserName(String uid) async {
     DocumentSnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection('users').doc(uid).get();
-    Map<String, dynamic>? name = snapshot.data();
+    Map<String, dynamic>? data = snapshot.data();
+    String name = data!['name'] ?? 'N/A';
 
-    return name?['name'];
+    return name != 'N/A' ? Right<String, String>(name) : const Left<String, String>('Newie');
   }
-
- 
 }

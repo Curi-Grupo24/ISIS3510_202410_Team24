@@ -14,20 +14,10 @@ class _DashboardHomeState extends State<DashboardHome> {
   DashboardBloc dashboardBloc = DashboardBloc();
   String username = '';
 
-  // _getName() {
-  //   UsersRepositoryImpl users = UsersRepositoryImpl();
-  //   users
-  //       .getUserName(AuthRepositoryImpl.uid)
-  //       .then((String user) => username = user);
-  // }
-
   @override
-  // ignore: must_call_super, always_declare_return_types, type_annotate_public_apis
   initState() {
     dashboardBloc.add(const GetUserInfo());
     super.initState();
-    //_getName();
-    // print(username);
   }
 
   @override
@@ -107,9 +97,7 @@ class _DashboardHomeState extends State<DashboardHome> {
               );
             } else if(state is DashboardSuccessfull) 
             {
-              setState(() {
-                username = state.name;
-              });
+              
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -117,7 +105,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                     width: double.infinity,
                   ),
                   Text(
-                    username,
+                    state.name,
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.gray[70],

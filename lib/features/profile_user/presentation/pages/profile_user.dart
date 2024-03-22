@@ -8,6 +8,74 @@ class ProfileUser extends StatefulWidget {
 }
 
 class _ProfileUserState extends State<ProfileUser> {
+  XFile? photo;
+
+  void onChangedPhoto(XFile? tPhoto) {
+    setState(() {
+      photo = tPhoto;
+    });
+    // widget.onChangedPhoto(photo);
+  }
+
+  Future<void> cameraMethod() async {
+    XFile? pickedImage = await ImageInterface.pickImage(ImageSource.camera);
+    setState(() {
+      photo = pickedImage;
+      Navigator.pop(context);
+    });
+    onChangedPhoto(photo);
+    if (photo == null) {
+      return;
+    } else {
+      // scannedText = await scannedRepository.scannedImage(photo);
+
+      // data = scannedRepository.organizeData(
+      //   scannedRepository.formatText(scannedText!),
+      // );
+
+      // for (int i = 0; i < data!.length; i++) {
+      //   codesControllers.add(TextEditingController());
+      //   viaControllers.add(TextEditingController());
+      // }
+
+      // onChangedCodes(data);
+    }
+  }
+
+  void galleryMethod() async {
+    XFile? pickImage = await ImageInterface.pickImage(ImageSource.gallery);
+    setState(() {
+      photo = pickImage;
+      Navigator.pop(context);
+    });
+    onChangedPhoto(photo);
+    if (photo == null) {
+      return;
+    } else {
+      // scannedText = await scannedRepository.scannedImage(photo);
+
+      // data = scannedRepository.organizeData(scannedText!);
+
+      // for (int i = 0; i < data!.length; i++) {
+      //   codesControllers.add(TextEditingController());
+      //   viaControllers.add(TextEditingController());
+      // }
+
+      // onChangedCodes(data);
+    }
+  }
+
+  Future<ImageProvider<Object>> xFileToImage(XFile? xFile) async {
+    if (xFile != null) {
+      Uint8List bytes = await xFile.readAsBytes();
+      return Image.memory(bytes).image;
+    } else {
+      return NetworkImage(
+        'https://picsum.photos/id/237/200/300',
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
@@ -47,15 +115,53 @@ class _ProfileUserState extends State<ProfileUser> {
                             padding: const EdgeInsets.symmetric(
                               vertical: UILayout.medium,
                             ),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.ocean[40],
-                              radius: UILayout.large,
-                              child: const CircleAvatar(
-                                radius: UILayout.xlarge,
-                                backgroundImage: NetworkImage(
-                                  'https://picsum.photos/id/237/200/300',
-                                ),
-                              ),
+                            child: GestureDetector(
+                              onTap: () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (BuildContext ctx) =>
+                                      ImagePickerModal(
+                                    cameraMethod: cameraMethod,
+                                    galleryMethod: galleryMethod,
+                                  ),
+                                );
+                              },
+                              child: photo == null
+                                  ? CircleAvatar(
+                                      backgroundColor: Colors.ocean[40],
+                                      radius: UILayout.large,
+                                      child: const CircleAvatar(
+                                        radius: UILayout.xlarge,
+                                        backgroundImage: NetworkImage(
+                                          'https://picsum.photos/id/237/200/300',
+                                        ),
+                                        
+                                      ),
+                                    )
+                                  : 
+                                  // CircleAvatar(
+                                  //     backgroundColor: Colors.ocean[40],
+                                  //     radius: UILayout.large,
+                                  //     child: const CircleAvatar(
+                                  //       radius: UILayout.xlarge,
+                                  //       backgroundImage: Image.file(File(photo!.path)),
+                                        
+                                  //     ),
+                                  //   )
+                                  
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: SizedBox(
+                                        height:
+                                            UILayout.xlarge,
+                                        width:
+                                            UILayout.xlarge,
+                                        child: FittedBox(
+                                          fit: BoxFit.cover,
+                                          child: Image.file(File(photo!.path)),
+                                        ),
+                                      ),
+                                    ),
                             ),
                           ),
                           Text(
@@ -87,8 +193,10 @@ class _ProfileUserState extends State<ProfileUser> {
                           ),
                           Text(
                             'Estudiante - Monitor',
-                            style:
-                                TextStyle(fontSize: 14, color: Colors.sunset[50]),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.sunset[50],
+                            ),
                           ),
                           const SizedBox(
                             height: UILayout.small,
@@ -102,8 +210,10 @@ class _ProfileUserState extends State<ProfileUser> {
                           ),
                           Text(
                             '+57 3187517662',
-                            style:
-                                TextStyle(fontSize: 14, color: Colors.sunset[50]),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.sunset[50],
+                            ),
                           ),
                           const SizedBox(
                             height: UILayout.small,
@@ -117,8 +227,10 @@ class _ProfileUserState extends State<ProfileUser> {
                           ),
                           Text(
                             'Ingeniería mmecánica',
-                            style:
-                                TextStyle(fontSize: 14, color: Colors.sunset[50]),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.sunset[50],
+                            ),
                           ),
                           const SizedBox(
                             height: UILayout.small,
@@ -189,13 +301,13 @@ class _ProfileUserState extends State<ProfileUser> {
                       ),
                     ),
                     SunsetButton(
-                            text: 'Cerrar sesión'.tr,
-                            backgroundColor: Colors.jelly[40],
-                            onPressed: (){
-                              FirebaseAuth.instance.signOut();
-                              Get.toNamed('/login');
-                            },
-                          ),
+                      text: 'Cerrar sesión'.tr,
+                      backgroundColor: Colors.jelly[40],
+                      onPressed: () {
+                        FirebaseAuth.instance.signOut();
+                        Get.toNamed('/login');
+                      },
+                    ),
                   ],
                 ),
               ),

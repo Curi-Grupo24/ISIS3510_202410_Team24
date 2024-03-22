@@ -41,8 +41,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<String, User?>> login(
-      {required String email, required String password}) async {
+  Future<Either<String, User?>> login({
+    required String email,
+    required String password,
+  }) async {
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(
         email: email,

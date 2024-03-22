@@ -10,7 +10,7 @@ import '../../../../core/models/dashboard_data.dart';
 import '../../../../core/ui/colors_brand.dart';
 import '../../../../core/ui/layout.dart';
 import '../../../../core/ui/spacing.dart';
-import '../../../common_widgets/widgets.dart';
+import '../../../classes_list/presentation/widgets/widgets.dart';
 import '../widgets/widgets.dart';
 
 part './dashboard_home.dart';

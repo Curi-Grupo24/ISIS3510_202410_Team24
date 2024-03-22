@@ -11,6 +11,7 @@ class _LoginState extends State<Login> {
   TextEditingController useernameMailController = TextEditingController();
   TextEditingController passwordControler = TextEditingController();
   bool isErrorMail = false;
+  bool isErrorPassword = false;
   bool isValidForm = false;
   final LoginBloc loginBloc = sl<LoginBloc>();
   @override
@@ -26,9 +27,9 @@ class _LoginState extends State<Login> {
       setState(() {
         isValidForm = true;
       });
-    }else{
+    } else {
       setState(() {
-        isValidForm=false;
+        isValidForm = false;
       });
     }
   }
@@ -97,7 +98,11 @@ class _LoginState extends State<Login> {
                           controller: passwordControler,
                           hintText: 'password'.tr,
                           isPassword: true,
-                          onChange: (String value){
+                          error: isErrorPassword ? 'Campo obligatorio' : null,
+                          onChange: (String value) {
+                            setState(() {
+                              isErrorPassword = value.isEmpty;
+                            });
                             validateForm();
                           },
                           maxLength: 16,
@@ -119,7 +124,7 @@ class _LoginState extends State<Login> {
                         Spacing.spacingV24,
                         SunsetButton(
                           text: 'log_in'.tr,
-                          onPressed: signin,
+                          onPressed: isValidForm ? signin : null,
                           backgroundColor: !isValidForm
                               ? Colors.gray[50]
                               : Colors.sunset[50],

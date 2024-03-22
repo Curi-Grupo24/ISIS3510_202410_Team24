@@ -11,7 +11,27 @@ class _LoginState extends State<Login> {
   TextEditingController useernameMailController = TextEditingController();
   TextEditingController passwordControler = TextEditingController();
   bool isErrorMail = false;
+  bool isValidForm = false;
   final LoginBloc loginBloc = sl<LoginBloc>();
+  @override
+  void initState() {
+    isValidForm = false;
+    super.initState();
+  }
+
+  void validateForm() {
+    if (useernameMailController.text.isNotEmpty &&
+        useernameMailController.text.endsWith('@uniandes.edu.co') &&
+        passwordControler.text.isNotEmpty) {
+      setState(() {
+        isValidForm = true;
+      });
+    }else{
+      setState(() {
+        isValidForm=false;
+      });
+    }
+  }
 
   Future<void> signin() async {
     String mail = useernameMailController.text;
@@ -53,6 +73,20 @@ class _LoginState extends State<Login> {
                         Input(
                           controller: useernameMailController,
                           hintText: 'username_mail'.tr,
+                          error:
+                              isErrorMail ? 'Ingresa un correo valido' : null,
+                          onChange: (String string) {
+                            if (!string.endsWith('@uniandes.edu.co')) {
+                              setState(() {
+                                isErrorMail = true;
+                              });
+                            } else {
+                              setState(() {
+                                isErrorMail = false;
+                              });
+                            }
+                            validateForm();
+                          },
                         ),
                         Spacing.spacingV16,
                         Input(
@@ -63,6 +97,10 @@ class _LoginState extends State<Login> {
                           controller: passwordControler,
                           hintText: 'password'.tr,
                           isPassword: true,
+                          onChange: (String value){
+                            validateForm();
+                          },
+                          maxLength: 16,
                         ),
                         Spacing.spacingV8,
                         GestureDetector(
@@ -82,6 +120,9 @@ class _LoginState extends State<Login> {
                         SunsetButton(
                           text: 'log_in'.tr,
                           onPressed: signin,
+                          backgroundColor: !isValidForm
+                              ? Colors.gray[50]
+                              : Colors.sunset[50],
                         ),
                         Spacing.spacingV16,
                         GestureDetector(

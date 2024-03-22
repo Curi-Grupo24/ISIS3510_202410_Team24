@@ -4,5 +4,5 @@ sealed class ShceduleHomeEvent extends Equatable {
   const ShceduleHomeEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }

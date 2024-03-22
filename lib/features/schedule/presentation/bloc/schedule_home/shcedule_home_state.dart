@@ -4,7 +4,7 @@ sealed class ShceduleHomeState extends Equatable {
   const ShceduleHomeState();
   
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 final class ShceduleHomeInitial extends ShceduleHomeState {}

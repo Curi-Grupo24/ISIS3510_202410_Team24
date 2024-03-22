@@ -182,7 +182,8 @@ class _RegisterViewState extends State<RegisterView> {
                                 });
                               },
                               fillColor: MaterialStateProperty.all<Color>(
-                                  Colors.white[0]!),
+                                Colors.white[0]!,
+                              ),
                               activeColor: Colors.ocean[40],
                               checkColor: Colors.ocean[40],
                             ),

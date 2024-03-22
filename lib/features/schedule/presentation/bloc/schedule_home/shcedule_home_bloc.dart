@@ -6,8 +6,11 @@ part 'shcedule_home_state.dart';
 
 class ShceduleHomeBloc extends Bloc<ShceduleHomeEvent, ShceduleHomeState> {
   ShceduleHomeBloc() : super(ShceduleHomeInitial()) {
-    on<ShceduleHomeEvent>((event, emit) {
-      // TODO: implement event handler
+    on<ShceduleHomeEvent>((
+      ShceduleHomeEvent event,
+      Emitter<ShceduleHomeState> emit,
+    ) {
+      // 
     });
   }
 }

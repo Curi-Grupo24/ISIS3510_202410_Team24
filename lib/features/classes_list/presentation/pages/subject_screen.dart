@@ -1,4 +1,4 @@
-part of com.curi.app.callseslist.pages;
+part of com.curi.app.classeslist.pages;
 
 class SubjectScreen extends StatefulWidget {
   const SubjectScreen({super.key});

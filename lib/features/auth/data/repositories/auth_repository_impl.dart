@@ -26,10 +26,10 @@ class AuthRepositoryImpl implements AuthRepository {
           .collection('users')
           .doc(credential.user!.uid)
           .set({
-        name: name,
-        phone: phone,
-        career: career,
-        studentCode: studentCode
+        'name': name,
+        'phone': phone,
+        'career': career,
+        'studentCode': studentCode
       });
 
       return Right(credential.user);

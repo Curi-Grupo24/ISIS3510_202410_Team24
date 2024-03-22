@@ -1,15 +1,12 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class ScheduleRepositoryImpl {
   ScheduleRepositoryImpl();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   Future<String> addSchedule(
-      String uid, Map<String, dynamic> addedschedule) async {
+    String uid,
+    Map<String, dynamic> addedschedule,
+  ) async {
     try {
       await FirebaseFirestore.instance
           .collection('schedule')
@@ -28,7 +25,9 @@ class ScheduleRepositoryImpl {
   }
 
   Future<String> updateSchedule(
-      String uid, Map<String, dynamic> scheduleFields) async {
+    String uid,
+    Map<String, dynamic> scheduleFields,
+  ) async {
     try {
       await FirebaseFirestore.instance
           .collection('schedule')

@@ -16,10 +16,11 @@ class RegisterAccountUseCase {
     required String studentCode,
   }) async =>
       repository.signup(
-          email: email,
-          password: password,
-          name: name,
-          phone: phone,
-          career: career,
-          studentCode: studentCode);
+        email: email,
+        password: password,
+        name: name,
+        phone: phone,
+        career: career,
+        studentCode: studentCode,
+      );
 }

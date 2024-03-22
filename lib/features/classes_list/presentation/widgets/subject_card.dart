@@ -62,7 +62,6 @@ class _SubjectCardState extends State<SubjectCard> {
                         Text(
                           widget.subjectTitle,
                           style: const TextStyle(
-                            fontFamily: '', //TODO:
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF151D0C),
@@ -72,7 +71,6 @@ class _SubjectCardState extends State<SubjectCard> {
                         Text(
                           widget.profesor,
                           style: const TextStyle(
-                            fontFamily: '', //TODO:
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
                             color: Color(0xFF94A3B8),
@@ -81,7 +79,6 @@ class _SubjectCardState extends State<SubjectCard> {
                         Text(
                           widget.time,
                           style: const TextStyle(
-                            fontFamily: '', //TODO:
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
                             color: Color(0xFF94A3B8),

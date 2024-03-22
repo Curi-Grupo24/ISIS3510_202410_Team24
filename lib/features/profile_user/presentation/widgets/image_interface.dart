@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 // import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
 class ImageInterface {
   // FirebaseStorage storage = FirebaseStorage.instance;
   static Future<XFile?> pickImage(ImageSource source) async {
@@ -48,13 +47,13 @@ class ImageInterface {
   ) async {
     try {
       // Reference ref = storage
-          // .ref()
-          // .child('users')
-          // .child('user_id: ${user.uid}')
-          // .child('clinica: ${clinica.uid}')
-          // .child('quirurgicos')
-          // .child(DateFormat('dd-MM-yyyy H:m:s').format(DateTime.now()))
-          // .child(type);
+      // .ref()
+      // .child('users')
+      // .child('user_id: ${user.uid}')
+      // .child('clinica: ${clinica.uid}')
+      // .child('quirurgicos')
+      // .child(DateFormat('dd-MM-yyyy H:m:s').format(DateTime.now()))
+      // .child(type);
 
       // UploadTask uploadTask = ref.putFile(file);
 

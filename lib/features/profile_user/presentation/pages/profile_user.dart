@@ -42,7 +42,7 @@ class _ProfileUserState extends State<ProfileUser> {
     }
   }
 
-  void galleryMethod() async {
+  Future<void> galleryMethod() async {
     XFile? pickImage = await ImageInterface.pickImage(ImageSource.gallery);
     setState(() {
       photo = pickImage;
@@ -70,7 +70,7 @@ class _ProfileUserState extends State<ProfileUser> {
       Uint8List bytes = await xFile.readAsBytes();
       return Image.memory(bytes).image;
     } else {
-      return NetworkImage(
+      return const NetworkImage(
         'https://picsum.photos/id/237/200/300',
       );
     }
@@ -135,27 +135,13 @@ class _ProfileUserState extends State<ProfileUser> {
                                         backgroundImage: NetworkImage(
                                           'https://picsum.photos/id/237/200/300',
                                         ),
-                                        
                                       ),
                                     )
-                                  : 
-                                  // CircleAvatar(
-                                  //     backgroundColor: Colors.ocean[40],
-                                  //     radius: UILayout.large,
-                                  //     child: const CircleAvatar(
-                                  //       radius: UILayout.xlarge,
-                                  //       backgroundImage: Image.file(File(photo!.path)),
-                                        
-                                  //     ),
-                                  //   )
-                                  
-                                  ClipRRect(
+                                  : ClipRRect(
                                       borderRadius: BorderRadius.circular(16),
                                       child: SizedBox(
-                                        height:
-                                            UILayout.xlarge,
-                                        width:
-                                            UILayout.xlarge,
+                                        height: UILayout.xlarge,
+                                        width: UILayout.xlarge,
                                         child: FittedBox(
                                           fit: BoxFit.cover,
                                           child: Image.file(File(photo!.path)),

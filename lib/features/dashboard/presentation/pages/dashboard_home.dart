@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 part of com.curi.app.dashboard.pages;
 
 class DashboardHome extends StatefulWidget {
@@ -8,8 +10,23 @@ class DashboardHome extends StatefulWidget {
 }
 
 class _DashboardHomeState extends State<DashboardHome> {
-  // late TabController _tabController;
   late List<DashboardTabData> tabs;
+  String username = '';
+
+  _getName() {
+    UsersRepositoryImpl users = UsersRepositoryImpl();
+    users
+        .getUserName(AuthRepositoryImpl.uid)
+        .then((String user) => username = user);
+  }
+
+  @override
+  // ignore: must_call_super, always_declare_return_types, type_annotate_public_apis
+  initState() {
+    super.initState();
+    //_getName();
+    print(username);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +60,7 @@ class _DashboardHomeState extends State<DashboardHome> {
           Row(
             children: <Widget>[
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   Get.toNamed('/notifications_home');
                 },
                 child: Icon(
@@ -56,11 +73,10 @@ class _DashboardHomeState extends State<DashboardHome> {
                 width: 8,
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   Get.toNamed('profile_user');
                 },
                 child: CircleAvatar(
-                  
                   backgroundColor: Colors.ocean[40],
                   radius: UILayout.large,
                   child: const CircleAvatar(
@@ -86,7 +102,7 @@ class _DashboardHomeState extends State<DashboardHome> {
               width: double.infinity,
             ),
             Text(
-              '¡Hola, José!',
+              username,
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.gray[70],
@@ -100,7 +116,7 @@ class _DashboardHomeState extends State<DashboardHome> {
             HorizontalCardScroll(
               title: 'Mis materias',
               onTapViewMore: () {
-                 Get.toNamed('/classes_list');
+                Get.toNamed('/classes_list');
               },
               sortedCards: sortedCards1,
               aproxCardWidth: aproxCardWidth,
@@ -110,7 +126,7 @@ class _DashboardHomeState extends State<DashboardHome> {
             HorizontalCardScroll(
               title: 'En las  que soy monitor',
               onTapViewMore: () {
-                 Get.toNamed('/classes_list');
+                Get.toNamed('/classes_list');
               },
               sortedCards: sortedCards2,
               aproxCardWidth: aproxCardWidth,

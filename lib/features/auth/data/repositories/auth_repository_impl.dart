@@ -7,8 +7,10 @@ import '../../domain/repositories/auth_repository.dart';
 import 'users_repository_impl.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
+  AuthRepositoryImpl();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  String uid = '';
+  static String uid = '';
 
   @override
   Future<Either<String, User?>> signup({
@@ -64,4 +66,6 @@ class AuthRepositoryImpl implements AuthRepository {
       );
     }
   }
+
+  String getuid() => uid;
 }

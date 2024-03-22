@@ -11,7 +11,16 @@ class UsersRepositoryImpl {
   Future<Map<String, dynamic>?> getUser(String uid) async {
     DocumentSnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    print(snapshot.data.toString());
     return snapshot.data();
+  }
+
+  Future<String> getUserName(String uid) async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    Map<String, dynamic>? name = snapshot.data();
+
+    return name?['name'];
   }
 
   Future<String> updateUser(String uid, Map<String, dynamic> userFields) async {

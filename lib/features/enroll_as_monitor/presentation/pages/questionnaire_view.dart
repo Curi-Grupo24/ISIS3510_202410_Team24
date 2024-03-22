@@ -115,14 +115,14 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
                       color: Colors.sunset[20],
                       shape: BoxShape.circle,
                     ),
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Icon(
                       Icons.arrow_forward_ios,
                       color: Colors.white[0],
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

@@ -43,7 +43,7 @@ class _DashboardHomeState extends State<DashboardHome> {
           Row(
             children: <Widget>[
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   Get.toNamed('/notifications_home');
                 },
                 child: Icon(
@@ -56,11 +56,10 @@ class _DashboardHomeState extends State<DashboardHome> {
                 width: 8,
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   Get.toNamed('profile_user');
                 },
                 child: CircleAvatar(
-                  
                   backgroundColor: Colors.ocean[40],
                   radius: UILayout.large,
                   child: const CircleAvatar(
@@ -100,7 +99,7 @@ class _DashboardHomeState extends State<DashboardHome> {
             HorizontalCardScroll(
               title: 'Mis materias',
               onTapViewMore: () {
-                 Get.toNamed('/classes_list');
+                Get.toNamed('/classes_list');
               },
               sortedCards: sortedCards1,
               aproxCardWidth: aproxCardWidth,
@@ -110,7 +109,7 @@ class _DashboardHomeState extends State<DashboardHome> {
             HorizontalCardScroll(
               title: 'En las  que soy monitor',
               onTapViewMore: () {
-                 Get.toNamed('/classes_list');
+                Get.toNamed('/classes_list');
               },
               sortedCards: sortedCards2,
               aproxCardWidth: aproxCardWidth,
@@ -161,12 +160,14 @@ class _DashboardHomeState extends State<DashboardHome> {
               ),
             ),
             Spacing.spacingV24,
-            SunsetButton(
-              text: 'Enroll',
+            SunsetCardFollow(
               onPressed: () {
                 Get.toNamed('/enroll_monitor_home');
               },
+              title: 'Apuntate para monitor!',
+              description: 'blah blah',
             ),
+            Spacing.spacingV24,
           ],
         ),
       ),

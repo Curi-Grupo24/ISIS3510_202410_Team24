@@ -10,6 +10,10 @@ import 'features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'features/auth/presentation/bloc/register_bloc/register_bloc.dart';
 import 'features/classes_list/data/repositories/classes_repository_impl.dart';
 import 'features/classes_list/domain/repositories/classes_repository.dart';
+import 'features/profile_user/data/respositories/profile_repository_impl.dart';
+import 'features/profile_user/domain/repositories/profile_repository.dart';
+import 'features/profile_user/domain/usecases/get_user_info.dart';
+import 'features/profile_user/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'features/schedule/data/repositories/schedule_repository_impl.dart';
 import 'features/schedule/domain/repositories/schedule_repository.dart';
 import 'features/dashboard/data/repositories/dashboard_repository_impl.dart';
@@ -30,6 +34,9 @@ void init() {
   sl.registerLazySingleton<DashboardBloc>(
     () => DashboardBloc(),
   );
+  sl.registerLazySingleton<ProfileBloc>(
+    () => ProfileBloc(),
+  );
 
   //Use Cases
   sl.registerLazySingleton(
@@ -41,6 +48,9 @@ void init() {
   sl.registerLazySingleton(
     () => GetUserInfoUseCase(repository: sl()),
   );
+  sl.registerLazySingleton(
+    () => GetProfileUserInfoUseCase(repository: sl()),
+  );
 
   //Repositories
   sl.registerLazySingleton<AuthRepository>(
@@ -48,7 +58,7 @@ void init() {
         // datasource: sl(),
         ),
   );
-  
+
   sl.registerLazySingleton<ClassRepository>(
     () => ClasessRepositoryImpl(
         // datasource: sl(),
@@ -56,9 +66,19 @@ void init() {
   );
   sl.registerLazySingleton<ScheduleRepository>(
     () => ScheduleRepositoryImpl(
+        // datasource: sl(),
+        ),
+  );
 
   sl.registerLazySingleton<DashboardRepository>(
     () => DashboardRepositoryImpl(
+
+        // datasource: sl(),
+        ),
+  );
+
+  sl.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(
 
         // datasource: sl(),
         ),

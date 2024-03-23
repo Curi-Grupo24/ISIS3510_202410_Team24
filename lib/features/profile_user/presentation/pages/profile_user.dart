@@ -9,6 +9,14 @@ class ProfileUser extends StatefulWidget {
 
 class _ProfileUserState extends State<ProfileUser> {
   XFile? photo;
+  ProfileBloc profileBloc = ProfileBloc();
+  String username = '';
+
+  @override
+  initState() {
+    profileBloc.add(const GetUserInfo());
+    super.initState();
+  }
 
   void onChangedPhoto(XFile? tPhoto) {
     setState(() {
@@ -99,205 +107,226 @@ class _ProfileUserState extends State<ProfileUser> {
           ),
         ),
         body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Colors.sunset[50]!.withOpacity(0.3),
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          Spacing.spacingV24,
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: UILayout.medium,
-                            ),
-                            child: GestureDetector(
-                              onTap: () async {
-                                await showDialog(
-                                  context: context,
-                                  builder: (BuildContext ctx) =>
-                                      ImagePickerModal(
-                                    cameraMethod: cameraMethod,
-                                    galleryMethod: galleryMethod,
-                                  ),
-                                );
-                              },
-                              child: photo == null
-                                  ? CircleAvatar(
-                                      backgroundColor: Colors.ocean[40],
-                                      radius: UILayout.large,
-                                      child: const CircleAvatar(
-                                        radius: UILayout.xlarge,
-                                        backgroundImage: NetworkImage(
-                                          'https://picsum.photos/id/237/200/300',
-                                        ),
-                                      ),
-                                    )
-                                  : ClipRRect(
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: SizedBox(
-                                        height: UILayout.xlarge,
-                                        width: UILayout.xlarge,
-                                        child: FittedBox(
-                                          fit: BoxFit.cover,
-                                          child: Image.file(File(photo!.path)),
-                                        ),
-                                      ),
-                                    ),
-                            ),
-                          ),
-                          Text(
-                            'Juan',
-                            style: TextStyle(
-                              fontSize: UILayout.large,
-                              color: Colors.gray[90],
-                            ),
-                          ),
-                          Spacing.spacingV24,
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Tipo de usuario',
-                            style: TextStyle(
-                              fontSize: UILayout.medium,
-                              color: Colors.gray[90],
-                            ),
-                          ),
-                          Text(
-                            'Estudiante - Monitor',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.sunset[50],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: UILayout.small,
-                          ),
-                          Text(
-                            'Contacto',
-                            style: TextStyle(
-                              fontSize: UILayout.medium,
-                              color: Colors.gray[90],
-                            ),
-                          ),
-                          Text(
-                            '+57 3187517662',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.sunset[50],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: UILayout.small,
-                          ),
-                          Text(
-                            'Carrera',
-                            style: TextStyle(
-                              fontSize: UILayout.medium,
-                              color: Colors.gray[90],
-                            ),
-                          ),
-                          Text(
-                            'Ingeniería mmecánica',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.sunset[50],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: UILayout.small,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: UILayout.large,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: UILayout.medium,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+          child: BlocBuilder<ProfileBloc, ProfileState>(
+            bloc: profileBloc,
+            builder: (BuildContext context, ProfileState state) {
+              if (state is ProfileLoading) {
+                return SpinKitRotatingCircle(
+                  color: Colors.sunset[20],
+                  size: 50,
+                );
+              } else if (state is ProfileSuccessfull) {
+                return Column(
                   children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.sunset[50]!.withOpacity(0.3),
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                Spacing.spacingV24,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: UILayout.medium,
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (BuildContext ctx) =>
+                                            ImagePickerModal(
+                                          cameraMethod: cameraMethod,
+                                          galleryMethod: galleryMethod,
+                                        ),
+                                      );
+                                    },
+                                    child: photo == null
+                                        ? CircleAvatar(
+                                            backgroundColor: Colors.ocean[40],
+                                            radius: UILayout.large,
+                                            child: const CircleAvatar(
+                                              radius: UILayout.xlarge,
+                                              backgroundImage: NetworkImage(
+                                                'https://picsum.photos/id/237/200/300',
+                                              ),
+                                            ),
+                                          )
+                                        : ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                            child: SizedBox(
+                                              height: UILayout.xlarge,
+                                              width: UILayout.xlarge,
+                                              child: FittedBox(
+                                                fit: BoxFit.cover,
+                                                child: Image.file(
+                                                    File(photo!.path)),
+                                              ),
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                                Text(
+                                  state.user?['name'],
+                                  style: TextStyle(
+                                    fontSize: UILayout.large,
+                                    color: Colors.gray[90],
+                                  ),
+                                ),
+                                Spacing.spacingV24,
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Tipo de usuario',
+                                  style: TextStyle(
+                                    fontSize: UILayout.medium,
+                                    color: Colors.gray[90],
+                                  ),
+                                ),
+                                Text(
+                                  state.user?['type'],
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.sunset[50],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: UILayout.small,
+                                ),
+                                Text(
+                                  'Contacto',
+                                  style: TextStyle(
+                                    fontSize: UILayout.medium,
+                                    color: Colors.gray[90],
+                                  ),
+                                ),
+                                Text(
+                                  state.user?['phone'],
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.sunset[50],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: UILayout.small,
+                                ),
+                                Text(
+                                  'Carrera',
+                                  style: TextStyle(
+                                    fontSize: UILayout.medium,
+                                    color: Colors.gray[90],
+                                  ),
+                                ),
+                                Text(
+                                  state.user?['career'],
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.sunset[50],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: UILayout.small,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: UILayout.large,
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: UILayout.medium,
                       ),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          SunsetButton(
-                            text: 'Agendar monitoría'.tr,
-                            backgroundColor: Colors.jelly[40],
-                          ),
-                          Spacing.spacingV16,
-                        ],
-                      ),
-                    ),
-                    Spacing.spacingV12,
-                    Text(
-                      'reviews',
-                      style: TextStyle(
-                        color: Colors.gray[90],
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Spacing.spacingV12,
-                    Center(
-                      child: Column(
-                        children: <Widget>[
-                          Image.asset(
-                            'assets/images/pana.png',
-                            width: MediaQuery.of(context).size.width * 0.5,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: UILayout.medium,
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                SunsetButton(
+                                  text: 'Agendar monitoría'.tr,
+                                  backgroundColor: Colors.jelly[40],
+                                ),
+                                Spacing.spacingV16,
+                              ],
+                            ),
                           ),
                           Spacing.spacingV12,
                           Text(
-                            'No hay reviews aún'.tr,
+                            'reviews',
                             style: TextStyle(
                               color: Colors.gray[90],
-                              fontSize: UILayout.medium,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(
-                            '''Aún no hay ninguna review, pero, puedes dar monitorías para que veas tus reviews y tus estadisticas''',
-                            style: TextStyle(color: Colors.gray[70]),
-                            textAlign: TextAlign.center,
+                          Spacing.spacingV12,
+                          Center(
+                            child: Column(
+                              children: <Widget>[
+                                Image.asset(
+                                  'assets/images/pana.png',
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                ),
+                                Spacing.spacingV12,
+                                Text(
+                                  'No hay reviews aún'.tr,
+                                  style: TextStyle(
+                                    color: Colors.gray[90],
+                                    fontSize: UILayout.medium,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  '''Aún no hay ninguna review, pero, puedes dar monitorías para que veas tus reviews y tus estadisticas''',
+                                  style: TextStyle(color: Colors.gray[70]),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SunsetButton(
+                            text: 'Cerrar sesión'.tr,
+                            backgroundColor: Colors.jelly[40],
+                            onPressed: () {
+                              FirebaseAuth.instance.signOut();
+                              Get.toNamed('/login');
+                            },
                           ),
                         ],
                       ),
                     ),
-                    SunsetButton(
-                      text: 'Cerrar sesión'.tr,
-                      backgroundColor: Colors.jelly[40],
-                      onPressed: () {
-                        FirebaseAuth.instance.signOut();
-                        Get.toNamed('/login');
-                      },
-                    ),
                   ],
-                ),
-              ),
-            ],
+                );
+              } else {
+                return SpinKitRotatingCircle(
+                  color: Colors.sunset[20],
+                  size: 50,
+                );
+              }
+            },
           ),
         ),
       );

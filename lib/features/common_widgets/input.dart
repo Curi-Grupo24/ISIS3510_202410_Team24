@@ -159,6 +159,7 @@ class InputState extends State<Input> {
     String? hintText,
   }) =>
       UIDecorator.instance.inputDecoration.copyWith(
+        counterText: '',
         fillColor: Colors.white[0],
         disabledBorder: UnderlineInputBorder(
           borderSide: border1.copyWith(
@@ -214,6 +215,7 @@ class InputState extends State<Input> {
   Widget build(BuildContext context) => AbsorbPointer(
         absorbing: !widget.enabled!,
         child: TextField(
+          maxLength: widget.maxLength,
           cursorColor: Colors.gray[70],
           textCapitalization: widget.capitalization!,
           readOnly: widget.readOnly!

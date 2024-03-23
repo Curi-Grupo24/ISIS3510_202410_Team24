@@ -32,7 +32,7 @@ class _FooterActionsIntroEnroll extends State<FooterActionsIntroEnroll> {
             ),
             child: Column(
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   width: double.infinity,
                 ),
                 Text(

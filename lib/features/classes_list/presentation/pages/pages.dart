@@ -1,4 +1,4 @@
-library com.curi.app.callseslist.pages;
+library com.curi.app.classeslist.pages;
 
 import 'package:flutter/material.dart' hide Colors;
 import 'package:get/get.dart';

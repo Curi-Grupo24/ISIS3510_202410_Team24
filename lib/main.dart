@@ -9,7 +9,7 @@ import 'features/auth/presentation/pages/pages.dart';
 import 'firebase_options.dart';
 import 'injection_container.dart' as di;
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

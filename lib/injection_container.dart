@@ -48,7 +48,7 @@ void init() {
         // datasource: sl(),
         ),
   );
-  
+
   sl.registerLazySingleton<ClassRepository>(
     () => ClasessRepositoryImpl(
         // datasource: sl(),
@@ -56,6 +56,9 @@ void init() {
   );
   sl.registerLazySingleton<ScheduleRepository>(
     () => ScheduleRepositoryImpl(
+        // datasource: sl(),
+        ),
+  );
 
   sl.registerLazySingleton<DashboardRepository>(
     () => DashboardRepositoryImpl(

@@ -28,7 +28,7 @@ class _SearchInputState extends State<SearchInput> {
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
               width: 1,
-              color: Colors.sunset[40]!, // TODO: Elegir el focus color
+              color: Colors.sunset[40]!,
             ),
           ),
           prefixIcon: Icon(

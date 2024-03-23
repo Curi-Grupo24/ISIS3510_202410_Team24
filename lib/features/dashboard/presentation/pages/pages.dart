@@ -12,11 +12,14 @@ import '../../../../core/models/dashboard_data.dart';
 import '../../../../core/ui/colors_brand.dart';
 import '../../../../core/ui/layout.dart';
 import '../../../../core/ui/spacing.dart';
+
+import '../../../classes_list/presentation/widgets/widgets.dart';
 import '../../../auth/data/repositories/auth_repository_impl.dart';
 import '../../../auth/data/repositories/users_repository_impl.dart';
 import '../../../auth/domain/repositories/auth_repository.dart';
 import '../../../common_widgets/widgets.dart';
 import '../bloc/dashboard_bloc/dashboard_bloc.dart';
+
 import '../widgets/widgets.dart';
 
 part './dashboard_home.dart';

@@ -1,12 +1,9 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class LogsRepositoryImpl {
   LogsRepositoryImpl();
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<String> addLogs(String uid, Map<String, dynamic> addedlogs) async {
     try {
@@ -26,7 +23,10 @@ class LogsRepositoryImpl {
     return snapshot.data();
   }
 
-  Future<String> updateLogs(String uid, Map<String, dynamic> logFields) async {
+  Future<String> updateLogs(
+    String uid,
+    Map<String, dynamic> logFields,
+  ) async {
     try {
       await FirebaseFirestore.instance
           .collection('logs')

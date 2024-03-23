@@ -18,6 +18,37 @@ class _RegisterViewState extends State<RegisterView> {
   bool isSelectedCheckbox = false;
   final RegisterBloc registerBloc = sl<RegisterBloc>();
 
+  bool isErrorMail = false;
+  bool isErrorPassword = false;
+  bool isErrorConfirmPassword = false;
+  bool isErrorNameField = false;
+  bool isErrorPhoneField = false;
+  bool isErrorStudentCode = false;
+  bool isValidForm = false;
+
+  void validateForm() {
+    if (controllerEmail.text.endsWith('@uniandes.edu.co') &&
+        (controllerPassword.text == controllerConfirmPassword.text) &&
+        controllerName.text.isNotEmpty &&
+        controllerPhone.text.isNotEmpty &&
+        actualState != 'Selecciona Carrera' &&
+        controllerStudentCode.text.isNotEmpty &&
+        isSelectedCheckbox &&
+        !isErrorPassword &&
+        !isErrorConfirmPassword &&
+        !isErrorNameField &&
+        !isErrorPhoneField &&
+        !isErrorStudentCode) {
+      setState(() {
+        isValidForm = true;
+      });
+    } else {
+      setState(() {
+        isValidForm = false;
+      });
+    }
+  }
+
   @override
   void dispose() {
     controllerEmail.dispose();
@@ -30,6 +61,7 @@ class _RegisterViewState extends State<RegisterView> {
   void initState() {
     actualState = 'Selecciona Carrera';
     isSelectedCheckbox = false;
+    isValidForm = false;
     super.initState();
   }
 
@@ -40,14 +72,16 @@ class _RegisterViewState extends State<RegisterView> {
     String career = actualState;
     String phone = controllerPhone.text;
     String studentCode = controllerStudentCode.text;
-    registerBloc.add(RegisterAccount(
-      email: mail,
-      password: password,
-      name: name,
-      career: career,
-      phone: phone,
-      studentCode: studentCode,
-    ));
+    registerBloc.add(
+      RegisterAccount(
+        email: mail,
+        password: password,
+        name: name,
+        career: career,
+        phone: phone,
+        studentCode: studentCode,
+      ),
+    );
   }
 
   @override
@@ -112,12 +146,27 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                         Spacing.spacingV16,
                         Input(
+                          maxLength: 50,
                           controller: controllerEmail,
                           hintText: 'Correo Uniandes'.tr,
                           suffix: TooltipOcean(
                             text: 'Debes iniciar sesión con tu cuenta uniandes.'
                                 .tr,
                           ),
+                          error:
+                              isErrorMail ? 'Ingresa un correo valido' : null,
+                          onChange: (String string) {
+                            if (!string.endsWith('@uniandes.edu.co')) {
+                              setState(() {
+                                isErrorMail = true;
+                              });
+                            } else {
+                              setState(() {
+                                isErrorMail = false;
+                              });
+                            }
+                            validateForm();
+                          },
                         ),
                         Spacing.spacingV16,
                         Input(
@@ -129,23 +178,78 @@ class _RegisterViewState extends State<RegisterView> {
                           controller: controllerPassword,
                           hintText: 'password'.tr,
                           isPassword: true,
+                          maxLength: 16,
+                          error: isErrorPassword
+                              ?'Ingresa una contraseña valida':null,
+                          onChange: (String value) {
+                            bool hasLowercase =
+                                RegExp(r'[a-z]').hasMatch(value);
+                            bool hasUppercase =
+                                RegExp(r'[A-Z]').hasMatch(value);
+                            bool hasDigit = RegExp(r'\d').hasMatch(value);
+                            bool hasSpecialChar =
+                                RegExp(r'[!@#$%^&*(),.?":{}|<>]')
+                                    .hasMatch(value);
+                            setState(() {
+                              isErrorPassword = !(hasLowercase &&
+                                  hasUppercase &&
+                                  (hasDigit || hasSpecialChar) &&
+                                  value.length >= 8 &&
+                                  value.length <= 16);
+                            });
+                            validateForm();
+                          },
                         ),
                         Spacing.spacingV16,
                         Input(
                           controller: controllerConfirmPassword,
                           hintText: 'Confirmar contraseña'.tr,
                           isPassword: true,
+                          error: isErrorConfirmPassword?
+                              'Las contraseñas deben coincidir':null,
+                          onChange: (String value) {
+                            setState(() {
+                              isErrorConfirmPassword =
+                                  !(controllerConfirmPassword.text ==
+                                      controllerPassword.text);
+                            });
+                            validateForm();
+                          },
                         ),
                         Spacing.spacingV16,
                         Input(
                           controller: controllerName,
                           hintText: 'Nombre'.tr,
+                          error: isErrorNameField
+                              ?'El campo es obligatorio':null,
+                          formatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'[a-zA-Z]'),
+                            ),
+                          ],
+                          onChange: (String value) {
+                            setState(() {
+                              isErrorNameField = value.isEmpty;
+                            });
+                            validateForm();
+                          },
                         ),
                         Spacing.spacingV16,
-
                         Input(
                           controller: controllerPhone,
                           hintText: 'Celular'.tr,
+                          formatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          error: isErrorPhoneField
+                              ?'El campo es obligatorio':null,
+                          maxLength: 10,
+                          onChange: (String value) {
+                            setState(() {
+                              isErrorPhoneField = value.isEmpty;
+                            });
+                            validateForm();
+                          },
                         ),
                         Spacing.spacingV16,
                         DropDownButtonCarreer(
@@ -156,6 +260,7 @@ class _RegisterViewState extends State<RegisterView> {
                             setState(() {
                               actualState = 'Selecciona Carrera';
                             });
+                            validateForm();
                           },
                         ),
 
@@ -168,6 +273,15 @@ class _RegisterViewState extends State<RegisterView> {
                           formatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.digitsOnly,
                           ],
+                          maxLength: 10,
+                          error: isErrorStudentCode
+                              ?'El campo es obligatorio':null,
+                          onChange: (String value) {
+                            setState(() {
+                              isErrorStudentCode = value.isEmpty;
+                            });
+                            validateForm();
+                          },
                         ),
 
                         Spacing.spacingV32,
@@ -180,9 +294,11 @@ class _RegisterViewState extends State<RegisterView> {
                                 setState(() {
                                   isSelectedCheckbox = isSelected ?? false;
                                 });
+                                validateForm();
                               },
                               fillColor: MaterialStateProperty.all<Color>(
-                                  Colors.white[0]!),
+                                Colors.white[0]!,
+                              ),
                               activeColor: Colors.ocean[40],
                               checkColor: Colors.ocean[40],
                             ),
@@ -231,7 +347,10 @@ class _RegisterViewState extends State<RegisterView> {
                         Spacing.spacingV32,
                         SunsetButton(
                           text: 'Registrarme'.tr,
-                          onPressed: signup,
+                          onPressed: isValidForm ? signup : null,
+                          backgroundColor: !isValidForm
+                              ? Colors.gray[50]
+                              : Colors.sunset[50],
                         ),
                         Spacing.spacingV32,
                       ],
@@ -303,6 +422,7 @@ class _RegisterViewState extends State<RegisterView> {
                           setState(() {
                             actualState = carreersState;
                           });
+                          validateForm();
                           Get.back();
                         },
                         style: ButtonStyle(

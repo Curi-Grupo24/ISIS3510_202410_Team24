@@ -1,15 +1,15 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class ScheduleRepositoryImpl {
+import '../../domain/repositories/schedule_repository.dart';
+
+class ScheduleRepositoryImpl implements ScheduleRepository {
   ScheduleRepositoryImpl();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  @override
   Future<String> addSchedule(
-      String uid, Map<String, dynamic> addedschedule) async {
+    String uid,
+    Map<String, dynamic> addedschedule,
+  ) async {
     try {
       await FirebaseFirestore.instance
           .collection('schedule')
@@ -21,14 +21,18 @@ class ScheduleRepositoryImpl {
     }
   }
 
+  @override
   Future<Map<String, dynamic>?> getSchedule(String uid) async {
     DocumentSnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection('schedule').doc(uid).get();
     return snapshot.data();
   }
 
+  @override
   Future<String> updateSchedule(
-      String uid, Map<String, dynamic> scheduleFields) async {
+    String uid,
+    Map<String, dynamic> scheduleFields,
+  ) async {
     try {
       await FirebaseFirestore.instance
           .collection('schedule')
@@ -40,6 +44,7 @@ class ScheduleRepositoryImpl {
     }
   }
 
+  @override
   Future<String> deleteSchedule(String uid) async {
     try {
       await FirebaseFirestore.instance.collection('schedule').doc(uid).delete();

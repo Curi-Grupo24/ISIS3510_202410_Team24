@@ -1,13 +1,11 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class ClasessRepositoryImpl {
+import '../../domain/repositories/classes_repository.dart';
+
+class ClasessRepositoryImpl implements ClassRepository {
   ClasessRepositoryImpl();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  @override
   Future<String> addClass(String uid, Map<String, dynamic> addedclass) async {
     try {
       await FirebaseFirestore.instance
@@ -20,14 +18,18 @@ class ClasessRepositoryImpl {
     }
   }
 
+  @override
   Future<Map<String, dynamic>?> getClasess(String uid) async {
     DocumentSnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection('classes').doc(uid).get();
     return snapshot.data();
   }
 
+  @override
   Future<String> updateClasess(
-      String uid, Map<String, dynamic> changingClass) async {
+    String uid,
+    Map<String, dynamic> changingClass,
+  ) async {
     try {
       await FirebaseFirestore.instance
           .collection('classes')
@@ -39,6 +41,7 @@ class ClasessRepositoryImpl {
     }
   }
 
+  @override
   Future<String> deleteClasess(String uid) async {
     try {
       await FirebaseFirestore.instance.collection('classes').doc(uid).delete();

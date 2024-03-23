@@ -1,6 +1,7 @@
 import 'package:get/route_manager.dart';
 
 import '../../features/auth/presentation/pages/pages.dart';
+import '../../features/class_flow/presentation/pages/pages.dart';
 import '../../features/classes_list/presentation/pages/pages.dart';
 import '../../features/dashboard/presentation/pages/pages.dart';
 import '../../features/enroll_as_monitor/presentation/pages/pages.dart';
@@ -63,6 +64,13 @@ List<GetPage<dynamic>> get getRoutes {
       transitionDuration: transitionDuration,
       middlewares: <GetMiddleware>[GetMiddleware()],
     ),
+    GetPage<dynamic>(
+      name: '/class_dashboard',
+      page: ClassDashboard.new,
+      transitionDuration: transitionDuration,
+      middlewares: <GetMiddleware>[GetMiddleware()],
+    ),
+
 
   ];
 }

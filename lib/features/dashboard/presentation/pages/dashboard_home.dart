@@ -95,7 +95,8 @@ class _DashboardHomeState extends State<DashboardHome> {
                 color: Colors.sunset[20],
                 size: 50,
               );
-            } else if (state is DashboardSuccessfull) {
+            } else if(state is DashboardSuccessfull) 
+            {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -103,7 +104,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                     width: double.infinity,
                   ),
                   Text(
-                    'hola, ${state.name}',
+                    'Hola, ${state.name}',
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.gray[70],

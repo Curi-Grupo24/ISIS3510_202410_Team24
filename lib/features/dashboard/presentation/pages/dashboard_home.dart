@@ -15,7 +15,7 @@ class _DashboardHomeState extends State<DashboardHome> {
   String username = '';
 
   @override
-  initState() {
+  void initState() {
     dashboardBloc.add(const GetUserInfo());
     super.initState();
   }

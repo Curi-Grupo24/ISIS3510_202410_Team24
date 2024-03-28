@@ -30,17 +30,17 @@ class AuthRepositoryImpl implements AuthRepository {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(credential.user!.uid)
-          .set({
+          .set(<String, dynamic>{
         'name': name,
         'phone': phone,
         'career': career,
         'studentCode': studentCode,
-        'type': 'student'
+        'type': 'student',
       });
       uid = credential.user!.uid;
       UsersRepositoryImpl userData = UsersRepositoryImpl();
       await userData.getUser(uid);
-      return Right(credential.user);
+      return Right<String, User?>(credential.user);
     } catch (e) {
       return const Left<String, User?>(
         'No se pudo Crear el usuario, intentelo más tarde',

@@ -10,16 +10,16 @@ import 'features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'features/auth/presentation/bloc/register_bloc/register_bloc.dart';
 import 'features/classes_list/data/repositories/classes_repository_impl.dart';
 import 'features/classes_list/domain/repositories/classes_repository.dart';
+import 'features/dashboard/data/repositories/dashboard_repository_impl.dart';
+import 'features/dashboard/domain/repositories/dashboard_repository.dart';
+import 'features/dashboard/domain/usecases/get_user_info.dart';
+import 'features/dashboard/presentation/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'features/profile_user/data/respositories/profile_repository_impl.dart';
 import 'features/profile_user/domain/repositories/profile_repository.dart';
 import 'features/profile_user/domain/usecases/get_user_info.dart';
 import 'features/profile_user/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'features/schedule/data/repositories/schedule_repository_impl.dart';
 import 'features/schedule/domain/repositories/schedule_repository.dart';
-import 'features/dashboard/data/repositories/dashboard_repository_impl.dart';
-import 'features/dashboard/domain/repositories/dashboard_repository.dart';
-import 'features/dashboard/domain/usecases/get_user_info.dart';
-import 'features/dashboard/presentation/bloc/dashboard_bloc/dashboard_bloc.dart';
 
 final GetIt sl = GetIt.instance;
 

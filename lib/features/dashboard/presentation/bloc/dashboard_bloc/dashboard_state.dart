@@ -15,8 +15,12 @@ class DashboardError extends DashboardState {
 }
 
 class DashboardSuccessfull extends DashboardState {
-  const DashboardSuccessfull({required this.name});
+  const DashboardSuccessfull({
+    required this.name,
+    required this.type,
+  });
   final String name;
+  final String type;
 }
 
 class DashboardLoading extends DashboardState {

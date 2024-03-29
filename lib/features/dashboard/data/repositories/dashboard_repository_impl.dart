@@ -14,12 +14,22 @@ class DashboardRepositoryImpl implements DashboardRepository {
   }
 
   @override
-  Future<Either<String, String>> getUserName(String uid) async {
+  Future<Either<String, Map<String, dynamic>>> getUserName(String uid) async {
     DocumentSnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection('users').doc(uid).get();
     Map<String, dynamic>? data = snapshot.data();
     String name = data!['name'] ?? 'N/A';
+    String type = data['type'] ?? 'N/A';
 
-    return name != 'N/A' ? Right<String, String>(name) : const Left<String, String>('Newie');
+    return name != 'N/A'
+        ? Right<String, Map<String, dynamic>>(
+            <String, dynamic>{
+              'name': name,
+              'type': type,
+            },
+          )
+        : const Left<String, Map<String, dynamic>>(
+            'Newie',
+          );
   }
 }

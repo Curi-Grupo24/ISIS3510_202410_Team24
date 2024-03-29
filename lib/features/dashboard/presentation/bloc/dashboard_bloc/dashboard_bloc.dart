@@ -20,8 +20,13 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
               errorMessage: l,
             ),
           ),
-          (String r) {
-            emit(DashboardSuccessfull(name: r));
+          (Map<String, dynamic> r) {
+            emit(
+              DashboardSuccessfull(
+                name: r['name'],
+                type: r['type'],
+              ),
+            );
           },
         );
       });

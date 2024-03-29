@@ -7,7 +7,7 @@ class GetUserInfoUseCase {
   GetUserInfoUseCase({required this.repository});
   final DashboardRepository repository;
 
-  Future<Either<String, String>> call() async =>
+  Future<Either<String, Map<String, dynamic>>> call() async =>
       repository.getUserName(
         AuthRepositoryImpl.uid,
       );

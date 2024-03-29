@@ -129,6 +129,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                     textScaleFactor: textScaleFactor,
                   ),
                   Spacing.spacingV12,
+                  if(state.type!='student')
                   HorizontalCardScroll(
                     title: 'En las  que soy monitor',
                     onTapViewMore: () {
@@ -137,6 +138,15 @@ class _DashboardHomeState extends State<DashboardHome> {
                     sortedCards: sortedCards2,
                     aproxCardWidth: aproxCardWidth,
                     textScaleFactor: textScaleFactor,
+                  ),
+                  Spacing.spacingV24,
+                  if(state.type=='student')
+                  SunsetCardFollow(
+                    description: '''Inscribete como monitor de la materias que te hayan gustado''',
+                    title: 'Apuntate para monitor!',
+                    onPressed:() {
+                      Get.toNamed('/enroll_monitor_home');
+                    } ,
                   ),
                   Spacing.spacingV24,
                   Padding(
@@ -165,7 +175,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                             Text(
                               'Revisa consejos para la universidad :D',
                               style: TextStyle(
-                                color: Colors.gray[80],
+                                color: Colors.gray[70],
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -183,12 +193,6 @@ class _DashboardHomeState extends State<DashboardHome> {
                     ),
                   ),
                   Spacing.spacingV24,
-                  SunsetButton(
-                    text: 'Enroll',
-                    onPressed: () {
-                      Get.toNamed('/enroll_monitor_home');
-                    },
-                  ),
                 ],
               );
             } else {

@@ -14,6 +14,7 @@ class Colors {
 
   static const Map<int, Color> jelly = <int, Color>{
     10: Color.fromRGBO(178, 98, 156, 1),
+    20: Color.fromRGBO(133, 114, 255, 1),
     40: Color.fromRGBO(115, 33, 92, 1),
   };
 
@@ -39,7 +40,7 @@ class Colors {
     40: Color.fromRGBO(221, 224, 232, 1),
     50: Color.fromRGBO(184, 187, 191, 1),
     60: Color.fromRGBO(122, 147, 171, 1),
-    70: Color.fromRGBO(78, 108, 136, 1),
+    70: Color.fromRGBO(74, 74, 74, 1),
     80: Color.fromRGBO(44, 67, 89, 1),
     90: Color.fromRGBO(26, 28, 33, 1),
   };

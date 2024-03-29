@@ -8,6 +8,11 @@ class ClassDashboard extends StatefulWidget {
 }
 
 class _ClassDashboardState extends State<ClassDashboard> {
+  // bool isSelectedDate = false;
+//   final AnimationController _controller = AnimationController(
+//   duration: const Duration(milliseconds: 500), vsync: this,
+// );
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
@@ -27,6 +32,68 @@ class _ClassDashboardState extends State<ClassDashboard> {
               fontSize: UILayout.medium,
               fontWeight: FontWeight.w800,
               color: Color(0xFF111007),
+            ),
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const ImportantDatesWidget(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    'Tus monitores Favoritos'.tr,
+                    style: TextStyle(
+                      color: Colors.gray[90],
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const FavTutorsCard(
+                  name: 'Juan',
+                  rate: '4,5',
+                  image: 'https://picsum.photos/id/237/200/300',
+                ),
+                const SizedBox(
+                  height: UILayout.medium,
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          'Encuentra monitores'.tr,
+                          style: TextStyle(
+                            color: Colors.gray[90],
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Ver todos'.tr,
+                      style: TextStyle(
+                        color: Colors.sunset[50],
+                      ),
+                    ),
+                  ],
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    'Tu progreso!'.tr,
+                    style: TextStyle(
+                      color: Colors.gray[90],
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

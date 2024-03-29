@@ -164,7 +164,8 @@ class _ProfileUserState extends State<ProfileUser> {
                                               child: FittedBox(
                                                 fit: BoxFit.cover,
                                                 child: Image.file(
-                                                    File(photo!.path)),
+                                                  File(photo!.path),
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -198,7 +199,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                   ),
                                 ),
                                 Text(
-                                  state.user?['type'],
+                                  '${state.user?['type']}'.tr,
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.sunset[50],

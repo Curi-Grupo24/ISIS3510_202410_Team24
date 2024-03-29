@@ -18,9 +18,4 @@ import '../bloc/profile_bloc/profile_bloc.dart';
 import '../widgets/image_interface.dart';
 import '../widgets/select_image_modal.dart';
 
-import '../../../classes_list/presentation/widgets/widgets.dart';
-import '../../../auth/data/repositories/auth_repository_impl.dart';
-import '../../../auth/data/repositories/users_repository_impl.dart';
-import '../../../auth/domain/repositories/auth_repository.dart';
-
 part './profile_user.dart';

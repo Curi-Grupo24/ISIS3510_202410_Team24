@@ -95,8 +95,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                 color: Colors.sunset[20],
                 size: 50,
               );
-            } else if(state is DashboardSuccessfull) 
-            {
+            } else if (state is DashboardSuccessfull) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -111,9 +110,14 @@ class _DashboardHomeState extends State<DashboardHome> {
                     ),
                   ),
                   Spacing.spacingV12,
-                  const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: CalendarHomeDashboard(),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.toNamed('/schedule_home');
+                      },
+                      child: const CalendarHomeDashboard(),
+                    ),
                   ),
                   HorizontalCardScroll(
                     title: 'Mis materias',

@@ -72,12 +72,18 @@ class HorizontalCardScroll extends StatelessWidget {
                       bottom: UILayout.medium,
                     ),
                     child: OtherProductsCard(
-                      productName: 'Anadec',
+                      productName: sortedCards[index]['name'],
                       badge: ProductBadgeType.latest,
+                      image:  sortedCards[index]['image'],
                       message: '2024-1',
                       cardWidth: aproxCardWidth * textScaleFactor,
                       onTap: () {
-                        //
+                        Get.toNamed(
+                          '/class_dashboard',
+                          parameters: <String, String>{
+                            'className': sortedCards[index]['name'],
+                          },
+                        );
                       },
                     ),
                   ),

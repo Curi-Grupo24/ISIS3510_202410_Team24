@@ -23,14 +23,15 @@ class _DashboardHomeState extends State<DashboardHome> {
   @override
   Widget build(BuildContext context) {
     List<dynamic> sortedCards1 = <dynamic>[
-      2,
-      3,
-      5,
+      <String, dynamic>{'name': 'Anadec', 'image':'assets/images/image_asset1.png'},
+      <String, dynamic>{'name': 'Proba', 'image':'assets/images/image_asset2.png'},
+      <String, dynamic>{'name': 'Inglés', 'image':'assets/images/image_asset4.png'},
     ];
     List<dynamic> sortedCards2 = <dynamic>[
-      2,
-      3,
+      <String, dynamic>{'name': 'IP', 'image':'assets/images/image_asset4.png'},
+      <String, dynamic>{'name': 'EDA', 'image':'assets/images/image_asset7.png'},
     ];
+
     double aproxCardWidth = MediaQuery.of(context).size.width / 2.8;
     double textScaleFactor =
         math.max(MediaQuery.textScaleFactorOf(context), 1.1);
@@ -129,25 +130,26 @@ class _DashboardHomeState extends State<DashboardHome> {
                     textScaleFactor: textScaleFactor,
                   ),
                   Spacing.spacingV12,
-                  if(state.type!='student')
-                  HorizontalCardScroll(
-                    title: 'En las  que soy monitor',
-                    onTapViewMore: () {
-                      Get.toNamed('/classes_list');
-                    },
-                    sortedCards: sortedCards2,
-                    aproxCardWidth: aproxCardWidth,
-                    textScaleFactor: textScaleFactor,
-                  ),
+                  if (state.type != 'student')
+                    HorizontalCardScroll(
+                      title: 'En las  que soy monitor',
+                      onTapViewMore: () {
+                        Get.toNamed('/classes_list');
+                      },
+                      sortedCards: sortedCards2,
+                      aproxCardWidth: aproxCardWidth,
+                      textScaleFactor: textScaleFactor,
+                    ),
                   Spacing.spacingV24,
-                  if(state.type=='student')
-                  SunsetCardFollow(
-                    description: '''Inscribete como monitor de la materias que te hayan gustado''',
-                    title: 'Apuntate para monitor!',
-                    onPressed:() {
-                      Get.toNamed('/enroll_monitor_home');
-                    } ,
-                  ),
+                  if (state.type == 'student')
+                    SunsetCardFollow(
+                      description:
+                          '''Inscribete como monitor de la materias que te hayan gustado''',
+                      title: 'Apuntate para monitor!',
+                      onPressed: () {
+                        Get.toNamed('/enroll_monitor_home');
+                      },
+                    ),
                   Spacing.spacingV24,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),

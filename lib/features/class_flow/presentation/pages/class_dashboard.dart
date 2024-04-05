@@ -12,6 +12,12 @@ class _ClassDashboardState extends State<ClassDashboard> {
 //   final AnimationController _controller = AnimationController(
 //   duration: const Duration(milliseconds: 500), vsync: this,
 // );
+  String className ='';
+  @override
+  void initState() {
+    super.initState();
+    className = Get.parameters['className']??'';
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -25,9 +31,9 @@ class _ClassDashboardState extends State<ClassDashboard> {
             ),
             onPressed: Get.back,
           ),
-          title: const Text(
-            'Probabilidad y estadistica 1',
-            style: TextStyle(
+          title: Text(
+            className,
+            style:const  TextStyle(
               fontFamily: 'Roboto',
               fontSize: UILayout.medium,
               fontWeight: FontWeight.w800,

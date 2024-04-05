@@ -31,6 +31,59 @@ class _SubjectScreenState extends State<SubjectScreen> {
     'Octavo Semestre'.tr,
   ];
 
+  void updatePossibleCarreers() {
+    List<String> updatedList = <String>[];
+    for (Map<String, dynamic> element in classList) {
+      if (!updatedList.contains(element['career'])) {
+        updatedList.add(element['career']);
+      }
+    }
+    setState(() {
+      possibleCarreers = updatedList;
+    });
+    // possibleCarreers =
+  }
+
+  List<Map<String, dynamic>> classList = <Map<String, dynamic>>[
+    <String, dynamic>{
+      'className': 'Probabilidad & Estadistica 1',
+      'career': 'Ingeniería industrial',
+      'image': 'assets/images/image_asset1.png',
+      'semester': <String>[
+        'Segundo Semestre',
+        'Tercer Semestre',
+        'Cuarto Semestre',
+      ],
+    },
+    <String, dynamic>{
+      'className': 'Analisis de decisión e inversión',
+      'career': 'Ingeniería industrial',
+      'image': 'assets/images/image_asset2.png',
+      'semester': <String>[
+        'Segundo Semestre',
+        'Tercer Semestre',
+        'Cuarto Semestre',
+      ],
+    },
+    <String, dynamic>{
+      'className': 'Diseño y analisis de algoritmos',
+      'career': 'Ingeniería de sistemas',
+      'image': 'assets/images/image_asset4.png',
+      'semester': <String>[
+        'Cuarto Semestre',
+      ],
+    },
+    <String, dynamic>{
+      'className': 'El ciclo de Macondo',
+      'career': 'Literatura',
+      'image': 'assets/images/image_asset6.png',
+      'type': 'Tipo E',
+      'semester': <String>[
+        'Cuarto Semestre',
+      ],
+    },
+  ];
+
   String filterCarreer = '';
   String filterType = '';
   String filterSemester = '';
@@ -53,11 +106,14 @@ class _SubjectScreenState extends State<SubjectScreen> {
     });
   }
 
+  void filterListToShow() {}
+
   @override
   void initState() {
     filterCarreer = 'Carrera';
     filterType = 'Tipo';
     filterSemester = 'Semestre';
+    updatePossibleCarreers();
     super.initState();
   }
 
@@ -161,45 +217,23 @@ class _SubjectScreenState extends State<SubjectScreen> {
               ),
               Column(
                 children: <Widget>[
-                  SubjectCard(
-                    subjectTitle: 'Probabilidad & Estadistica 1',
-                    profesor: 'Profesora Laura Gonzales',
-                    time: 'MXJ 12:30m',
-                    onTap: () {
-                      Get.toNamed('/class_dashboard');
-                    },
-                  ),
-                  SubjectCard(
-                    subjectTitle: 'Probabilidad & Estadistica 1',
-                    profesor: 'Profesora Laura Gonzales',
-                    time: 'MXJ 12:30m',
-                    onTap: () {
-                      Get.toNamed('/class_dashboard');
-                    },
-                  ),
-                  SubjectCard(
-                    subjectTitle: 'Probabilidad & Estadistica 1',
-                    profesor: 'Profesora Laura Gonzales',
-                    time: 'MXJ 12:30m',
-                    onTap: () {
-                      Get.toNamed('/class_dashboard');
-                    },
-                  ),
-                  SubjectCard(
-                    subjectTitle: 'Probabilidad & Estadistica 1',
-                    profesor: 'Profesora Laura Gonzales',
-                    time: 'MXJ 12:30m',
-                    onTap: () {
-                      Get.toNamed('/class_dashboard');
-                    },
-                  ),
-                  SubjectCard(
-                    subjectTitle: 'Probabilidad & Estadistica 1',
-                    profesor: 'Profesora Laura Gonzales',
-                    time: 'MXJ 12:30m',
-                    onTap: () {
-                      Get.toNamed('/class_dashboard');
-                    },
+                  ...classList.map(
+                    (Map<String, dynamic> eachClass) => SubjectCard(
+                      subjectTitle: eachClass['className'],
+                      profesor: eachClass['career'],
+                      type: eachClass['type'],
+                      image: eachClass['image'],
+                      time:
+                          '''${eachClass['semester'].length > 1 ? 'Semestre mixto: ' : ''}${eachClass['semester'][0]}''',
+                      onTap: () {
+                        Get.toNamed(
+                          '/class_dashboard',
+                          parameters: <String, String>{
+                            'className': eachClass['className'],
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),

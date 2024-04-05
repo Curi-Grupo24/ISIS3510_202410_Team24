@@ -6,6 +6,8 @@ class SubjectCard extends StatefulWidget {
     required this.profesor,
     required this.time,
     required this.onTap,
+    this.type,
+    this.image= 'assets/images/image_asset1.png',
     super.key,
   });
 
@@ -13,6 +15,8 @@ class SubjectCard extends StatefulWidget {
   final String profesor;
   final String time;
   final void Function()? onTap;
+  final String? type;
+  final String? image;
 
   @override
   State<SubjectCard> createState() => _SubjectCardState();
@@ -30,24 +34,24 @@ class _SubjectCardState extends State<SubjectCard> {
                 color: const Color(0xFFEEEEEE),
               ),
               borderRadius: BorderRadius.circular(10),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  offset: const Offset(-2, 3),
-                  blurRadius: 2,
-                  spreadRadius: 10,
-                  blurStyle: BlurStyle.outer,
-                  color: Colors.black[0]!.withOpacity(0.05),
-                ),
-              ],
             ),
             child: SizedBox(
               width: MediaQuery.of(context).size.width - 32,
               child: Row(
                 children: <Widget>[
-                  const SizedBox(
+                  SizedBox(
                     height: 96,
                     width: 96,
-                    //child: Image.asset('assets/image.png'), //TODO: agregar imagen
+                   child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8,),
+                          child: Image.asset(
+                            widget.image!,
+                            width: 85,
+                            height: 85,
+                          ),
+                        ),
+                      ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -67,7 +71,16 @@ class _SubjectCardState extends State<SubjectCard> {
                             color: Color(0xFF151D0C),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: UILayout.medium),
+                        if(widget.type!=null)
+                        Text(
+                          widget.type!,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF94A3B8),
+                          ),
+                        ),
                         Text(
                           widget.profesor,
                           style: const TextStyle(

@@ -53,5 +53,10 @@ flutter:
   assets:
     - assets/
     - assets/images/image_asset1.png
+    - assets/images/image_asset2.png
+    - assets/images/image_asset3.png
+    - assets/images/image_asset4.png
+    - assets/images/image_asset6.png
+    - assets/images/image_asset7.png
     - assets/images/pana.png
     - assets/images/onboarding_enroll_image.png

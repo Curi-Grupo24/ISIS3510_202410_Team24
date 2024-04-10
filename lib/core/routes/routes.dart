@@ -89,7 +89,11 @@ List<GetPage<dynamic>> get getRoutes {
       transitionDuration: transitionDuration,
       middlewares: <GetMiddleware>[GetMiddleware()],
     ),
-
-
+    GetPage<dynamic>(
+      name: '/add_class_view',
+      page: AddSubjectScreen.new,
+      transitionDuration: transitionDuration,
+      middlewares: <GetMiddleware>[GetMiddleware()],
+    ),
   ];
 }

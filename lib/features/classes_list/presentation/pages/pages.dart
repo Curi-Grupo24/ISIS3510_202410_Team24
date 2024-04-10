@@ -10,3 +10,4 @@ import '../../../common_widgets/widgets.dart';
 import '../widgets/widgets.dart';
 
 part './subject_screen.dart';
+part './add_subject.dart';

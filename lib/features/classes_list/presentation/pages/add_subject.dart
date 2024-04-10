@@ -1,13 +1,13 @@
 part of com.curi.app.classeslist.pages;
 
-class SubjectScreen extends StatefulWidget {
-  const SubjectScreen({super.key});
+class AddSubjectScreen extends StatefulWidget {
+  const AddSubjectScreen({super.key});
 
   @override
-  State<SubjectScreen> createState() => _SubjectScreenState();
+  State<AddSubjectScreen> createState() => _AddSubjectScreenState();
 }
 
-class _SubjectScreenState extends State<SubjectScreen> {
+class _AddSubjectScreenState extends State<AddSubjectScreen> {
   String actualState = '';
   List<String> possibleCarreers = <String>[];
   List<String> possibleTypes = <String>[];
@@ -202,7 +202,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
             onPressed: Get.back,
           ),
           title: const Text(
-            'Tus materias',
+            'Añade materias',
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: UILayout.medium,
@@ -215,11 +215,6 @@ class _SubjectScreenState extends State<SubjectScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SunsetCardFollow(
-                onPressed: () {
-                  Get.toNamed('/add_class_view');
-                },
-              ),
               SearchInput(
                 hintText: 'Name',
                 controller: controller,
@@ -335,14 +330,8 @@ class _SubjectScreenState extends State<SubjectScreen> {
                           '''${eachClass['semester'].length > 1 ? 'Semestre mixto: ' : ''}${eachClass['semester'].length > 1 ? semestersNumbers(
                               eachClass['semester'],
                             ) : eachClass['semester'][0]}''',
-                      onTap: () {
-                        Get.toNamed(
-                          '/class_dashboard',
-                          parameters: <String, String>{
-                            'className': eachClass['className'],
-                          },
-                        );
-                      },
+                      onTap: () {},
+                      isForAdding: true,
                     ),
                   ),
                   if (classListFiltered.isEmpty)

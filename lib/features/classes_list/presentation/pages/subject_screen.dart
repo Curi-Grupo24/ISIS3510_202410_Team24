@@ -95,6 +95,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
   String filterCarreer = '';
   String filterType = '';
   String filterSemester = '';
+  TextEditingController? controller = TextEditingController();
 
   void _updateCarreerFilter(String text) {
     setState(() {
@@ -138,6 +139,21 @@ class _SubjectScreenState extends State<SubjectScreen> {
     return responseBuffer.toString();
   }
 
+  void searchForName(String value) {
+    setState(() {
+      if((controller?.text.isNotEmpty??false) && value.isNotEmpty){
+        classListFiltered = classListFiltered
+          .where(
+            (Map<String, dynamic> eachClass) =>
+                eachClass['className'].toLowerCase().contains(
+                      value.toLowerCase(),
+                    ),
+          )
+          .toList();
+      }
+    });
+  }
+
   void updateFilterDef() {
     bool shouldResetFilter = filterCarreer == 'Carrera' &&
         filterType == 'Tipo' &&
@@ -164,6 +180,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
       setState(() {
         classListFiltered = classList;
       });
+      searchForName(controller?.text??'');
     });
     if (shouldResetFilter) {
       setState(() {
@@ -171,25 +188,36 @@ class _SubjectScreenState extends State<SubjectScreen> {
           classListFiltered = classList;
         });
       });
+      searchForName(controller?.text??'');
     } else if (careerAndType) {
       _updateCarreerFilter(filterCarreer);
       _updateTypeFilter(filterType);
+      searchForName(controller?.text??'');
+
     } else if (careerAndSemester) {
       _updateCarreerFilter(filterCarreer);
       _updateSemesterFilter(filterSemester);
+      searchForName(controller?.text??'');
+
     } else if (career) {
       _updateCarreerFilter(filterCarreer);
+      searchForName(controller?.text??'');
+
     } else if (typeAndSemester) {
       _updateSemesterFilter(filterSemester);
       _updateTypeFilter(filterType);
+      searchForName(controller?.text??'');
     } else if (type) {
       _updateTypeFilter(filterType);
+      searchForName(controller?.text??'');
     } else if (semester) {
       _updateSemesterFilter(filterSemester);
+      searchForName(controller?.text??'');
     } else {
       _updateCarreerFilter(filterCarreer);
       _updateTypeFilter(filterType);
       _updateSemesterFilter(filterSemester);
+      searchForName(controller?.text??'');
     }
   }
 
@@ -232,7 +260,13 @@ class _SubjectScreenState extends State<SubjectScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SunsetCardFollow(onPressed: () {}),
-              const SearchInput(hintText: 'Name'),
+              SearchInput(
+                hintText: 'Name',
+                controller: controller,
+                onChangedController: (String value){
+                  updateFilterDef();
+                },
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: Text(

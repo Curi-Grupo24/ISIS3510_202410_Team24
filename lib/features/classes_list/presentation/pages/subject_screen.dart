@@ -9,27 +9,10 @@ class SubjectScreen extends StatefulWidget {
 
 class _SubjectScreenState extends State<SubjectScreen> {
   String actualState = '';
-  List<String> possibleCarreers = <String>[
-    'Ingeniería de Sistemas'.tr,
-    'Ingeniería mecánica'.tr,
-    'Ingeniería industrial'.tr,
-  ];
-
-  List<String> possibleTypes = <String>[
-    'Tipo E'.tr,
-    'CBU'.tr,
-    'CBCA'.tr,
-  ];
-  List<String> possibleSemesters = <String>[
-    'Primer Semestre'.tr,
-    'Segundo Semestre'.tr,
-    'Tercer Semestre'.tr,
-    'Cuarto Semestre'.tr,
-    'Quinto Semestre'.tr,
-    'Sexto Semestre'.tr,
-    'Septimo Semestre'.tr,
-    'Octavo Semestre'.tr,
-  ];
+  List<String> possibleCarreers = <String>[];
+  List<String> possibleTypes = <String>[];
+  List<String> possibleSemesters = <String>[];
+  List<Map<String, dynamic>> classListFiltered = <Map<String, dynamic>>[];
 
   void updatePossibleCarreers() {
     List<String> updatedList = <String>[];
@@ -41,7 +24,32 @@ class _SubjectScreenState extends State<SubjectScreen> {
     setState(() {
       possibleCarreers = updatedList;
     });
-    // possibleCarreers =
+  }
+
+  void updatePossibleClassType() {
+    List<String> updatedList = <String>[];
+    for (Map<String, dynamic> element in classList) {
+      if (element['type'] != null && !updatedList.contains(element['type'])) {
+        updatedList.add(element['type']);
+      }
+    }
+    setState(() {
+      possibleTypes = updatedList;
+    });
+  }
+
+  void updatePossibleSemester() {
+    List<String> updatedList = <String>[];
+    for (Map<String, dynamic> element in classList) {
+      for (String classSemester in element['semester']) {
+        if (!updatedList.contains(classSemester)) {
+          updatedList.add(classSemester);
+        }
+      }
+    }
+    setState(() {
+      possibleSemesters = updatedList;
+    });
   }
 
   List<Map<String, dynamic>> classList = <Map<String, dynamic>>[
@@ -91,29 +99,79 @@ class _SubjectScreenState extends State<SubjectScreen> {
   void _updateCarreerFilter(String text) {
     setState(() {
       filterCarreer = text;
+      classListFiltered = classListFiltered
+          .where(
+            (Map<String, dynamic> eachClass) => eachClass['career'] == text,
+          )
+          .toList();
     });
   }
 
   void _updateTypeFilter(String text) {
     setState(() {
       filterType = text;
+      classListFiltered = classListFiltered
+          .where(
+            (Map<String, dynamic> eachClass) => eachClass['type'] == text,
+          )
+          .toList();
     });
   }
 
   void _updateSemesterFilter(String text) {
     setState(() {
       filterSemester = text;
+      classListFiltered = classListFiltered
+          .where(
+            (Map<String, dynamic> eachClass) =>
+                eachClass['semester'].contains(text),
+          )
+          .toList();
     });
   }
 
-  void filterListToShow() {}
+  String semestersNumbers(List<String> semesterNumbers) {
+    StringBuffer responseBuffer = StringBuffer();
+    for (String element in semesterNumbers) {
+      responseBuffer.write('${semesterTypes[element]} ');
+    }
+    return responseBuffer.toString();
+  }
+
+  void filterListToShow() {
+    bool shouldResetFilter = filterCarreer == 'Carrera' &&
+        filterType == 'Tipo' &&
+        filterSemester == 'Semestre';
+    bool needsSemesterFilter = filterSemester != 'Semestre';
+    bool needsTypeFilter = filterType != 'Tipo';
+    bool needsCarreerFilter = filterCarreer != 'Carrera';
+
+    if (shouldResetFilter) {
+      setState(() {
+        classListFiltered = classList;
+      });
+    } else if (needsSemesterFilter) {
+      _updateSemesterFilter(filterSemester);
+    } else if (needsTypeFilter) {
+      _updateTypeFilter(filterType);
+    } else if (needsCarreerFilter) {
+      _updateCarreerFilter(filterCarreer);
+    } else {
+      setState(() {
+        classListFiltered = classList;
+      });
+    }
+  }
 
   @override
   void initState() {
     filterCarreer = 'Carrera';
     filterType = 'Tipo';
     filterSemester = 'Semestre';
+    classListFiltered = classList;
     updatePossibleCarreers();
+    updatePossibleClassType();
+    updatePossibleSemester();
     super.initState();
   }
 
@@ -177,7 +235,9 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       onCrossTapped: () {
                         setState(() {
                           filterCarreer = 'Carrera';
+                          // classListFiltered = classList;
                         });
+                        filterListToShow();
                       },
                     ),
                     SortButton(
@@ -193,7 +253,9 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       onCrossTapped: () {
                         setState(() {
                           filterType = 'Tipo';
+                          classListFiltered = classList;
                         });
+                        filterListToShow();
                       },
                     ),
                     SortButton(
@@ -209,7 +271,9 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       onCrossTapped: () {
                         setState(() {
                           filterSemester = 'Semestre';
+                          classListFiltered = classList;
                         });
+                        filterListToShow();
                       },
                     ),
                   ],
@@ -217,14 +281,16 @@ class _SubjectScreenState extends State<SubjectScreen> {
               ),
               Column(
                 children: <Widget>[
-                  ...classList.map(
+                  ...classListFiltered.map(
                     (Map<String, dynamic> eachClass) => SubjectCard(
                       subjectTitle: eachClass['className'],
                       profesor: eachClass['career'],
                       type: eachClass['type'],
                       image: eachClass['image'],
                       time:
-                          '''${eachClass['semester'].length > 1 ? 'Semestre mixto: ' : ''}${eachClass['semester'][0]}''',
+                          '''${eachClass['semester'].length > 1 ? 'Semestre mixto: ' : ''}${eachClass['semester'].length > 1 ? semestersNumbers(
+                              eachClass['semester'],
+                            ) : eachClass['semester'][0]}''',
                       onTap: () {
                         Get.toNamed(
                           '/class_dashboard',

@@ -74,7 +74,7 @@ class HorizontalCardScroll extends StatelessWidget {
                     child: OtherProductsCard(
                       productName: sortedCards[index]['name'],
                       badge: ProductBadgeType.latest,
-                      image:  sortedCards[index]['image'],
+                      image: sortedCards[index]['image'],
                       message: '2024-1',
                       cardWidth: aproxCardWidth * textScaleFactor,
                       onTap: () {

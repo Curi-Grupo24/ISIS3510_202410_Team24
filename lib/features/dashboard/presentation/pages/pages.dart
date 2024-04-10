@@ -14,7 +14,6 @@ import '../../../../core/ui/layout.dart';
 import '../../../../core/ui/spacing.dart';
 
 import '../../../classes_list/presentation/widgets/widgets.dart';
-import '../../../common_widgets/widgets.dart';
 import '../bloc/dashboard_bloc/dashboard_bloc.dart';
 
 import '../widgets/widgets.dart';

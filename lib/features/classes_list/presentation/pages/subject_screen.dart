@@ -138,28 +138,58 @@ class _SubjectScreenState extends State<SubjectScreen> {
     return responseBuffer.toString();
   }
 
-  void filterListToShow() {
+  void updateFilterDef() {
     bool shouldResetFilter = filterCarreer == 'Carrera' &&
         filterType == 'Tipo' &&
         filterSemester == 'Semestre';
-    bool needsSemesterFilter = filterSemester != 'Semestre';
-    bool needsTypeFilter = filterType != 'Tipo';
-    bool needsCarreerFilter = filterCarreer != 'Carrera';
-
+    bool careerAndType = filterCarreer != 'Carrera' &&
+        filterType != 'Tipo' &&
+        filterSemester == 'Semestre';
+    bool careerAndSemester = filterCarreer != 'Carrera' &&
+        filterType == 'Tipo' &&
+        filterSemester != 'Semestre';
+    bool career = filterCarreer != 'Carrera' &&
+        filterType == 'Tipo' &&
+        filterSemester == 'Semestre';
+    bool typeAndSemester = filterCarreer == 'Carrera' &&
+        filterType != 'Tipo' &&
+        filterSemester != 'Semestre';
+    bool type = filterCarreer == 'Carrera' &&
+        filterType != 'Tipo' &&
+        filterSemester == 'Semestre';
+    bool semester = filterCarreer == 'Carrera' &&
+        filterType == 'Tipo' &&
+        filterSemester != 'Semestre';
+    setState(() {
+      setState(() {
+        classListFiltered = classList;
+      });
+    });
     if (shouldResetFilter) {
       setState(() {
-        classListFiltered = classList;
+        setState(() {
+          classListFiltered = classList;
+        });
       });
-    } else if (needsSemesterFilter) {
-      _updateSemesterFilter(filterSemester);
-    } else if (needsTypeFilter) {
-      _updateTypeFilter(filterType);
-    } else if (needsCarreerFilter) {
+    } else if (careerAndType) {
       _updateCarreerFilter(filterCarreer);
+      _updateTypeFilter(filterType);
+    } else if (careerAndSemester) {
+      _updateCarreerFilter(filterCarreer);
+      _updateSemesterFilter(filterSemester);
+    } else if (career) {
+      _updateCarreerFilter(filterCarreer);
+    } else if (typeAndSemester) {
+      _updateSemesterFilter(filterSemester);
+      _updateTypeFilter(filterType);
+    } else if (type) {
+      _updateTypeFilter(filterType);
+    } else if (semester) {
+      _updateSemesterFilter(filterSemester);
     } else {
-      setState(() {
-        classListFiltered = classList;
-      });
+      _updateCarreerFilter(filterCarreer);
+      _updateTypeFilter(filterType);
+      _updateSemesterFilter(filterSemester);
     }
   }
 
@@ -226,9 +256,14 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       text: filterCarreer,
                       onPressed: () {
                         showModalStatesToFilter(
-                          possibleCarreers,
-                          'select_carreer'.tr,
-                          parentAction: _updateCarreerFilter,
+                          possibleCarreers, 'select_carreer'.tr,
+                          parentAction: (String value) {
+                            setState(() {
+                              filterCarreer = value;
+                            });
+                            updateFilterDef();
+                          },
+                          //  _updateCarreerFilter,
                         );
                       },
                       crossEnabled: filterCarreer != 'Carrera',
@@ -237,43 +272,58 @@ class _SubjectScreenState extends State<SubjectScreen> {
                           filterCarreer = 'Carrera';
                           // classListFiltered = classList;
                         });
-                        filterListToShow();
+                        updateFilterDef();
+                        // filterListToShow();
                       },
                     ),
                     SortButton(
                       text: filterType,
                       onPressed: () {
                         showModalStatesToFilter(
-                          possibleTypes,
-                          'Escoge el tipo de la materia'.tr,
-                          parentAction: _updateTypeFilter,
+                          possibleTypes, 'Escoge el tipo de la materia'.tr,
+                          parentAction: (String value) {
+                            setState(() {
+                              filterType = value;
+                            });
+                            updateFilterDef();
+                          },
+                          // _updateTypeFilter,
                         );
                       },
                       crossEnabled: filterType != 'Tipo',
                       onCrossTapped: () {
                         setState(() {
                           filterType = 'Tipo';
-                          classListFiltered = classList;
+                          // classListFiltered = classList;
                         });
-                        filterListToShow();
+                        updateFilterDef();
+
+                        // filterListToShow();
                       },
                     ),
                     SortButton(
                       text: filterSemester,
                       onPressed: () {
                         showModalStatesToFilter(
-                          possibleSemesters,
-                          'Escoge el semestre'.tr,
-                          parentAction: _updateSemesterFilter,
+                          possibleSemesters, 'Escoge el semestre'.tr,
+                          parentAction: (String value) {
+                            setState(() {
+                              filterSemester = value;
+                            });
+                            updateFilterDef();
+                          },
+                          // _updateSemesterFilter,
                         );
                       },
                       crossEnabled: filterSemester != 'Semestre',
                       onCrossTapped: () {
                         setState(() {
                           filterSemester = 'Semestre';
-                          classListFiltered = classList;
+                          // classListFiltered = classList;
                         });
-                        filterListToShow();
+                        updateFilterDef();
+
+                        // filterListToShow();
                       },
                     ),
                   ],
@@ -301,6 +351,10 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       },
                     ),
                   ),
+                  if (classListFiltered.isEmpty)
+                    const WarningMessage(
+                      message: 'No hay clases para este filtro',
+                    ),
                 ],
               ),
               const SizedBox(height: 56),

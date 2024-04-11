@@ -43,14 +43,14 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: BlocListener<LoginBloc, LoginState>(
-            bloc: loginBloc,
-          listener: (BuildContext context,LoginState state) {
+          bloc: loginBloc,
+          listener: (BuildContext context, LoginState state) {
             if (state is LoginError) {
               ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(content: Text(state.errorMessage)),
-                  );
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(content: Text(state.errorMessage)),
+                );
             }
           },
           child: BlocBuilder<LoginBloc, LoginState>(
@@ -88,7 +88,9 @@ class _LoginState extends State<Login> {
                             error:
                                 isErrorMail ? 'Ingresa un correo valido' : null,
                             onChange: (String string) {
-                              if (!string.endsWith('@uniandes.edu.co')) {
+                              if (!string.endsWith('@uniandes.edu.co') ||
+                                  string.length <= 16 ||
+                                  string.contains(' ')) {
                                 setState(() {
                                   isErrorMail = true;
                                 });

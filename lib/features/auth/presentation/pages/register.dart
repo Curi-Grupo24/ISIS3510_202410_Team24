@@ -156,7 +156,9 @@ class _RegisterViewState extends State<RegisterView> {
                           error:
                               isErrorMail ? 'Ingresa un correo valido' : null,
                           onChange: (String string) {
-                            if (!string.endsWith('@uniandes.edu.co')) {
+                            if (!string.endsWith('@uniandes.edu.co') ||
+                                  string.length <= 16 ||
+                                  string.contains(' ')) {
                               setState(() {
                                 isErrorMail = true;
                               });
@@ -238,6 +240,7 @@ class _RegisterViewState extends State<RegisterView> {
                         Input(
                           controller: controllerPhone,
                           hintText: 'Celular'.tr,
+                          keyboardType: TextInputType.number,
                           formatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.digitsOnly,
                           ],

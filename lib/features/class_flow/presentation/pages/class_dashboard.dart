@@ -58,10 +58,16 @@ class _ClassDashboardState extends State<ClassDashboard> {
                     ),
                   ),
                 ),
-                const FavTutorsCard(
+                const SizedBox(
+                  height: UILayout.medium,
+                ),
+                FavTutorsCard(
                   name: 'Juan',
                   rate: '4,5',
                   image: 'https://picsum.photos/id/237/200/300',
+                  onTap: (){
+                    // showModalBottomSheet();
+                  },
                 ),
                 const SizedBox(
                   height: UILayout.medium,

@@ -7,6 +7,7 @@ import '../../../../core/constants/smester_constants.dart';
 import '../../../../core/ui/colors_brand.dart';
 import '../../../../core/ui/layout.dart';
 import '../../../common_widgets/widgets.dart';
+import '../../../profile_user/presentation/widgets/modal_case.dart';
 import '../widgets/widgets.dart';
 
 part './subject_screen.dart';

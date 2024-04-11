@@ -330,7 +330,30 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                           '''${eachClass['semester'].length > 1 ? 'Semestre mixto: ' : ''}${eachClass['semester'].length > 1 ? semestersNumbers(
                               eachClass['semester'],
                             ) : eachClass['semester'][0]}''',
-                      onTap: () {},
+                      onTap: () async {
+                        await showDialog(
+                          context: context,
+                          builder: (BuildContext ctx) => SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: ModalCase(
+                              'Añadir materia',
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: AddClassesModal(
+                                  className: eachClass['className'],
+                                  onPressedAccept: (){
+                                    //
+                                    Get.back();
+                                  },
+                                ),
+                              ),
+                              height: 200,
+                            ),
+                          ),
+                        );
+                      },
                       isForAdding: true,
                     ),
                   ),
@@ -480,6 +503,15 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
     <String, dynamic>{
       'className': 'El ciclo de Macondo',
       'career': 'Literatura',
+      'image': 'assets/images/image_asset6.png',
+      'type': 'Tipo E',
+      'semester': <String>[
+        'Cuarto Semestre',
+      ],
+    },
+    <String, dynamic>{
+      'className': 'Tecnologías de la información',
+      'career': 'Ingeniería de sistemas',
       'image': 'assets/images/image_asset6.png',
       'type': 'Tipo E',
       'semester': <String>[

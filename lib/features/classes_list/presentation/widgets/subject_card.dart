@@ -19,6 +19,7 @@ class SubjectCard extends StatefulWidget {
   final String? type;
   final String? image;
   final bool isForAdding;
+  // final String heroTag;
 
   @override
   State<SubjectCard> createState() => _SubjectCardState();
@@ -117,9 +118,10 @@ class _SubjectCardState extends State<SubjectCard> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: FloatingActionButton(
+                        heroTag: widget.subjectTitle,
                         elevation: 0,
                         backgroundColor: const Color(0xFFF3962E),
-                        onPressed: () {},
+                        onPressed: widget.onTap,
                         child: const Icon(Icons.add),
                       ),
                     ),

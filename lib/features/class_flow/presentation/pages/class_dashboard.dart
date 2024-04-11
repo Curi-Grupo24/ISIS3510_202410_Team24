@@ -12,12 +12,25 @@ class _ClassDashboardState extends State<ClassDashboard> {
 //   final AnimationController _controller = AnimationController(
 //   duration: const Duration(milliseconds: 500), vsync: this,
 // );
-  String className ='';
+  String className = '';
   @override
   void initState() {
     super.initState();
-    className = Get.parameters['className']??'';
+    className = Get.parameters['className'] ?? '';
   }
+
+  List<Map<String, dynamic>> favTutorsList = <Map<String, dynamic>>[
+    <String, dynamic>{
+      'name': 'Juan',
+      'rate': '4,5',
+      'image': 'https://picsum.photos/id/237/200/300',
+    },
+    <String, dynamic>{
+      'name': 'Alexa',
+      'rate': '4,7',
+      'image': 'https://picsum.photos/id/237/200/300',
+    }
+  ];
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -33,7 +46,7 @@ class _ClassDashboardState extends State<ClassDashboard> {
           ),
           title: Text(
             className,
-            style:const  TextStyle(
+            style: const TextStyle(
               fontFamily: 'Roboto',
               fontSize: UILayout.medium,
               fontWeight: FontWeight.w800,
@@ -48,6 +61,9 @@ class _ClassDashboardState extends State<ClassDashboard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const ImportantDatesWidget(),
+                const SizedBox(
+                  height: UILayout.small,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
@@ -61,13 +77,23 @@ class _ClassDashboardState extends State<ClassDashboard> {
                 const SizedBox(
                   height: UILayout.medium,
                 ),
-                FavTutorsCard(
-                  name: 'Juan',
-                  rate: '4,5',
-                  image: 'https://picsum.photos/id/237/200/300',
-                  onTap: (){
-                    // showModalBottomSheet();
-                  },
+                ...favTutorsList.map(
+                  (Map<String, dynamic> tutor) => Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: UILayout.medium,
+                    ),
+                    child: FavTutorsCard(
+                      name: tutor['name'],
+                      rate: tutor['rate'],
+                      image: tutor['image'],
+                      onTap: () {
+                        tutorModalDetail(
+                          context,
+                          name: tutor['name'],
+                        );
+                      },
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: UILayout.medium,
@@ -94,7 +120,6 @@ class _ClassDashboardState extends State<ClassDashboard> {
                     ),
                   ],
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
@@ -108,6 +133,60 @@ class _ClassDashboardState extends State<ClassDashboard> {
               ],
             ),
           ),
+        ),
+      );
+
+  Future<dynamic> tutorModalDetail(
+    BuildContext context, {
+    required String name,
+  }) =>
+      showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(19),
+          ),
+        ),
+        backgroundColor: const Color(0xFFF0ECE9),
+        builder: (BuildContext context) => Column(
+          children: <Widget>[
+            const SizedBox(
+              height: UILayout.small,
+            ),
+            const SizedBox(
+              width: 48,
+              child: Divider(
+                height: 4,
+                thickness: 4,
+              ),
+            ),
+            const SizedBox(
+              height: UILayout.medium,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: UILayout.medium,
+              ),
+              child: MonitorCardDetail(
+                name: name,
+              ),
+            ),
+            const SizedBox(
+              height: UILayout.medium,
+            ),
+            Text('Info adicional'),
+            const SizedBox(
+              height: UILayout.medium,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: UILayout.medium,
+              ),
+              child: SunsetButton(
+                text: 'Iniciar chat'.tr,
+              ),
+            ),
+          ],
         ),
       );
 }

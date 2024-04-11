@@ -14,9 +14,12 @@ class _LoginState extends State<Login> {
   bool isErrorPassword = false;
   bool isValidForm = false;
   final LoginBloc loginBloc = sl<LoginBloc>();
+  bool isVisiblePassword = false;
+
   @override
   void initState() {
     isValidForm = false;
+    isVisiblePassword = false;
     super.initState();
   }
 
@@ -104,13 +107,22 @@ class _LoginState extends State<Login> {
                           ),
                           Spacing.spacingV16,
                           Input(
-                            suffix: Icon(
-                              Icons.remove_red_eye,
-                              color: Colors.gray[80],
+                            suffix: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isVisiblePassword = !isVisiblePassword;
+                                });
+                              },
+                              child: Icon(
+                                isVisiblePassword
+                                    ? Icons.remove_red_eye
+                                    : Icons.remove_outlined,
+                                color: Colors.gray[80],
+                              ),
                             ),
                             controller: passwordControler,
                             hintText: 'password'.tr,
-                            isPassword: true,
+                            isPassword: isVisiblePassword,
                             error: isErrorPassword ? 'Campo obligatorio' : null,
                             onChange: (String value) {
                               setState(() {

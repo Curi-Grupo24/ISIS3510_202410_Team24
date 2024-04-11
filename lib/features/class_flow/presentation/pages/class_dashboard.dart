@@ -120,6 +120,52 @@ class _ClassDashboardState extends State<ClassDashboard> {
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: UILayout.medium,
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.gray[10],
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Colors.gray[30]!,
+                          ),
+                        ),
+                        child: SizedBox(
+                          height: 110,
+                          // width: 140,
+                          child: Column(children: <Widget>[
+                            Text('data'),
+                          ]),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: UILayout.medium,
+                    ),
+                    Expanded(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.gray[10],
+                          border: Border.all(
+                            color: Colors.gray[30]!,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: SizedBox(
+                          height: 110,
+                          // width: 140,
+                          child: Column(children: [
+                            Text('data'),
+                          ]),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(

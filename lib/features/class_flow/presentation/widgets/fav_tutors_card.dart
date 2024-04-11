@@ -21,7 +21,7 @@ class FavTutorsCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white[0],
             border: Border.all(
-              color: Colors.gray[50]!,
+              color: Colors.gray[40]!,
             ),
             borderRadius: BorderRadius.circular(10),
           ),

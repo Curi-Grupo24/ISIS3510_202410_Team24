@@ -36,10 +36,13 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             if (state is ForgotPasswordError) {
               setState(() {
                 errorMessage = state.errorMessage;
+                successfullEmailSent = '';
               });
+              Get.back();
             } else if (state is ForgotPasswordSuccessfull) {
               setState(() {
                 successfullEmailSent = state.message ?? '';
+                errorMessage = '';
               });
               Get.back();
             } else if (state is ForgotPasswordLoading) {
@@ -53,7 +56,6 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                   ),
                 ),
               );
-              
             }
           },
           child: Padding(

@@ -14,12 +14,12 @@ class _LoginState extends State<Login> {
   bool isErrorPassword = false;
   bool isValidForm = false;
   final LoginBloc loginBloc = sl<LoginBloc>();
-  bool isVisiblePassword = false;
+  bool isNotVisiblePassword = true;
 
   @override
   void initState() {
     isValidForm = false;
-    isVisiblePassword = false;
+    isNotVisiblePassword = true;
     super.initState();
   }
 
@@ -110,19 +110,19 @@ class _LoginState extends State<Login> {
                             suffix: GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  isVisiblePassword = !isVisiblePassword;
+                                  isNotVisiblePassword = !isNotVisiblePassword;
                                 });
                               },
                               child: Icon(
-                                isVisiblePassword
-                                    ? Icons.remove_red_eye
-                                    : Icons.remove_outlined,
+                                isNotVisiblePassword
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.visibility_outlined,
                                 color: Colors.gray[80],
                               ),
                             ),
                             controller: passwordControler,
                             hintText: 'password'.tr,
-                            isPassword: isVisiblePassword,
+                            isPassword: isNotVisiblePassword,
                             error: isErrorPassword ? 'Campo obligatorio' : null,
                             onChange: (String value) {
                               setState(() {

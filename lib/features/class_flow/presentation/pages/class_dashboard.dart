@@ -134,12 +134,33 @@ class _ClassDashboardState extends State<ClassDashboard> {
                             color: Colors.gray[30]!,
                           ),
                         ),
-                        child: SizedBox(
-                          height: 110,
-                          // width: 140,
-                          child: Column(children: <Widget>[
-                            Text('data'),
-                          ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          // mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: UILayout.small,
+                              ),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  'Mejores precios'.tr,
+                                  style: TextStyle(
+                                    color: Colors.gray[80],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Image.asset(
+                                'assets/images/Image_circle.png',
+                                width: 101,
+                                height: 75,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -155,16 +176,38 @@ class _ClassDashboardState extends State<ClassDashboard> {
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: SizedBox(
-                          height: 110,
-                          // width: 140,
-                          child: Column(children: [
-                            Text('data'),
-                          ]),
+                        child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: UILayout.small,
+                              ),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  'Mejor Raiting'.tr,
+                                  style: TextStyle(
+                                    color: Colors.gray[80],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Image.asset(
+                                'assets/images/Image_circle2.png',
+                                width: 101,
+                                height: 72,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: UILayout.medium,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -176,6 +219,10 @@ class _ClassDashboardState extends State<ClassDashboard> {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: UILayout.small,
+                ),
+                const ProgressCard(),
               ],
             ),
           ),

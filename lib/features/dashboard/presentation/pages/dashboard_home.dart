@@ -87,123 +87,125 @@ class _DashboardHomeState extends State<DashboardHome> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: BlocBuilder<DashboardBloc, DashboardState>(
-          bloc: dashboardBloc,
-          builder: (BuildContext context, DashboardState state) {
-            if (state is DashboardLoading) {
-              return SpinKitRotatingCircle(
-                color: Colors.sunset[20],
-                size: 50,
-              );
-            } else if (state is DashboardSuccessfull) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const SizedBox(
-                    width: double.infinity,
-                  ),
-                  Text(
-                    'Hola, ${state.name}',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.gray[70],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: BlocBuilder<DashboardBloc, DashboardState>(
+            bloc: dashboardBloc,
+            builder: (BuildContext context, DashboardState state) {
+              if (state is DashboardLoading) {
+                return SpinKitRotatingCircle(
+                  color: Colors.sunset[20],
+                  size: 50,
+                );
+              } else if (state is DashboardSuccessfull) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    const SizedBox(
+                      width: double.infinity,
                     ),
-                  ),
-                  Spacing.spacingV12,
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.toNamed('/schedule_home');
-                      },
-                      child: const CalendarHomeDashboard(),
+                    Text(
+                      'Hola, ${state.name}',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.gray[70],
+                      ),
                     ),
-                  ),
-                  HorizontalCardScroll(
-                    title: 'Mis materias',
-                    onTapViewMore: () {
-                      Get.toNamed('/classes_list');
-                    },
-                    sortedCards: sortedCards1,
-                    aproxCardWidth: aproxCardWidth,
-                    textScaleFactor: textScaleFactor,
-                  ),
-                  Spacing.spacingV12,
-                  if (state.type != 'student')
+                    Spacing.spacingV12,
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.toNamed('/schedule_home');
+                        },
+                        child: const CalendarHomeDashboard(),
+                      ),
+                    ),
                     HorizontalCardScroll(
-                      title: 'En las  que soy monitor',
+                      title: 'Mis materias',
                       onTapViewMore: () {
                         Get.toNamed('/classes_list');
                       },
-                      sortedCards: sortedCards2,
+                      sortedCards: sortedCards1,
                       aproxCardWidth: aproxCardWidth,
                       textScaleFactor: textScaleFactor,
                     ),
-                  Spacing.spacingV24,
-                  if (state.type == 'student')
-                    SunsetCardFollow(
-                      description:
-                          '''Inscribete como monitor de la materias que te hayan gustado''',
-                      title: 'Apuntate para monitor!',
-                      onPressed: () {
-                        Get.toNamed('/enroll_monitor_home');
-                      },
-                    ),
-                  Spacing.spacingV24,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.sunset[5],
+                    Spacing.spacingV12,
+                    if (state.type != 'student')
+                      HorizontalCardScroll(
+                        title: 'En las  que soy monitor',
+                        onTapViewMore: () {
+                          Get.toNamed('/classes_list');
+                        },
+                        sortedCards: sortedCards2,
+                        aproxCardWidth: aproxCardWidth,
+                        textScaleFactor: textScaleFactor,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'Consejos',
-                              style: TextStyle(
-                                color: Colors.gray[90],
-                                fontWeight: FontWeight.bold,
+                    Spacing.spacingV24,
+                    if (state.type == 'student')
+                      SunsetCardFollow(
+                        description:
+                            '''Inscribete como monitor de la materias que te hayan gustado''',
+                        title: 'Apuntate para monitor!',
+                        onPressed: () {
+                          Get.toNamed('/enroll_monitor_home');
+                        },
+                      ),
+                    Spacing.spacingV24,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.sunset[5],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Consejos',
+                                style: TextStyle(
+                                  color: Colors.gray[90],
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: double.infinity,
-                            ),
-                            Text(
-                              'Revisa consejos para la universidad :D',
-                              style: TextStyle(
-                                color: Colors.gray[70],
-                                fontWeight: FontWeight.w400,
+                              const SizedBox(
+                                width: double.infinity,
                               ),
-                            ),
-                            Text(
-                              'Disponible proximamente',
-                              style: TextStyle(
-                                color: Colors.gray[70],
-                                fontWeight: FontWeight.w400,
+                              Text(
+                                'Revisa consejos para la universidad :D',
+                                style: TextStyle(
+                                  color: Colors.gray[70],
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            Spacing.spacingV24,
-                          ],
+                              Text(
+                                'Disponible proximamente',
+                                style: TextStyle(
+                                  color: Colors.gray[70],
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Spacing.spacingV24,
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Spacing.spacingV24,
-                ],
-              );
-            } else {
-              return SpinKitRotatingCircle(
-                color: Colors.sunset[20],
-                size: 50,
-              );
-            }
-          },
+                    Spacing.spacingV24,
+                  ],
+                );
+              } else {
+                return SpinKitRotatingCircle(
+                  color: Colors.sunset[20],
+                  size: 50,
+                );
+              }
+            },
+          ),
         ),
       ),
     );

@@ -12,3 +12,4 @@ part './date_card_button.dart';
 part './important_dates_widget.dart';
 part './fav_tutors_card.dart';
 part './monitor_card_detail.dart';
+part './progress_card.dart';

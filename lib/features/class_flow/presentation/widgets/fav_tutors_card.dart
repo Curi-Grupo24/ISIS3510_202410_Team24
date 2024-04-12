@@ -16,8 +16,8 @@ class FavTutorsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-    onTap: onTap,
-    child: DecoratedBox(
+        onTap: onTap,
+        child: DecoratedBox(
           decoration: BoxDecoration(
             color: Colors.white[0],
             border: Border.all(
@@ -54,14 +54,21 @@ class FavTutorsCard extends StatelessWidget {
                           color: Colors.gray[80],
                         ),
                       ),
-                      Text('Ver más de $name'.tr,
-                      style: TextStyle(color: Colors.ocean[40]),),
+                      Text(
+                        'Ver más de $name'.tr,
+                        style: TextStyle(color: Colors.ocean[40]),
+                      ),
                     ],
                   ),
                 ),
                 Row(
                   children: <Widget>[
-                    Text(rate),
+                    Text(
+                      rate,
+                      style: TextStyle(
+                        color: Colors.gray[70],
+                      ),
+                    ),
                     Icon(
                       Icons.star,
                       color: Colors.sunset[50],
@@ -72,5 +79,5 @@ class FavTutorsCard extends StatelessWidget {
             ),
           ),
         ),
-  );
+      );
 }

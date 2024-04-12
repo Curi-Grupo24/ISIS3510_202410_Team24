@@ -47,7 +47,7 @@ class _SortButtonState extends State<SortButton> {
                       widget.text,
                       style: const TextStyle(
                         fontFamily: 'Roboto',
-                        fontSize: 12,
+                        fontSize: 14,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFF000000),
                       ),

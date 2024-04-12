@@ -9,6 +9,7 @@ class SubjectCard extends StatefulWidget {
     this.type,
     this.image = 'assets/images/image_asset1.png',
     this.isForAdding = false,
+    this.isForDeleting=false,
     super.key,
   });
 
@@ -19,6 +20,7 @@ class SubjectCard extends StatefulWidget {
   final String? type;
   final String? image;
   final bool isForAdding;
+  final bool isForDeleting;
   // final String heroTag;
 
   @override
@@ -123,6 +125,17 @@ class _SubjectCardState extends State<SubjectCard> {
                         backgroundColor: const Color(0xFFF3962E),
                         onPressed: widget.onTap,
                         child: const Icon(Icons.add),
+                      ),
+                    ),
+                  if (widget.isForDeleting)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: FloatingActionButton(
+                        heroTag: widget.subjectTitle,
+                        elevation: 0,
+                        backgroundColor:  Colors.sunset[40],
+                        onPressed: widget.onTap,
+                        child: const Icon(Icons.delete),
                       ),
                     ),
                 ],

@@ -17,6 +17,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
   String filterType = '';
   String filterSemester = '';
   TextEditingController? controller = TextEditingController();
+  bool deletingClasses = false;
 
   void updatePossibleCarreers() {
     List<String> updatedList = <String>[];
@@ -210,6 +211,19 @@ class _SubjectScreenState extends State<SubjectScreen> {
               color: Color(0xFF111007),
             ),
           ),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  deletingClasses = !deletingClasses;
+                });
+              },
+              icon:  Icon(
+                Icons.edit,
+                color: Colors.gray[50],
+              ),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -335,7 +349,35 @@ class _SubjectScreenState extends State<SubjectScreen> {
                           '''${eachClass['semester'].length > 1 ? 'Semestre mixto: ' : ''}${eachClass['semester'].length > 1 ? semestersNumbers(
                               eachClass['semester'],
                             ) : eachClass['semester'][0]}''',
-                      onTap: () {
+                      onTap:
+                      deletingClasses?
+                       () async {
+                        await showDialog(
+                          context: context,
+                          builder: (BuildContext ctx) => SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: ModalCase(
+                              'Eliminar materia',
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: AddClassesModal(
+                                  deletingClasses: true,
+                                  className: eachClass['className'],
+                                  onPressedAccept: () {
+                                    //
+                                    Get.back();
+                                  },
+                                ),
+                              ),
+                              height: 200,
+                            ),
+                          ),
+                        );
+                      }:
+                      
+                       () {
                         Get.toNamed(
                           '/class_dashboard',
                           parameters: <String, String>{
@@ -343,6 +385,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                           },
                         );
                       },
+                      isForDeleting: deletingClasses,
                     ),
                   ),
                   if (classListFiltered.isEmpty)

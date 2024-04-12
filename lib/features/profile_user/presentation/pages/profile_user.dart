@@ -313,7 +313,7 @@ class _ProfileUserState extends State<ProfileUser> {
                             backgroundColor: Colors.jelly[40],
                             onPressed: () {
                               FirebaseAuth.instance.signOut();
-                              Get.toNamed('/login');
+                              Get.offAllNamed('/login');
                             },
                           ),
                         ],

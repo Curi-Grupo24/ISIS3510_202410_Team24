@@ -25,7 +25,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             ),
           ),
           (User? r) {
-            Get.toNamed('/dashboard_home');
+            Get.offAndToNamed('/dashboard_home');
             emit(LoginSuccessfull(user: r));
           },
         );

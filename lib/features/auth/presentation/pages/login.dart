@@ -88,6 +88,11 @@ class _LoginState extends State<Login> {
                           Input(
                             controller: useernameMailController,
                             hintText: 'username_mail'.tr,
+                            formatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'^[a-zA-Z0-9\s.@]*'),
+                              ),
+                            ],
                             error:
                                 isErrorMail ? 'Ingresa un correo valido' : null,
                             onChange: (String string) {

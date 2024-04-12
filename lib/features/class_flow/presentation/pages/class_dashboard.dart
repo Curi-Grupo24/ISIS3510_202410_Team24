@@ -112,10 +112,21 @@ class _ClassDashboardState extends State<ClassDashboard> {
                         ),
                       ),
                     ),
-                    Text(
-                      'Ver todos'.tr,
-                      style: TextStyle(
-                        color: Colors.sunset[50],
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(
+                          '/find_tutors',
+                          parameters: <String, String>{
+                            'className': className,
+                            'type': 'none',
+                          },
+                        );
+                      },
+                      child: Text(
+                        'Ver todos'.tr,
+                        style: TextStyle(
+                          color: Colors.sunset[50],
+                        ),
                       ),
                     ),
                   ],
@@ -126,41 +137,52 @@ class _ClassDashboardState extends State<ClassDashboard> {
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.gray[10],
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: Colors.gray[30]!,
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.toNamed(
+                            '/find_tutors',
+                            parameters: <String, String>{
+                              'className': className,
+                              'type': 'prices',
+                            },
+                          );
+                        },
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.gray[10],
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.gray[30]!,
+                            ),
                           ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          // mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: UILayout.small,
-                              ),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Mejores precios'.tr,
-                                  style: TextStyle(
-                                    color: Colors.gray[80],
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            // mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: UILayout.small,
+                                ),
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    'Mejores precios'.tr,
+                                    style: TextStyle(
+                                      color: Colors.gray[80],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Image.asset(
-                                'assets/images/Image_circle.png',
-                                width: 101,
-                                height: 75,
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Image.asset(
+                                  'assets/images/Image_circle.png',
+                                  width: 101,
+                                  height: 75,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -168,39 +190,50 @@ class _ClassDashboardState extends State<ClassDashboard> {
                       width: UILayout.medium,
                     ),
                     Expanded(
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.gray[10],
-                          border: Border.all(
-                            color: Colors.gray[30]!,
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.toNamed(
+                            '/find_tutors',
+                            parameters: <String, String>{
+                              'className': className,
+                              'type': 'rating',
+                            },
+                          );
+                        },
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.gray[10],
+                            border: Border.all(
+                              color: Colors.gray[30]!,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: UILayout.small,
-                              ),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Mejor Raiting'.tr,
-                                  style: TextStyle(
-                                    color: Colors.gray[80],
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: UILayout.small,
+                                ),
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    'Mejor Raiting'.tr,
+                                    style: TextStyle(
+                                      color: Colors.gray[80],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Image.asset(
-                                'assets/images/Image_circle2.png',
-                                width: 101,
-                                height: 72,
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Image.asset(
+                                  'assets/images/Image_circle2.png',
+                                  width: 101,
+                                  height: 72,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -223,6 +256,9 @@ class _ClassDashboardState extends State<ClassDashboard> {
                   height: UILayout.small,
                 ),
                 const ProgressCard(),
+                const SizedBox(
+                  height: UILayout.large,
+                ),
               ],
             ),
           ),

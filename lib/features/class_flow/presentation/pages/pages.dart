@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../../core/ui/colors_brand.dart';
 import '../../../../core/ui/layout.dart';
+import '../../../classes_list/presentation/widgets/widgets.dart';
 import '../../../common_widgets/widgets.dart';
 import '../widgets/widgets.dart';
 

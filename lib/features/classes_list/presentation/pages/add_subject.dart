@@ -308,11 +308,9 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                       onCrossTapped: () {
                         setState(() {
                           filterSemester = 'Semestre';
-                          // classListFiltered = classList;
                         });
                         updateFilterDef();
 
-                        // filterListToShow();
                       },
                     ),
                   ],
@@ -343,7 +341,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                                 ),
                                 child: AddClassesModal(
                                   className: eachClass['className'],
-                                  onPressedAccept: (){
+                                  onPressedAccept: () {
                                     //
                                     Get.back();
                                   },

@@ -95,5 +95,11 @@ List<GetPage<dynamic>> get getRoutes {
       transitionDuration: transitionDuration,
       middlewares: <GetMiddleware>[GetMiddleware()],
     ),
+    GetPage<dynamic>(
+      name: '/find_tutors',
+      page: FindTutorsView.new,
+      transitionDuration: transitionDuration,
+      middlewares: <GetMiddleware>[GetMiddleware()],
+    ),
   ];
 }

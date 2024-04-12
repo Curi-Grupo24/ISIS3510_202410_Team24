@@ -4,8 +4,10 @@ import 'package:get_it/get_it.dart';
 
 import 'features/auth/data/repositories/auth_repository_impl.dart';
 import 'features/auth/domain/repositories/auth_repository.dart';
+import 'features/auth/domain/usecases/forgot_password_account.dart';
 import 'features/auth/domain/usecases/login_account.dart';
 import 'features/auth/domain/usecases/register_account.dart';
+import 'features/auth/presentation/bloc/forgot_password_bloc/forgot_password_bloc.dart';
 import 'features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'features/auth/presentation/bloc/register_bloc/register_bloc.dart';
 import 'features/classes_list/data/repositories/classes_repository_impl.dart';
@@ -37,6 +39,9 @@ void init() {
   sl.registerLazySingleton<ProfileBloc>(
     () => ProfileBloc(),
   );
+  sl.registerLazySingleton<ForgotPasswordBloc>(
+    () => ForgotPasswordBloc(),
+  );
 
   //Use Cases
   sl.registerLazySingleton(
@@ -50,6 +55,9 @@ void init() {
   );
   sl.registerLazySingleton(
     () => GetProfileUserInfoUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton(
+    () => ForgotPasswordUseCase(repository: sl()),
   );
 
   //Repositories

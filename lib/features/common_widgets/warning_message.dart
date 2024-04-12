@@ -4,12 +4,14 @@ class WarningMessage extends StatelessWidget {
   const WarningMessage({
     required this.message,
     this.padding = 16,
-    this.isError=false,
+    this.isError = false,
+    this.isSuccess = false,
     super.key,
   });
   final String message;
   final double padding;
   final bool isError;
+  final bool isSuccess;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -20,11 +22,19 @@ class WarningMessage extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
             ),
-            tileColor: isError?Colors.blooming[5]: Colors.sunset[5],
+            tileColor: isError
+                ? Colors.blooming[5]
+                : isSuccess
+                    ? Colors.ocean[5]
+                    : Colors.sunset[5],
             dense: true,
             leading: Icon(
-              Icons.warning_amber_rounded,
-              color: isError?Colors.blooming[30]:  Colors.sunset[30],
+             isSuccess? Icons.mail : Icons.warning_amber_rounded,
+              color: isError
+                  ? Colors.blooming[30]
+                  : isSuccess
+                      ? Colors.ocean[40]
+                      : Colors.sunset[30],
             ),
             title: Align(
               alignment: Alignment.centerLeft,

@@ -73,4 +73,16 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   String getuid() => uid;
+  
+  @override
+  Future<Either<String, dynamic>> forgotPassword({required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return const Right<String, dynamic>('Se envió un correo de recuperación a tu cuenta, espera unos minutos.');
+    } catch (e) {
+     return Left<String, dynamic>(  e is FirebaseAuthException
+            ? e.code.tr
+            : 'Estamos teniendo problemas con el inicio de sesión, intentalo más tarde',);
+    }
+  }
 }

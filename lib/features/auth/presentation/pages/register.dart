@@ -158,6 +158,11 @@ class _RegisterViewState extends State<RegisterView> {
                           Input(
                             maxLength: 50,
                             controller: controllerEmail,
+                            formatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'^[a-zA-Z0-9\s.@_]*'),
+                              ),
+                            ],
                             hintText: 'Correo Uniandes'.tr,
                             suffix: TooltipOcean(
                               text:
@@ -240,7 +245,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 : null,
                             formatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.allow(
-                                RegExp(r'[a-zA-Z]'),
+                                RegExp(r'[a-zA-Z\s\n]*'),
                               ),
                             ],
                             onChange: (String value) {

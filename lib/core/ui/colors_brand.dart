@@ -19,6 +19,7 @@ class Colors {
   };
 
   static const Map<int, Color> ocean = <int, Color>{
+    5: Color.fromRGBO(175, 234, 233, 1),
     40: Color.fromRGBO(41, 183, 180, 1),
     50: Color.fromRGBO(25, 154, 152, 1),
   };

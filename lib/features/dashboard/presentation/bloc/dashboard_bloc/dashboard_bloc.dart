@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../../injection_container.dart';
+import '../../../../auth/data/models/user_model.dart';
 import '../../../domain/usecases/get_user_info.dart';
 
 part 'dashboard_event.dart';
@@ -20,11 +21,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
               errorMessage: l,
             ),
           ),
-          (Map<String, dynamic> r) {
+          (UserModel r) {
             emit(
               DashboardSuccessfull(
-                name: r['name'],
-                type: r['type'],
+                name: r.name??'',
+                type: r.type,
               ),
             );
           },

@@ -41,7 +41,7 @@ class ProgressCard extends StatelessWidget {
                     height: UILayout.small,
                   ),
                   Text(
-                    'Diana',
+                    'Newie',
                     style: TextStyle(
                       color: Colors.gray[90],
                       fontWeight: FontWeight.bold,

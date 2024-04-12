@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+
 import './core/internazionalization/internationalization.dart';
 import 'core/routes/routes.dart';
 import 'core/ui/theme.dart';
@@ -11,6 +13,11 @@ import 'injection_container.dart' as di;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations(
+    <DeviceOrientation>[
+      DeviceOrientation.portraitUp,
+    ],
+  );
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

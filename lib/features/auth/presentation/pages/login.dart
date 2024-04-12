@@ -90,7 +90,7 @@ class _LoginState extends State<Login> {
                             hintText: 'username_mail'.tr,
                             formatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.allow(
-                                RegExp(r'^[a-zA-Z0-9\s.@]*'),
+                                RegExp(r'^[a-zA-Z0-9\s.@_]*'),
                               ),
                             ],
                             error:

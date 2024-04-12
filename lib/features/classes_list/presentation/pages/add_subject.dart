@@ -239,81 +239,84 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                   top: 8,
                   bottom: 16,
                 ),
-                child: Row(
-                  children: <Widget>[
-                    SortButton(
-                      text: filterCarreer,
-                      onPressed: () {
-                        showModalStatesToFilter(
-                          possibleCarreers, 'select_carreer'.tr,
-                          parentAction: (String value) {
-                            setState(() {
-                              filterCarreer = value;
-                            });
-                            updateFilterDef();
-                          },
-                          //  _updateCarreerFilter,
-                        );
-                      },
-                      crossEnabled: filterCarreer != 'Carrera',
-                      onCrossTapped: () {
-                        setState(() {
-                          filterCarreer = 'Carrera';
-                          // classListFiltered = classList;
-                        });
-                        updateFilterDef();
-                        // filterListToShow();
-                      },
-                    ),
-                    SortButton(
-                      text: filterType,
-                      onPressed: () {
-                        showModalStatesToFilter(
-                          possibleTypes, 'Escoge el tipo de la materia'.tr,
-                          parentAction: (String value) {
-                            setState(() {
-                              filterType = value;
-                            });
-                            updateFilterDef();
-                          },
-                          // _updateTypeFilter,
-                        );
-                      },
-                      crossEnabled: filterType != 'Tipo',
-                      onCrossTapped: () {
-                        setState(() {
-                          filterType = 'Tipo';
-                          // classListFiltered = classList;
-                        });
-                        updateFilterDef();
-
-                        // filterListToShow();
-                      },
-                    ),
-                    SortButton(
-                      text: filterSemester,
-                      onPressed: () {
-                        showModalStatesToFilter(
-                          possibleSemesters, 'Escoge el semestre'.tr,
-                          parentAction: (String value) {
-                            setState(() {
-                              filterSemester = value;
-                            });
-                            updateFilterDef();
-                          },
-                          // _updateSemesterFilter,
-                        );
-                      },
-                      crossEnabled: filterSemester != 'Semestre',
-                      onCrossTapped: () {
-                        setState(() {
-                          filterSemester = 'Semestre';
-                        });
-                        updateFilterDef();
-
-                      },
-                    ),
-                  ],
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: <Widget>[
+                      SortButton(
+                        text: filterCarreer,
+                        onPressed: () {
+                          showModalStatesToFilter(
+                            possibleCarreers, 'select_carreer'.tr,
+                            parentAction: (String value) {
+                              setState(() {
+                                filterCarreer = value;
+                              });
+                              updateFilterDef();
+                            },
+                            //  _updateCarreerFilter,
+                          );
+                        },
+                        crossEnabled: filterCarreer != 'Carrera',
+                        onCrossTapped: () {
+                          setState(() {
+                            filterCarreer = 'Carrera';
+                            // classListFiltered = classList;
+                          });
+                          updateFilterDef();
+                          // filterListToShow();
+                        },
+                      ),
+                      SortButton(
+                        text: filterType,
+                        onPressed: () {
+                          showModalStatesToFilter(
+                            possibleTypes, 'Escoge el tipo de la materia'.tr,
+                            parentAction: (String value) {
+                              setState(() {
+                                filterType = value;
+                              });
+                              updateFilterDef();
+                            },
+                            // _updateTypeFilter,
+                          );
+                        },
+                        crossEnabled: filterType != 'Tipo',
+                        onCrossTapped: () {
+                          setState(() {
+                            filterType = 'Tipo';
+                            // classListFiltered = classList;
+                          });
+                          updateFilterDef();
+                
+                          // filterListToShow();
+                        },
+                      ),
+                      SortButton(
+                        text: filterSemester,
+                        onPressed: () {
+                          showModalStatesToFilter(
+                            possibleSemesters, 'Escoge el semestre'.tr,
+                            parentAction: (String value) {
+                              setState(() {
+                                filterSemester = value;
+                              });
+                              updateFilterDef();
+                            },
+                            // _updateSemesterFilter,
+                          );
+                        },
+                        crossEnabled: filterSemester != 'Semestre',
+                        onCrossTapped: () {
+                          setState(() {
+                            filterSemester = 'Semestre';
+                          });
+                          updateFilterDef();
+                
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Column(

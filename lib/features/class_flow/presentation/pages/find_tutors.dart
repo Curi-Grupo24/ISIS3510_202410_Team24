@@ -160,24 +160,27 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                   const SizedBox(
                     height: UILayout.small,
                   ),
-                  Row(
-                    children: <Widget>[
-                      SortButton(
-                        text: 'Calificación',
-                        onPressed: () {},
-                        crossEnabled: filterRating != 'Calificación',
-                        onCrossTapped: () {},
-                      ),
-                      const SizedBox(
-                        width: UILayout.small,
-                      ),
-                      SortButton(
-                        text: 'Precio',
-                        onPressed: () {},
-                        crossEnabled: filterPrice != 'Precio',
-                        onCrossTapped: () {},
-                      ),
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: <Widget>[
+                        SortButton(
+                          text: 'Calificación',
+                          onPressed: () {},
+                          crossEnabled: filterRating != 'Calificación',
+                          onCrossTapped: () {},
+                        ),
+                        const SizedBox(
+                          width: UILayout.small,
+                        ),
+                        SortButton(
+                          text: 'Precio',
+                          onPressed: () {},
+                          crossEnabled: filterPrice != 'Precio',
+                          onCrossTapped: () {},
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: UILayout.medium,

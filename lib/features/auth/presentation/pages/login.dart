@@ -15,6 +15,8 @@ class _LoginState extends State<Login> {
   bool isValidForm = false;
   final LoginBloc loginBloc = sl<LoginBloc>();
   bool isNotVisiblePassword = true;
+  String version = 'Versión 1.0.0';
+  String errorMessage = '';
 
   @override
   void initState() {
@@ -47,13 +49,27 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) => Scaffold(
         body: BlocListener<LoginBloc, LoginState>(
           bloc: loginBloc,
-          listener: (BuildContext context, LoginState state) {
+          listener: (BuildContext context, LoginState state) async {
             if (state is LoginError) {
-              ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(
-                  SnackBar(content: Text(state.errorMessage)),
-                );
+              setState(() {
+                errorMessage = state.errorMessage;
+              });
+              // await showDialog(
+              //   context: context,
+              //   builder: (BuildContext ctx) => SizedBox(
+              //     width: MediaQuery.of(context).size.width * 0.8,
+              //     child: ModalCase(
+              //       'Añadir materia',
+              //       Padding(
+              //         padding: const EdgeInsets.symmetric(
+              //           horizontal: 16,
+              //         ),
+              //         child: Text(state.errorMessage),
+              //       ),
+              //       height: 200,
+              //     ),
+              //   ),
+              // );
             }
           },
           child: BlocBuilder<LoginBloc, LoginState>(
@@ -152,6 +168,12 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           Spacing.spacingV24,
+                          if (errorMessage.isNotEmpty)
+                            WarningMessage(
+                              isError: true,
+                              message: errorMessage,
+                              padding: 0,
+                            ),
                           SunsetButton(
                             text: 'log_in'.tr,
                             onPressed: isValidForm ? signin : null,
@@ -193,6 +215,15 @@ class _LoginState extends State<Login> {
                 );
               }
             },
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(UILayout.small),
+          child: Text(
+            version,
+            style: const TextStyle(
+              fontSize: 14,
+            ),
           ),
         ),
       );

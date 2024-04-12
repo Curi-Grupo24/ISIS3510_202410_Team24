@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import '../../domain/repositories/auth_repository.dart';
 import 'users_repository_impl.dart';
 
@@ -42,8 +43,10 @@ class AuthRepositoryImpl implements AuthRepository {
       await userData.getUser(uid);
       return Right<String, User?>(credential.user);
     } catch (e) {
-      return const Left<String, User?>(
-        'No se pudo Crear el usuario, intentelo más tarde',
+      return Left<String, User?>(
+        e is FirebaseAuthException
+            ? e.code.tr
+            : 'No se pudo Crear el usuario, intentelo más tarde',
       );
     }
   }
@@ -61,8 +64,10 @@ class AuthRepositoryImpl implements AuthRepository {
       uid = credential.user!.uid;
       return Right<String, User?>(credential.user);
     } catch (e) {
-      return const Left<String, User?>(
-        'No se pudo iniciar sesión, intentelo más tarde',
+      return Left<String, User?>(
+        e is FirebaseAuthException
+            ? e.code.tr
+            : 'Estamos teniendo problemas con el inicio de sesión, intentalo más tarde',
       );
     }
   }

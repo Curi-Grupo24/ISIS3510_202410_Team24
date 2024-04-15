@@ -10,9 +10,7 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial()) {
     on<GetUserInfo>((ProfileEvent event, Emitter<ProfileState> emit) async {
-      //
       emit(const ProfileLoading());
-      print("llegue aca");
       GetProfileUserInfoUseCase usecase = sl<GetProfileUserInfoUseCase>();
       await usecase().then(
         (Map<String, dynamic>? r) {

@@ -22,14 +22,30 @@ class _DashboardHomeState extends State<DashboardHome> {
 
   @override
   Widget build(BuildContext context) {
+    double paddingBottom = MediaQuery.of(context).padding.bottom;
     List<dynamic> sortedCards1 = <dynamic>[
-      <String, dynamic>{'name': 'Anadec', 'image':'assets/images/image_asset1.png'},
-      <String, dynamic>{'name': 'Proba', 'image':'assets/images/image_asset2.png'},
-      <String, dynamic>{'name': 'Inglés', 'image':'assets/images/image_asset4.png'},
+      <String, dynamic>{
+        'name': 'Anadec',
+        'image': 'assets/images/image_asset1.png',
+      },
+      <String, dynamic>{
+        'name': 'Proba',
+        'image': 'assets/images/image_asset2.png',
+      },
+      <String, dynamic>{
+        'name': 'Inglés',
+        'image': 'assets/images/image_asset4.png',
+      },
     ];
     List<dynamic> sortedCards2 = <dynamic>[
-      <String, dynamic>{'name': 'IP', 'image':'assets/images/image_asset4.png'},
-      <String, dynamic>{'name': 'EDA', 'image':'assets/images/image_asset7.png'},
+      <String, dynamic>{
+        'name': 'IP',
+        'image': 'assets/images/image_asset4.png',
+      },
+      <String, dynamic>{
+        'name': 'EDA',
+        'image': 'assets/images/image_asset7.png',
+      },
     ];
 
     double aproxCardWidth = MediaQuery.of(context).size.width / 2.8;
@@ -86,6 +102,47 @@ class _DashboardHomeState extends State<DashboardHome> {
             ],
           ),
         ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.fromLTRB(
+          UILayout.medium,
+          UILayout.medium,
+          UILayout.medium,
+          UILayout.medium + paddingBottom,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Icon(
+                      Icons.home,
+                      color: Colors.sunset[50],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.toNamed('/chats_home');
+                    },
+                    child: Icon(
+                      Icons.chat_bubble_rounded,
+                      color: Colors.gray[50],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Spacing.spacingV8,
+          ],
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

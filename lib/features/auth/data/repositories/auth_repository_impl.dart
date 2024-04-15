@@ -39,6 +39,7 @@ class AuthRepositoryImpl implements AuthRepository {
         'studentCode': studentCode,
         'type': 'student',
         'email': email,
+        'uid': credential.user!.uid,
       });
       uid = credential.user!.uid;
       UsersRepositoryImpl userData = UsersRepositoryImpl();

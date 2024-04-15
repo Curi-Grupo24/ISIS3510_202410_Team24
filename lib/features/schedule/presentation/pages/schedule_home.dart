@@ -56,18 +56,32 @@ class _ScheduleHomeState extends State<ScheduleHome> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    DateTime.now().hour < 12
-                        ? 'Buenos Días!'
-                        : DateTime.now().hour < 21
-                            ? 'Buenas Tardes!'
-                            : 'Buenas Noches!',
-                    style: const TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xFF111007),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        DateTime.now().hour < 12
+                            ? 'Buenos Días!'
+                            : DateTime.now().hour < 19
+                                ? 'Buenas Tardes!'
+                                : 'Buenas Noches!',
+                        style: const TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xFF111007),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed('/schedule_register');
+                        },
+                        child: Icon(
+                          Icons.add_circle,
+                          color: Colors.sunset[40],
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: UILayout.medium,

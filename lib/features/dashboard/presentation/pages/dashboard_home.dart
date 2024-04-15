@@ -105,7 +105,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                       width: double.infinity,
                     ),
                     Text(
-                      'Hola, ${state.name}',
+                      'Hola, ${state.user.name}',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.gray[70],
@@ -131,7 +131,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                       textScaleFactor: textScaleFactor,
                     ),
                     Spacing.spacingV12,
-                    if (state.type != 'student')
+                    if (state.user.type != 'student')
                       HorizontalCardScroll(
                         title: 'En las  que soy monitor',
                         onTapViewMore: () {
@@ -142,7 +142,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                         textScaleFactor: textScaleFactor,
                       ),
                     Spacing.spacingV24,
-                    if (state.type == 'student')
+                    if (state.user.type == 'student')
                       SunsetCardFollow(
                         description:
                             '''Inscribete como monitor de la materias que te hayan gustado''',

@@ -24,8 +24,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           (UserModel r) {
             emit(
               DashboardSuccessfull(
-                name: r.name??'',
-                type: r.type,
+                user: r,
               ),
             );
           },

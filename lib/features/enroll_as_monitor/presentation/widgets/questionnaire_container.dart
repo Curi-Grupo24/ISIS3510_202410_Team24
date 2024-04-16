@@ -80,7 +80,7 @@ class RiskProfileQuestionnaireCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     width: UILayout.large,
                     // child:
                     // Radio<RiskProfileQuestionAnswer>(

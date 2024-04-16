@@ -15,6 +15,7 @@ dependencies:
   dartz: ^0.10.1
   el_tooltip: ^2.0.0
   equatable: ^2.0.5
+  firebase_analytics: ^10.8.0
   firebase_auth: ^4.16.0
   firebase_core: ^2.24.2
   flutter:
@@ -31,6 +32,7 @@ dependencies:
   percent_indicator: ^4.2.2
   permission_handler: ^10.3.0
   shared_preferences: ^2.1.1
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -51,6 +53,14 @@ flutter:
         - asset: assets/fonts/roboto/Roboto-Regular.ttf
   assets:
     - assets/
+    - assets/images/Image_circle.png
+    - assets/images/Image_circle2.png
     - assets/images/image_asset1.png
+    - assets/images/image_asset2.png
+    - assets/images/image_asset3.png
+    - assets/images/image_asset4.png
+    - assets/images/image_asset6.png
+    - assets/images/image_asset7.png
     - assets/images/pana.png
+    - assets/images/image_newie.png
     - assets/images/onboarding_enroll_image.png

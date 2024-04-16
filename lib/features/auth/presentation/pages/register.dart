@@ -17,6 +17,7 @@ class _RegisterViewState extends State<RegisterView> {
   String actualState = 'Selecciona Carrera';
   bool isSelectedCheckbox = false;
   final RegisterBloc registerBloc = sl<RegisterBloc>();
+  String registerError ='';
 
   bool isErrorMail = false;
   bool isErrorPassword = false;
@@ -111,255 +112,285 @@ class _RegisterViewState extends State<RegisterView> {
             ),
           ),
         ),
-        body: BlocBuilder<RegisterBloc, RegisterState>(
-          bloc: registerBloc,
-          builder: (BuildContext context, RegisterState state) {
-            if (state is RegisterLoading) {
-              return SpinKitRotatingCircle(
-                color: Colors.sunset[20],
-                size: 50,
-              );
-            } else {
-              return SingleChildScrollView(
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const Center(
-                          child: Text(
-                            'espacio para logo',
-                          ),
-                        ),
-                        Spacing.spacingV48,
-                        Text(
-                          'Registro'.tr,
-                          style: Paragraphs.large.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.gray[90],
-                          ),
-                        ),
-                        Spacing.spacingV16,
-                        Input(
-                          maxLength: 50,
-                          controller: controllerEmail,
-                          hintText: 'Correo Uniandes'.tr,
-                          suffix: TooltipOcean(
-                            text: 'Debes iniciar sesión con tu cuenta uniandes.'
-                                .tr,
-                          ),
-                          error:
-                              isErrorMail ? 'Ingresa un correo valido' : null,
-                          onChange: (String string) {
-                            if (!string.endsWith('@uniandes.edu.co')) {
-                              setState(() {
-                                isErrorMail = true;
-                              });
-                            } else {
-                              setState(() {
-                                isErrorMail = false;
-                              });
-                            }
-                            validateForm();
-                          },
-                        ),
-                        Spacing.spacingV16,
-                        Input(
-                          suffix: TooltipOcean(
-                            text:
-                                'La contraseña debe tener mínimo 8 caracteres y máximo 16, estar compuesta por lo menos de una minúscula, una mayúscula, un número y/o un carácter especial entre *, -, #.'
-                                    .tr,
-                          ),
-                          controller: controllerPassword,
-                          hintText: 'password'.tr,
-                          isPassword: true,
-                          maxLength: 16,
-                          error: isErrorPassword
-                              ?'Ingresa una contraseña valida':null,
-                          onChange: (String value) {
-                            bool hasLowercase =
-                                RegExp(r'[a-z]').hasMatch(value);
-                            bool hasUppercase =
-                                RegExp(r'[A-Z]').hasMatch(value);
-                            bool hasDigit = RegExp(r'\d').hasMatch(value);
-                            bool hasSpecialChar =
-                                RegExp(r'[!@#$%^&*(),.?":{}|<>]')
-                                    .hasMatch(value);
-                            setState(() {
-                              isErrorPassword = !(hasLowercase &&
-                                  hasUppercase &&
-                                  (hasDigit || hasSpecialChar) &&
-                                  value.length >= 8 &&
-                                  value.length <= 16);
-                            });
-                            validateForm();
-                          },
-                        ),
-                        Spacing.spacingV16,
-                        Input(
-                          controller: controllerConfirmPassword,
-                          hintText: 'Confirmar contraseña'.tr,
-                          isPassword: true,
-                          error: isErrorConfirmPassword?
-                              'Las contraseñas deben coincidir':null,
-                          onChange: (String value) {
-                            setState(() {
-                              isErrorConfirmPassword =
-                                  !(controllerConfirmPassword.text ==
-                                      controllerPassword.text);
-                            });
-                            validateForm();
-                          },
-                        ),
-                        Spacing.spacingV16,
-                        Input(
-                          controller: controllerName,
-                          hintText: 'Nombre'.tr,
-                          error: isErrorNameField
-                              ?'El campo es obligatorio':null,
-                          formatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                              RegExp(r'[a-zA-Z]'),
-                            ),
-                          ],
-                          onChange: (String value) {
-                            setState(() {
-                              isErrorNameField = value.isEmpty;
-                            });
-                            validateForm();
-                          },
-                        ),
-                        Spacing.spacingV16,
-                        Input(
-                          controller: controllerPhone,
-                          hintText: 'Celular'.tr,
-                          formatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          error: isErrorPhoneField
-                              ?'El campo es obligatorio':null,
-                          maxLength: 10,
-                          onChange: (String value) {
-                            setState(() {
-                              isErrorPhoneField = value.isEmpty;
-                            });
-                            validateForm();
-                          },
-                        ),
-                        Spacing.spacingV16,
-                        DropDownButtonCarreer(
-                          actualState: actualState,
-                          onPressed: showModalStates,
-                          isDefaultState: actualState != 'Selecciona Carrera',
-                          onPressedCrossIcon: () {
-                            setState(() {
-                              actualState = 'Selecciona Carrera';
-                            });
-                            validateForm();
-                          },
-                        ),
-
-                        Spacing.spacingV8,
-                        Spacing.spacingV16,
-                        Input(
-                          controller: controllerStudentCode,
-                          hintText: 'Código estudiantil'.tr,
-                          keyboardType: TextInputType.number,
-                          formatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          maxLength: 10,
-                          error: isErrorStudentCode
-                              ?'El campo es obligatorio':null,
-                          onChange: (String value) {
-                            setState(() {
-                              isErrorStudentCode = value.isEmpty;
-                            });
-                            validateForm();
-                          },
-                        ),
-
-                        Spacing.spacingV32,
-                        //checkbox de términos y condiciones.
-                        Row(
-                          children: <Widget>[
-                            Checkbox(
-                              value: isSelectedCheckbox,
-                              onChanged: (bool? isSelected) {
-                                setState(() {
-                                  isSelectedCheckbox = isSelected ?? false;
-                                });
-                                validateForm();
-                              },
-                              fillColor: MaterialStateProperty.all<Color>(
-                                Colors.white[0]!,
-                              ),
-                              activeColor: Colors.ocean[40],
-                              checkColor: Colors.ocean[40],
-                            ),
-                            Expanded(
-                              child: RichText(
-                                text: TextSpan(
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Acepto los '.tr,
-                                      style: TextStyle(
-                                        color: Colors.gray[80],
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: 'Términos y condiciones '.tr,
-                                      style: TextStyle(
-                                        color: Colors.ocean[40],
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16,
-                                      ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Get.dialog(
-                                            const TermsAndConditionsPage(),
-                                            barrierDismissible: true,
-                                            barrierColor: Colors.gray[90]!
-                                                .withOpacity(.7),
-                                            useSafeArea: false,
-                                          );
-                                        },
-                                    ),
-                                    TextSpan(
-                                      text: 'de uso de la aplicación'.tr,
-                                      style: TextStyle(
-                                        color: Colors.gray[80],
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Spacing.spacingV32,
-                        SunsetButton(
-                          text: 'Registrarme'.tr,
-                          onPressed: isValidForm ? signup : null,
-                          backgroundColor: !isValidForm
-                              ? Colors.gray[50]
-                              : Colors.sunset[50],
-                        ),
-                        Spacing.spacingV32,
-                      ],
-                    ),
-                  ),
-                ),
-              );
+        body: BlocListener<RegisterBloc, RegisterState>(
+            bloc: registerBloc,
+          listener: (BuildContext context,RegisterState state) {
+            if(state is RegisterError){
+              setState(() {
+                registerError=state.errorMessage;
+              });
             }
           },
+          child: BlocBuilder<RegisterBloc, RegisterState>(
+            bloc: registerBloc,
+            builder: (BuildContext context, RegisterState state) {
+              if (state is RegisterLoading) {
+                return SpinKitRotatingCircle(
+                  color: Colors.sunset[20],
+                  size: 50,
+                );
+              } else {
+                return SingleChildScrollView(
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Center(
+                            child: Text(
+                              'espacio para logo',
+                            ),
+                          ),
+                          Spacing.spacingV48,
+                          Text(
+                            'Registro'.tr,
+                            style: Paragraphs.large.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.gray[90],
+                            ),
+                          ),
+                          Spacing.spacingV16,
+                          Input(
+                            maxLength: 50,
+                            controller: controllerEmail,
+                            formatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'^[a-zA-Z0-9\s.@_]*'),
+                              ),
+                            ],
+                            hintText: 'Correo Uniandes'.tr,
+                            suffix: TooltipOcean(
+                              text:
+                                  'Debes iniciar sesión con tu cuenta uniandes.'
+                                      .tr,
+                            ),
+                            error:
+                                isErrorMail ? 'Ingresa un correo valido' : null,
+                            onChange: (String string) {
+                              if (!string.endsWith('@uniandes.edu.co') ||
+                                  string.length <= 16 ||
+                                  string.contains(' ')) {
+                                setState(() {
+                                  isErrorMail = true;
+                                });
+                              } else {
+                                setState(() {
+                                  isErrorMail = false;
+                                });
+                              }
+                              validateForm();
+                            },
+                          ),
+                          Spacing.spacingV16,
+                          Input(
+                            suffix: TooltipOcean(
+                              text:
+                                  'La contraseña debe tener mínimo 8 caracteres y máximo 16, estar compuesta por lo menos de una minúscula, una mayúscula, un número y/o un carácter especial entre *, -, #.'
+                                      .tr,
+                            ),
+                            controller: controllerPassword,
+                            hintText: 'password'.tr,
+                            isPassword: true,
+                            maxLength: 16,
+                            error: isErrorPassword
+                                ? 'Ingresa una contraseña valida'
+                                : null,
+                            onChange: (String value) {
+                              bool hasLowercase =
+                                  RegExp(r'[a-z]').hasMatch(value);
+                              bool hasUppercase =
+                                  RegExp(r'[A-Z]').hasMatch(value);
+                              bool hasDigit = RegExp(r'\d').hasMatch(value);
+                              bool hasSpecialChar =
+                                  RegExp(r'[!@#$%^&*(),.?":{}|<>]')
+                                      .hasMatch(value);
+                              setState(() {
+                                isErrorPassword = !(hasLowercase &&
+                                    hasUppercase &&
+                                    (hasDigit || hasSpecialChar) &&
+                                    value.length >= 8 &&
+                                    value.length <= 16);
+                              });
+                              validateForm();
+                            },
+                          ),
+                          Spacing.spacingV16,
+                          Input(
+                            controller: controllerConfirmPassword,
+                            hintText: 'Confirmar contraseña'.tr,
+                            isPassword: true,
+                            error: isErrorConfirmPassword
+                                ? 'Las contraseñas deben coincidir'
+                                : null,
+                            onChange: (String value) {
+                              setState(() {
+                                isErrorConfirmPassword =
+                                    !(controllerConfirmPassword.text ==
+                                        controllerPassword.text);
+                              });
+                              validateForm();
+                            },
+                          ),
+                          Spacing.spacingV16,
+                          Input(
+                            controller: controllerName,
+                            hintText: 'Nombre'.tr,
+                            error: isErrorNameField
+                                ? 'El campo es obligatorio'
+                                : null,
+                            formatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'[a-zA-Z\s\n]*'),
+                              ),
+                            ],
+                            onChange: (String value) {
+                              setState(() {
+                                isErrorNameField = value.isEmpty;
+                              });
+                              validateForm();
+                            },
+                          ),
+                          Spacing.spacingV16,
+                          Input(
+                            controller: controllerPhone,
+                            hintText: 'Celular'.tr,
+                            keyboardType: TextInputType.number,
+                            formatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            error: isErrorPhoneField
+                                ? 'El campo es obligatorio'
+                                : null,
+                            maxLength: 10,
+                            onChange: (String value) {
+                              setState(() {
+                                isErrorPhoneField = value.isEmpty;
+                              });
+                              validateForm();
+                            },
+                          ),
+                          Spacing.spacingV16,
+                          DropDownButtonCarreer(
+                            actualState: actualState,
+                            onPressed: showModalStates,
+                            isDefaultState: actualState != 'Selecciona Carrera',
+                            onPressedCrossIcon: () {
+                              setState(() {
+                                actualState = 'Selecciona Carrera';
+                              });
+                              validateForm();
+                            },
+                          ),
+
+                          Spacing.spacingV8,
+                          Spacing.spacingV16,
+                          Input(
+                            controller: controllerStudentCode,
+                            hintText: 'Código estudiantil'.tr,
+                            keyboardType: TextInputType.number,
+                            formatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            maxLength: 10,
+                            error: isErrorStudentCode
+                                ? 'El campo es obligatorio'
+                                : null,
+                            onChange: (String value) {
+                              setState(() {
+                                isErrorStudentCode = value.isEmpty;
+                              });
+                              validateForm();
+                            },
+                          ),
+
+                          Spacing.spacingV32,
+                          //checkbox de términos y condiciones.
+                          Row(
+                            children: <Widget>[
+                              Checkbox(
+                                value: isSelectedCheckbox,
+                                onChanged: (bool? isSelected) {
+                                  setState(() {
+                                    isSelectedCheckbox = isSelected ?? false;
+                                  });
+                                  validateForm();
+                                },
+                                fillColor: MaterialStateProperty.all<Color>(
+                                  Colors.white[0]!,
+                                ),
+                                activeColor: Colors.ocean[40],
+                                checkColor: Colors.ocean[40],
+                              ),
+                              Expanded(
+                                child: RichText(
+                                  text: TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Acepto los '.tr,
+                                        style: TextStyle(
+                                          color: Colors.gray[80],
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: 'Términos y condiciones '.tr,
+                                        style: TextStyle(
+                                          color: Colors.ocean[40],
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
+                                        ),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            Get.dialog(
+                                              const TermsAndConditionsPage(),
+                                              barrierDismissible: true,
+                                              barrierColor: Colors.gray[90]!
+                                                  .withOpacity(.7),
+                                              useSafeArea: false,
+                                            );
+                                          },
+                                      ),
+                                      TextSpan(
+                                        text: 'de uso de la aplicación'.tr,
+                                        style: TextStyle(
+                                          color: Colors.gray[80],
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Spacing.spacingV32,
+                          if (registerError.isNotEmpty)
+                            WarningMessage(
+                              isError: true,
+                              message: registerError,
+                              padding: 0,
+                            ),
+                          SunsetButton(
+                            text: 'Registrarme'.tr,
+                            onPressed: isValidForm ? signup : null,
+                            backgroundColor: !isValidForm
+                                ? Colors.gray[50]
+                                : Colors.sunset[50],
+                          ),
+                          Spacing.spacingV32,
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
         ),
       );
 

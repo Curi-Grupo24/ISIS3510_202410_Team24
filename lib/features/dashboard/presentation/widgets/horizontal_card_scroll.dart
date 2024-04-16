@@ -10,7 +10,7 @@ class HorizontalCardScroll extends StatelessWidget {
     super.key,
   });
 
-  final List<dynamic> sortedCards;
+  final List<ClassModel> sortedCards;
   final double aproxCardWidth;
   final double textScaleFactor;
   final String title;
@@ -62,7 +62,7 @@ class HorizontalCardScroll extends StatelessWidget {
                 child: ListView.separated(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  itemCount: sortedCards.length,
+                  itemCount: sortedCards.length > 4 ? 4 : sortedCards.length,
                   itemBuilder: (BuildContext context, int index) => Padding(
                     padding: EdgeInsets.only(
                       left: index == 0 ? UILayout.medium : 0,
@@ -72,12 +72,18 @@ class HorizontalCardScroll extends StatelessWidget {
                       bottom: UILayout.medium,
                     ),
                     child: OtherProductsCard(
-                      productName: 'Anadec',
+                      productName: sortedCards[index].className,
                       badge: ProductBadgeType.latest,
+                      image: sortedCards[index].image,
                       message: '2024-1',
                       cardWidth: aproxCardWidth * textScaleFactor,
                       onTap: () {
-                        //
+                        Get.toNamed(
+                          '/class_dashboard',
+                          parameters: <String, String>{
+                            'className': sortedCards[index].className,
+                          },
+                        );
                       },
                     ),
                   ),

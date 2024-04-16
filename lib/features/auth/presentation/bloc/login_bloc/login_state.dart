@@ -17,7 +17,7 @@ class LoginSuccessfull extends LoginState {
   const LoginSuccessfull({
     required this.user,
   });
-  final User? user;
+  final UserModel user;
 }
 
 class LoginLoading extends LoginState {

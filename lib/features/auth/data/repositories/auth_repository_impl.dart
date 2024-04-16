@@ -3,7 +3,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import '../../domain/repositories/auth_repository.dart';
+import '../models/user_model.dart';
 import 'users_repository_impl.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -13,7 +15,7 @@ class AuthRepositoryImpl implements AuthRepository {
   static String uid = '';
 
   @override
-  Future<Either<String, User?>> signup({
+  Future<Either<String, UserModel>> signup({
     required String email,
     required String password,
     required String name,
@@ -30,26 +32,34 @@ class AuthRepositoryImpl implements AuthRepository {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(credential.user!.uid)
-          .set({
+          .set(<String, dynamic>{
         'name': name,
         'phone': phone,
         'career': career,
         'studentCode': studentCode,
-        'type': 'student'
+        'type': 'student',
+        'email': email,
+        'uid': credential.user!.uid,
+        'myClasses': <String>[],
+        'myTutorClasses': <String>[],
       });
       uid = credential.user!.uid;
       UsersRepositoryImpl userData = UsersRepositoryImpl();
-      await userData.getUser(uid);
-      return Right(credential.user);
+      Map<String, dynamic> rawData =
+          await userData.getUser(uid) ?? <String, dynamic>{};
+      UserModel userModel = UserModel.fromJson(rawData);
+      return Right<String, UserModel>(userModel);
     } catch (e) {
-      return const Left<String, User?>(
-        'No se pudo Crear el usuario, intentelo más tarde',
+      return Left<String, UserModel>(
+        e is FirebaseAuthException
+            ? e.code.tr
+            : 'No se pudo Crear el usuario, intentelo más tarde',
       );
     }
   }
 
   @override
-  Future<Either<String, User?>> login({
+  Future<Either<String, UserModel>> login({
     required String email,
     required String password,
   }) async {
@@ -59,13 +69,38 @@ class AuthRepositoryImpl implements AuthRepository {
         password: password,
       );
       uid = credential.user!.uid;
-      return Right<String, User?>(credential.user);
+      UsersRepositoryImpl userData = UsersRepositoryImpl();
+      Map<String, dynamic> rawData =
+          await userData.getUser(uid) ?? <String, dynamic>{}
+            ..addAll(<String, dynamic>{'email': email});
+      UserModel userModel = UserModel.fromJson(rawData);
+      return Right<String, UserModel>(userModel);
     } catch (e) {
-      return const Left<String, User?>(
-        'No se pudo iniciar sesión, intentelo más tarde',
+      return Left<String, UserModel>(
+        e is FirebaseAuthException
+            ? e.code.tr
+            : 'Estamos teniendo problemas con el inicio de sesión, intentalo más tarde',
       );
     }
   }
 
   String getuid() => uid;
+
+  @override
+  Future<Either<String, dynamic>> forgotPassword({
+    required String email,
+  }) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return const Right<String, dynamic>(
+        'Se envió un correo de recuperación a tu cuenta, espera unos minutos.',
+      );
+    } catch (e) {
+      return Left<String, dynamic>(
+        e is FirebaseAuthException
+            ? e.code.tr
+            : 'Estamos teniendo problemas con el inicio de sesión, intentalo más tarde',
+      );
+    }
+  }
 }

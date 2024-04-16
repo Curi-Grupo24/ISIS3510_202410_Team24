@@ -14,6 +14,7 @@ import '../../../../core/ui/spacing.dart';
 import '../../../../core/ui/typography.dart';
 import '../../../../injection_container.dart';
 import '../../../common_widgets/widgets.dart';
+import '../bloc/forgot_password_bloc/forgot_password_bloc.dart';
 import '../bloc/login_bloc/login_bloc.dart';
 import '../bloc/register_bloc/register_bloc.dart';
 import '../widgets/widgets.dart';

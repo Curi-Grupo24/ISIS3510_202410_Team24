@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../data/models/user_model.dart';
 
 abstract class AuthRepository {
-  Future<Either<String, User?>> signup({
+  Future<Either<String, UserModel>> signup({
     required String email,
     required String password,
     required String name,
@@ -11,8 +12,12 @@ abstract class AuthRepository {
     required String studentCode,
   });
 
-  Future<Either<String, User?>> login({
+  Future<Either<String, UserModel>> login({
     required String email,
     required String password,
+  });
+
+  Future<Either<String, dynamic>> forgotPassword({
+    required String email,
   });
 }

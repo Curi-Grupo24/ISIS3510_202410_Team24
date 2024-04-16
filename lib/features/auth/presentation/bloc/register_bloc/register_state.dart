@@ -17,7 +17,7 @@ class RegisterSuccessfull extends RegisterState {
   const RegisterSuccessfull({
     required this.user,
   });
-  final User? user;
+  final UserModel user;
 }
 
 class RegisterLoading extends RegisterState {

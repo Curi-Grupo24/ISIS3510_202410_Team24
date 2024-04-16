@@ -12,28 +12,22 @@ class DashboardHome extends StatefulWidget {
 class _DashboardHomeState extends State<DashboardHome> {
   late List<DashboardTabData> tabs;
   DashboardBloc dashboardBloc = DashboardBloc();
+  MyClassesBloc myClassesBloc = MyClassesBloc();
   String username = '';
 
   @override
-  initState() {
+  void initState() {
     dashboardBloc.add(const GetUserInfo());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> sortedCards1 = <dynamic>[
-      2,
-      3,
-      5,
-    ];
-    List<dynamic> sortedCards2 = <dynamic>[
-      2,
-      3,
-    ];
+    double paddingBottom = MediaQuery.of(context).padding.bottom;
     double aproxCardWidth = MediaQuery.of(context).size.width / 2.8;
     double textScaleFactor =
         math.max(MediaQuery.textScaleFactorOf(context), 1.1);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -86,115 +80,192 @@ class _DashboardHomeState extends State<DashboardHome> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: BlocBuilder<DashboardBloc, DashboardState>(
-          bloc: dashboardBloc,
-          builder: (BuildContext context, DashboardState state) {
-            if (state is DashboardLoading) {
-              return SpinKitRotatingCircle(
-                color: Colors.sunset[20],
-                size: 50,
-              );
-            } else if(state is DashboardSuccessfull) 
-            {
-              
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const SizedBox(
-                    width: double.infinity,
-                  ),
-                  Text(
-                    state.name,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.gray[70],
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.fromLTRB(
+          UILayout.medium,
+          UILayout.medium,
+          UILayout.medium,
+          UILayout.medium + paddingBottom,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Icon(
+                      Icons.home,
+                      color: Colors.sunset[50],
                     ),
                   ),
-                  Spacing.spacingV12,
-                  const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: CalendarHomeDashboard(),
-                  ),
-                  HorizontalCardScroll(
-                    title: 'Mis materias',
-                    onTapViewMore: () {
-                      Get.toNamed('/classes_list');
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.toNamed('/chats_home');
                     },
-                    sortedCards: sortedCards1,
-                    aproxCardWidth: aproxCardWidth,
-                    textScaleFactor: textScaleFactor,
-                  ),
-                  Spacing.spacingV12,
-                  HorizontalCardScroll(
-                    title: 'En las  que soy monitor',
-                    onTapViewMore: () {
-                      Get.toNamed('/classes_list');
-                    },
-                    sortedCards: sortedCards2,
-                    aproxCardWidth: aproxCardWidth,
-                    textScaleFactor: textScaleFactor,
-                  ),
-                  Spacing.spacingV24,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.sunset[5],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'Consejos',
-                              style: TextStyle(
-                                color: Colors.gray[90],
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: double.infinity,
-                            ),
-                            Text(
-                              'Revisa consejos para la universidad :D',
-                              style: TextStyle(
-                                color: Colors.gray[80],
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Text(
-                              'Disponible proximamente',
-                              style: TextStyle(
-                                color: Colors.gray[70],
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Spacing.spacingV24,
-                          ],
-                        ),
-                      ),
+                    child: Icon(
+                      Icons.chat_bubble_rounded,
+                      color: Colors.gray[50],
                     ),
                   ),
-                  Spacing.spacingV24,
-                  SunsetButton(
-                    text: 'Enroll',
-                    onPressed: () {
-                      Get.toNamed('/enroll_monitor_home');
-                    },
-                  ),
-                ],
-              );
-            }else{
-              return SpinKitRotatingCircle(
-                color: Colors.sunset[20],
-                size: 50,
-              );
-            }
-          },
+                ),
+              ],
+            ),
+            Spacing.spacingV8,
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: BlocBuilder<DashboardBloc, DashboardState>(
+            bloc: dashboardBloc,
+            builder: (BuildContext context, DashboardState state) {
+              if (state is DashboardLoading) {
+                return SpinKitRotatingCircle(
+                  color: Colors.sunset[20],
+                  size: 50,
+                );
+              } else if (state is DashboardSuccessfull) {
+                myClassesBloc.add(const GetMyClasses());
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    const SizedBox(
+                      width: double.infinity,
+                    ),
+                    Text(
+                      'Hola, ${state.user.name}!',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.gray[70],
+                      ),
+                    ),
+                    Spacing.spacingV12,
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.toNamed('/schedule_home');
+                        },
+                        child: const CalendarHomeDashboard(),
+                      ),
+                    ),
+                    if (state.user.myClasses.isEmpty)
+                      SunsetCardFollow(
+                        description:
+                            '''Podrás empezar a buscar monitores en las clases que necesites''',
+                        title: '''Añade las materias que estás viendo!''',
+                        onPressed: () {
+                          Get.toNamed('/add_class_view');
+                        },
+                      ),
+                    if (state.user.myClasses.isNotEmpty)
+                      BlocBuilder<MyClassesBloc, MyClassesState>(
+                        bloc: myClassesBloc,
+                        builder:
+                            (BuildContext context, MyClassesState state) {
+                          if (state is GetMyClassesLoading) {
+                            return const ShimmerDashboardClasses();
+                          }
+                          if (state is GetMyClassesError) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: Colors.gray[20],
+                                  borderRadius: radius8,
+                                ),
+                                child: Column(
+                                  children: <Widget>[
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                      ),
+                                      child: Text(
+                                        '''${state.errorMessage}, esperamos pronto poder mostrarte tus clases :D''',
+                                        style:
+                                            TextStyle(color: Colors.gray[80]),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.face_3,
+                                      color: Colors.gray[80],
+                                    ),
+                                    const SizedBox(
+                                      width: double.infinity,
+                                      height: 8,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                          if (state is GetMyClassesSuccessfull) {
+                            return HorizontalCardScroll(
+                              title: 'Mis materias',
+                              onTapViewMore: () {
+                                Get.toNamed('/classes_list', arguments: state.listClasses);
+                              },
+                              sortedCards: state.listClasses,
+                              aproxCardWidth: aproxCardWidth,
+                              textScaleFactor: textScaleFactor,
+                            );
+                          } else {
+                            return const ShimmerDashboardClasses();
+                          }
+                        },
+                      ),
+                    Spacing.spacingV12,
+                    if (state.user.type != 'student')
+                      HorizontalCardScroll(
+                        title: 'En las  que soy monitor',
+                        onTapViewMore: () {
+                          Get.toNamed('/classes_list');
+                        },
+                        sortedCards: const <ClassModel>[],
+                        aproxCardWidth: aproxCardWidth,
+                        textScaleFactor: textScaleFactor,
+                      ),
+                    Spacing.spacingV12,
+                    if (state.user.type == 'student')
+                      SunsetCardFollow(
+                        description:
+                            '''Inscribete como monitor de la materias que te hayan gustado''',
+                        title: 'Apuntate para monitor!',
+                        onPressed: () {
+                          Get.toNamed('/enroll_monitor_home');
+                        },
+                        backgroundColor: state.user.myClasses.isEmpty
+                            ? Colors.ocean[5]
+                            : const Color(0xFFFFEFBB),
+                        buttonColor: state.user.myClasses.isEmpty
+                            ? Colors.ocean[50]
+                            : null,
+                      ),
+                    Spacing.spacingV24,
+                    Spacing.spacingV24,
+                  ],
+                );
+              } else {
+                return SpinKitRotatingCircle(
+                  color: Colors.sunset[20],
+                  size: 50,
+                );
+              }
+            },
+          ),
         ),
       ),
     );

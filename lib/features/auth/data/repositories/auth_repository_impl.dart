@@ -40,6 +40,8 @@ class AuthRepositoryImpl implements AuthRepository {
         'type': 'student',
         'email': email,
         'uid': credential.user!.uid,
+        'myClasses': <String>[],
+        'myTutorClasses': <String>[],
       });
       uid = credential.user!.uid;
       UsersRepositoryImpl userData = UsersRepositoryImpl();

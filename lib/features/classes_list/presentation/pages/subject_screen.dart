@@ -12,18 +12,19 @@ class _SubjectScreenState extends State<SubjectScreen> {
   List<String> possibleCarreers = <String>[];
   List<String> possibleTypes = <String>[];
   List<String> possibleSemesters = <String>[];
-  List<Map<String, dynamic>> classListFiltered = <Map<String, dynamic>>[];
+  List<ClassModel> classListFiltered = <ClassModel>[];
   String filterCarreer = '';
   String filterType = '';
   String filterSemester = '';
   TextEditingController? controller = TextEditingController();
   bool deletingClasses = false;
+  List <ClassModel>classList= <ClassModel>[];
 
   void updatePossibleCarreers() {
     List<String> updatedList = <String>[];
-    for (Map<String, dynamic> element in classList) {
-      if (!updatedList.contains(element['career'])) {
-        updatedList.add(element['career']);
+    for (ClassModel element in classList) {
+      if (!updatedList.contains(element.career)) {
+        updatedList.add(element.career);
       }
     }
     setState(() {
@@ -33,9 +34,9 @@ class _SubjectScreenState extends State<SubjectScreen> {
 
   void updatePossibleClassType() {
     List<String> updatedList = <String>[];
-    for (Map<String, dynamic> element in classList) {
-      if (element['type'] != null && !updatedList.contains(element['type'])) {
-        updatedList.add(element['type']);
+    for (ClassModel element in classList) {
+      if (element.type != null && !updatedList.contains(element.type)) {
+        updatedList.add(element.type!);
       }
     }
     setState(() {
@@ -45,8 +46,8 @@ class _SubjectScreenState extends State<SubjectScreen> {
 
   void updatePossibleSemester() {
     List<String> updatedList = <String>[];
-    for (Map<String, dynamic> element in classList) {
-      for (String classSemester in element['semester']) {
+    for (ClassModel element in classList) {
+      for (String classSemester in element.semester) {
         if (!updatedList.contains(classSemester)) {
           updatedList.add(classSemester);
         }
@@ -62,7 +63,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
       filterCarreer = text;
       classListFiltered = classListFiltered
           .where(
-            (Map<String, dynamic> eachClass) => eachClass['career'] == text,
+            (ClassModel eachClass) => eachClass.career == text,
           )
           .toList();
     });
@@ -73,7 +74,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
       filterType = text;
       classListFiltered = classListFiltered
           .where(
-            (Map<String, dynamic> eachClass) => eachClass['type'] == text,
+            (ClassModel eachClass) => eachClass.type == text,
           )
           .toList();
     });
@@ -84,8 +85,8 @@ class _SubjectScreenState extends State<SubjectScreen> {
       filterSemester = text;
       classListFiltered = classListFiltered
           .where(
-            (Map<String, dynamic> eachClass) =>
-                eachClass['semester'].contains(text),
+            (ClassModel eachClass) =>
+                eachClass.semester.contains(text),
           )
           .toList();
     });
@@ -104,8 +105,8 @@ class _SubjectScreenState extends State<SubjectScreen> {
       if ((controller?.text.isNotEmpty ?? false) && value.isNotEmpty) {
         classListFiltered = classListFiltered
             .where(
-              (Map<String, dynamic> eachClass) =>
-                  eachClass['className'].toLowerCase().contains(
+              (ClassModel eachClass) =>
+                  eachClass.className.toLowerCase().contains(
                         value.toLowerCase(),
                       ),
             )
@@ -183,6 +184,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
     filterCarreer = 'Carrera';
     filterType = 'Tipo';
     filterSemester = 'Semestre';
+    classList = Get.arguments;
     classListFiltered = classList;
     updatePossibleCarreers();
     updatePossibleClassType();
@@ -343,15 +345,15 @@ class _SubjectScreenState extends State<SubjectScreen> {
               Column(
                 children: <Widget>[
                   ...classListFiltered.map(
-                    (Map<String, dynamic> eachClass) => SubjectCard(
-                      subjectTitle: eachClass['className'],
-                      profesor: eachClass['career'],
-                      type: eachClass['type'],
-                      image: eachClass['image'],
+                    (ClassModel eachClass) => SubjectCard(
+                      subjectTitle: eachClass.className,
+                      profesor: eachClass.career,
+                      type: eachClass.type,
+                      image: eachClass.image,
                       time:
-                          '''${eachClass['semester'].length > 1 ? 'Semestre mixto: ' : ''}${eachClass['semester'].length > 1 ? semestersNumbers(
-                              eachClass['semester'],
-                            ) : eachClass['semester'][0]}''',
+                          '''${eachClass.semester.length > 1 ? 'Semestre mixto: ' : ''}${eachClass.semester.length > 1 ? semestersNumbers(
+                              eachClass.semester,
+                            ) : eachClass.semester[0]}''',
                       onTap:
                       deletingClasses?
                        () async {
@@ -367,7 +369,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                 ),
                                 child: AddClassesModal(
                                   deletingClasses: true,
-                                  className: eachClass['className'],
+                                  className: eachClass.className,
                                   onPressedAccept: () {
                                     //
                                     Get.back();
@@ -384,7 +386,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                         Get.toNamed(
                           '/class_dashboard',
                           parameters: <String, String>{
-                            'className': eachClass['className'],
+                            'className': eachClass.className,
                           },
                         );
                       },
@@ -504,44 +506,4 @@ class _SubjectScreenState extends State<SubjectScreen> {
           ],
         ),
       );
-
-  List<Map<String, dynamic>> classList = <Map<String, dynamic>>[
-    <String, dynamic>{
-      'className': 'Probabilidad & Estadistica 1',
-      'career': 'Ingeniería industrial',
-      'image': 'assets/images/image_asset1.png',
-      'semester': <String>[
-        'Segundo Semestre',
-        'Tercer Semestre',
-        'Cuarto Semestre',
-      ],
-    },
-    <String, dynamic>{
-      'className': 'Analisis de decisión e inversión',
-      'career': 'Ingeniería industrial',
-      'image': 'assets/images/image_asset2.png',
-      'semester': <String>[
-        'Segundo Semestre',
-        'Tercer Semestre',
-        'Cuarto Semestre',
-      ],
-    },
-    <String, dynamic>{
-      'className': 'Diseño y analisis de algoritmos',
-      'career': 'Ingeniería de sistemas',
-      'image': 'assets/images/image_asset4.png',
-      'semester': <String>[
-        'Cuarto Semestre',
-      ],
-    },
-    <String, dynamic>{
-      'className': 'El ciclo de Macondo',
-      'career': 'Literatura',
-      'image': 'assets/images/image_asset6.png',
-      'type': 'Tipo E',
-      'semester': <String>[
-        'Cuarto Semestre',
-      ],
-    },
-  ];
 }

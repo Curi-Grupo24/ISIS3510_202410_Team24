@@ -12,6 +12,7 @@ class DashboardHome extends StatefulWidget {
 class _DashboardHomeState extends State<DashboardHome> {
   late List<DashboardTabData> tabs;
   DashboardBloc dashboardBloc = DashboardBloc();
+  MyClassesBloc myClassesBloc = MyClassesBloc();
   String username = '';
 
   @override
@@ -23,34 +24,10 @@ class _DashboardHomeState extends State<DashboardHome> {
   @override
   Widget build(BuildContext context) {
     double paddingBottom = MediaQuery.of(context).padding.bottom;
-    List<dynamic> sortedCards1 = <dynamic>[
-      <String, dynamic>{
-        'name': 'Anadec',
-        'image': 'assets/images/image_asset1.png',
-      },
-      <String, dynamic>{
-        'name': 'Proba',
-        'image': 'assets/images/image_asset2.png',
-      },
-      <String, dynamic>{
-        'name': 'Inglés',
-        'image': 'assets/images/image_asset4.png',
-      },
-    ];
-    List<dynamic> sortedCards2 = <dynamic>[
-      <String, dynamic>{
-        'name': 'IP',
-        'image': 'assets/images/image_asset4.png',
-      },
-      <String, dynamic>{
-        'name': 'EDA',
-        'image': 'assets/images/image_asset7.png',
-      },
-    ];
-
     double aproxCardWidth = MediaQuery.of(context).size.width / 2.8;
     double textScaleFactor =
         math.max(MediaQuery.textScaleFactorOf(context), 1.1);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -155,6 +132,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                   size: 50,
                 );
               } else if (state is DashboardSuccessfull) {
+                myClassesBloc.add(const GetMyClasses());
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -188,14 +166,66 @@ class _DashboardHomeState extends State<DashboardHome> {
                         },
                       ),
                     if (state.user.myClasses.isNotEmpty)
-                      HorizontalCardScroll(
-                        title: 'Mis materias',
-                        onTapViewMore: () {
-                          Get.toNamed('/classes_list');
+                      BlocBuilder<MyClassesBloc, MyClassesState>(
+                        bloc: myClassesBloc,
+                        builder:
+                            (BuildContext context, MyClassesState state) {
+                          if (state is GetMyClassesLoading) {
+                            return const ShimmerDashboardClasses();
+                          }
+                          if (state is GetMyClassesError) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: Colors.gray[20],
+                                  borderRadius: radius8,
+                                ),
+                                child: Column(
+                                  children: <Widget>[
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                      ),
+                                      child: Text(
+                                        '''${state.errorMessage}, esperamos pronto poder mostrarte tus clases :D''',
+                                        style:
+                                            TextStyle(color: Colors.gray[80]),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.face_3,
+                                      color: Colors.gray[80],
+                                    ),
+                                    const SizedBox(
+                                      width: double.infinity,
+                                      height: 8,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                          if (state is GetMyClassesSuccessfull) {
+                            return HorizontalCardScroll(
+                              title: 'Mis materias',
+                              onTapViewMore: () {
+                                Get.toNamed('/classes_list', arguments: state.listClasses);
+                              },
+                              sortedCards: state.listClasses,
+                              aproxCardWidth: aproxCardWidth,
+                              textScaleFactor: textScaleFactor,
+                            );
+                          } else {
+                            return const ShimmerDashboardClasses();
+                          }
                         },
-                        sortedCards: sortedCards1,
-                        aproxCardWidth: aproxCardWidth,
-                        textScaleFactor: textScaleFactor,
                       ),
                     Spacing.spacingV12,
                     if (state.user.type != 'student')
@@ -204,7 +234,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                         onTapViewMore: () {
                           Get.toNamed('/classes_list');
                         },
-                        sortedCards: sortedCards2,
+                        sortedCards: const <ClassModel>[],
                         aproxCardWidth: aproxCardWidth,
                         textScaleFactor: textScaleFactor,
                       ),
@@ -225,50 +255,6 @@ class _DashboardHomeState extends State<DashboardHome> {
                             : null,
                       ),
                     Spacing.spacingV24,
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
-                    //   child: DecoratedBox(
-                    //     decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(8),
-                    //       color: Colors.sunset[5],
-                    //     ),
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.symmetric(horizontal: 
-                    // 16),
-                    //       child: Column(
-                    //         mainAxisAlignment: MainAxisAlignment.start,
-                    //         crossAxisAlignment: CrossAxisAlignment.start,
-                    //         children: <Widget>[
-                    //           Text(
-                    //             'Consejos',
-                    //             style: TextStyle(
-                    //               color: Colors.gray[90],
-                    //               fontWeight: FontWeight.bold,
-                    //             ),
-                    //           ),
-                    //           const SizedBox(
-                    //             width: double.infinity,
-                    //           ),
-                    //           Text(
-                    //             'Revisa consejos para la universidad :D',
-                    //             style: TextStyle(
-                    //               color: Colors.gray[70],
-                    //               fontWeight: FontWeight.w400,
-                    //             ),
-                    //           ),
-                    //           Text(
-                    //             'Disponible proximamente',
-                    //             style: TextStyle(
-                    //               color: Colors.gray[70],
-                    //               fontWeight: FontWeight.w400,
-                    //             ),
-                    //           ),
-                    //           Spacing.spacingV24,
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     Spacing.spacingV24,
                   ],
                 );

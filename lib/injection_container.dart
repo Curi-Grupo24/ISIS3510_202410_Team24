@@ -14,10 +14,13 @@ import 'features/classes_list/data/repositories/classes_repository_impl.dart';
 import 'features/classes_list/domain/repositories/classes_repository.dart';
 import 'features/classes_list/domain/usecases/add_class_usecase.dart';
 import 'features/classes_list/domain/usecases/fetch_all_classes_usecase.dart';
+import 'features/classes_list/presentation/bloc/add_class_bloc/add_class_bloc.dart';
 import 'features/dashboard/data/repositories/dashboard_repository_impl.dart';
 import 'features/dashboard/domain/repositories/dashboard_repository.dart';
+import 'features/dashboard/domain/usecases/get_my_classes.dart';
 import 'features/dashboard/domain/usecases/get_user_info.dart';
 import 'features/dashboard/presentation/bloc/dashboard_bloc/dashboard_bloc.dart';
+import 'features/dashboard/presentation/bloc/my_classes/my_classes_bloc.dart';
 import 'features/profile_user/data/respositories/profile_repository_impl.dart';
 import 'features/profile_user/domain/repositories/profile_repository.dart';
 import 'features/profile_user/domain/usecases/get_user_info.dart';
@@ -44,6 +47,12 @@ void init() {
   sl.registerLazySingleton<ForgotPasswordBloc>(
     () => ForgotPasswordBloc(),
   );
+  sl.registerLazySingleton<MyClassesBloc>(
+    () => MyClassesBloc(),
+  );
+  sl.registerLazySingleton<AddClassBloc>(
+    () => AddClassBloc(),
+  );
 
   //Use Cases
   sl.registerLazySingleton(
@@ -66,6 +75,9 @@ void init() {
   );
   sl.registerLazySingleton(
     () => AddClassUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton(
+    () => GetMyClassesUseCase(repository: sl()),
   );
 
   //Repositories

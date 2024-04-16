@@ -4,7 +4,7 @@ import '../../data/models/class_model.dart';
 
 abstract class ClassRepository {
 
-  Future<String> addClass(String uid, Map<String, dynamic> addedclass);
+  Future<Either<String, String>> addClass(ClassModel addedclass);
   Future<Either<String, Map<String, dynamic>?>> getMyClasess(String uid);
   Future<String> updateClasess(
     String uid,

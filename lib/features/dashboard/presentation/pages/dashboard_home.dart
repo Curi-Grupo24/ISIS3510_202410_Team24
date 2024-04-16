@@ -178,15 +178,25 @@ class _DashboardHomeState extends State<DashboardHome> {
                         child: const CalendarHomeDashboard(),
                       ),
                     ),
-                    HorizontalCardScroll(
-                      title: 'Mis materias',
-                      onTapViewMore: () {
-                        Get.toNamed('/classes_list');
-                      },
-                      sortedCards: sortedCards1,
-                      aproxCardWidth: aproxCardWidth,
-                      textScaleFactor: textScaleFactor,
-                    ),
+                    if (state.user.myClasses.isEmpty)
+                      SunsetCardFollow(
+                        description:
+                            '''Podrás empezar a buscar monitores en las clases que necesites''',
+                        title: '''Añade las materias que estás viendo!''',
+                        onPressed: () {
+                          Get.toNamed('/add_class_view');
+                        },
+                      ),
+                    if (state.user.myClasses.isNotEmpty)
+                      HorizontalCardScroll(
+                        title: 'Mis materias',
+                        onTapViewMore: () {
+                          Get.toNamed('/classes_list');
+                        },
+                        sortedCards: sortedCards1,
+                        aproxCardWidth: aproxCardWidth,
+                        textScaleFactor: textScaleFactor,
+                      ),
                     Spacing.spacingV12,
                     if (state.user.type != 'student')
                       HorizontalCardScroll(
@@ -198,7 +208,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                         aproxCardWidth: aproxCardWidth,
                         textScaleFactor: textScaleFactor,
                       ),
-                    Spacing.spacingV24,
+                    Spacing.spacingV12,
                     if (state.user.type == 'student')
                       SunsetCardFollow(
                         description:
@@ -207,51 +217,58 @@ class _DashboardHomeState extends State<DashboardHome> {
                         onPressed: () {
                           Get.toNamed('/enroll_monitor_home');
                         },
+                        backgroundColor: state.user.myClasses.isEmpty
+                            ? Colors.ocean[5]
+                            : const Color(0xFFFFEFBB),
+                        buttonColor: state.user.myClasses.isEmpty
+                            ? Colors.ocean[50]
+                            : null,
                       ),
                     Spacing.spacingV24,
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.sunset[5],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                'Consejos',
-                                style: TextStyle(
-                                  color: Colors.gray[90],
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: double.infinity,
-                              ),
-                              Text(
-                                'Revisa consejos para la universidad :D',
-                                style: TextStyle(
-                                  color: Colors.gray[70],
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Text(
-                                'Disponible proximamente',
-                                style: TextStyle(
-                                  color: Colors.gray[70],
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Spacing.spacingV24,
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                    //   child: DecoratedBox(
+                    //     decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(8),
+                    //       color: Colors.sunset[5],
+                    //     ),
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.symmetric(horizontal: 
+                    // 16),
+                    //       child: Column(
+                    //         mainAxisAlignment: MainAxisAlignment.start,
+                    //         crossAxisAlignment: CrossAxisAlignment.start,
+                    //         children: <Widget>[
+                    //           Text(
+                    //             'Consejos',
+                    //             style: TextStyle(
+                    //               color: Colors.gray[90],
+                    //               fontWeight: FontWeight.bold,
+                    //             ),
+                    //           ),
+                    //           const SizedBox(
+                    //             width: double.infinity,
+                    //           ),
+                    //           Text(
+                    //             'Revisa consejos para la universidad :D',
+                    //             style: TextStyle(
+                    //               color: Colors.gray[70],
+                    //               fontWeight: FontWeight.w400,
+                    //             ),
+                    //           ),
+                    //           Text(
+                    //             'Disponible proximamente',
+                    //             style: TextStyle(
+                    //               color: Colors.gray[70],
+                    //               fontWeight: FontWeight.w400,
+                    //             ),
+                    //           ),
+                    //           Spacing.spacingV24,
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Spacing.spacingV24,
                   ],
                 );

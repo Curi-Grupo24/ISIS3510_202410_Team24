@@ -17,8 +17,11 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
   String filterType = '';
   String filterSemester = '';
   TextEditingController? controller = TextEditingController();
-  AddSubjectBloc addClassBloc = AddSubjectBloc();
+  FetchSubjectBloc fetchClassBloc = FetchSubjectBloc();
+  AddClassBloc addClassBloc = AddClassBloc();
   List<ClassModel> classList = <ClassModel>[];
+  String responseToadd = '';
+  String errorResponse = '';
   int count = 0;
 
   void updatePossibleCarreers() {
@@ -186,7 +189,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
     filterCarreer = 'Carrera';
     filterType = 'Tipo';
     filterSemester = 'Semestre';
-    addClassBloc.add(const FetchAllClases());
+    fetchClassBloc.add(const FetchAllClases());
     super.initState();
   }
 
@@ -212,9 +215,9 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
             ),
           ),
         ),
-        body: BlocListener<AddSubjectBloc, AddSubjectState>(
-          bloc: addClassBloc,
-          listener: (BuildContext context, AddSubjectState state) {
+        body: BlocListener<FetchSubjectBloc, FetchSubjectState>(
+          bloc: fetchClassBloc,
+          listener: (BuildContext context, FetchSubjectState state) {
             if (state is FetchAllClasesSuccessful) {
               setState(() {
                 classList = state.classesList;
@@ -228,10 +231,10 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
               updatePossibleSemester();
             }
           },
-          child: BlocBuilder<AddSubjectBloc, AddSubjectState>(
-            bloc: addClassBloc,
-            builder: (BuildContext context, AddSubjectState state) {
-              if (state is AddSubjectError) {
+          child: BlocBuilder<FetchSubjectBloc, FetchSubjectState>(
+            bloc: fetchClassBloc,
+            builder: (BuildContext context, FetchSubjectState state) {
+              if (state is FetchClassError) {
                 return Column(
                   children: <Widget>[
                     WarningMessage(
@@ -243,163 +246,209 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                 );
               }
               if (state is FetchAllClasesSuccessful) {
-                // classListFiltered = classList;
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SearchInput(
-                        hintText: 'Name',
-                        controller: controller,
-                        onChangedController: (String value) {
-                          updateFilterDef();
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: Text(
-                          'Filtrar por',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.gray[90],
+                return BlocListener<AddClassBloc, AddClassState>(
+                  bloc: addClassBloc,
+                  listener: (BuildContext context, AddClassState state) async {
+                    if (state is AddSubjectLoading) {
+                      await showDialog(
+                        context: context,
+                        builder: (BuildContext ctx) => SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          child: SpinKitRotatingCircle(
+                            color: Colors.sunset[20],
+                            size: 50,
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 8,
-                          top: 8,
-                          bottom: 16,
+                      );
+                    }
+                    if (state is AddSubjectError) {
+                      setState(() {
+                      responseToadd ='';
+                      errorResponse=state.errorMessage;
+                      });
+                      Get.back();
+                    }
+                    if (state is AddSubjectSuccessfull) {
+                      setState(() {
+                      responseToadd = state.successMessage;
+                      errorResponse='';
+                      });
+                      Get.back();
+                    }
+                  },
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        if (responseToadd.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: WarningMessage(
+                              isSuccess: true,
+                              message: responseToadd,
+                              padding: 0,
+                            ),
+                          ),
+                        if (errorResponse.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: WarningMessage(
+                              isError: true,
+                              message: responseToadd,
+                              padding: 0,
+                            ),
+                          ),
+                        SearchInput(
+                          hintText: 'Name',
+                          controller: controller,
+                          onChangedController: (String value) {
+                            updateFilterDef();
+                          },
                         ),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: <Widget>[
-                              SortButton(
-                                text: filterCarreer,
-                                onPressed: () {
-                                  showModalStatesToFilter(
-                                    possibleCarreers,
-                                    'select_carreer'.tr,
-                                    parentAction: (String value) {
-                                      setState(() {
-                                        filterCarreer = value;
-                                      });
-                                      updateFilterDef();
-                                    },
-                                  );
-                                },
-                                crossEnabled: filterCarreer != 'Carrera',
-                                onCrossTapped: () {
-                                  setState(() {
-                                    filterCarreer = 'Carrera';
-                                    // classListFiltered = classList;
-                                  });
-                                  updateFilterDef();
-                                  // filterListToShow();
-                                },
-                              ),
-                              SortButton(
-                                text: filterType,
-                                onPressed: () {
-                                  showModalStatesToFilter(
-                                    possibleTypes,
-                                    'Escoge el tipo de la materia'.tr,
-                                    parentAction: (String value) {
-                                      setState(() {
-                                        filterType = value;
-                                      });
-                                      updateFilterDef();
-                                    },
-                                    // _updateTypeFilter,
-                                  );
-                                },
-                                crossEnabled: filterType != 'Tipo',
-                                onCrossTapped: () {
-                                  setState(() {
-                                    filterType = 'Tipo';
-                                    // classListFiltered = classList;
-                                  });
-                                  updateFilterDef();
-
-                                  // filterListToShow();
-                                },
-                              ),
-                              SortButton(
-                                text: filterSemester,
-                                onPressed: () {
-                                  showModalStatesToFilter(
-                                    possibleSemesters, 'Escoge el semestre'.tr,
-                                    parentAction: (String value) {
-                                      setState(() {
-                                        filterSemester = value;
-                                      });
-                                      updateFilterDef();
-                                    },
-                                    // _updateSemesterFilter,
-                                  );
-                                },
-                                crossEnabled: filterSemester != 'Semestre',
-                                onCrossTapped: () {
-                                  setState(() {
-                                    filterSemester = 'Semestre';
-                                  });
-                                  updateFilterDef();
-                                },
-                              ),
-                            ],
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Text(
+                            'Filtrar por',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.gray[90],
+                            ),
                           ),
                         ),
-                      ),
-                      Column(
-                        children: <Widget>[
-                          ...classListFiltered.map(
-                            (ClassModel eachClass) => SubjectCard(
-                              subjectTitle: eachClass.className,
-                              profesor: eachClass.career,
-                              type: eachClass.type,
-                              image: eachClass.image,
-                              time:
-                                  '''${eachClass.semester.length > 1 ? 'Semestre mixto: ' : ''}${eachClass.semester.length > 1 ? semestersNumbers(
-                                      eachClass.semester,
-                                    ) : eachClass.semester[0]}''',
-                              onTap: () async {
-                                await showDialog(
-                                  context: context,
-                                  builder: (BuildContext ctx) => SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.8,
-                                    child: ModalCase(
-                                      'Añadir materia',
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 8,
+                            top: 8,
+                            bottom: 16,
+                          ),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: <Widget>[
+                                SortButton(
+                                  text: filterCarreer,
+                                  onPressed: () {
+                                    showModalStatesToFilter(
+                                      possibleCarreers,
+                                      'select_carreer'.tr,
+                                      parentAction: (String value) {
+                                        setState(() {
+                                          filterCarreer = value;
+                                        });
+                                        updateFilterDef();
+                                      },
+                                    );
+                                  },
+                                  crossEnabled: filterCarreer != 'Carrera',
+                                  onCrossTapped: () {
+                                    setState(() {
+                                      filterCarreer = 'Carrera';
+                                    });
+                                    updateFilterDef();
+                                  },
+                                ),
+                                SortButton(
+                                  text: filterType,
+                                  onPressed: () {
+                                    showModalStatesToFilter(
+                                      possibleTypes,
+                                      'Escoge el tipo de la materia'.tr,
+                                      parentAction: (String value) {
+                                        setState(() {
+                                          filterType = value;
+                                        });
+                                        updateFilterDef();
+                                      },
+                                    );
+                                  },
+                                  crossEnabled: filterType != 'Tipo',
+                                  onCrossTapped: () {
+                                    setState(() {
+                                      filterType = 'Tipo';
+                                    });
+                                    updateFilterDef();
+                                  },
+                                ),
+                                SortButton(
+                                  text: filterSemester,
+                                  onPressed: () {
+                                    showModalStatesToFilter(
+                                      possibleSemesters,
+                                      'Escoge el semestre'.tr,
+                                      parentAction: (String value) {
+                                        setState(() {
+                                          filterSemester = value;
+                                        });
+                                        updateFilterDef();
+                                      },
+                                    );
+                                  },
+                                  crossEnabled: filterSemester != 'Semestre',
+                                  onCrossTapped: () {
+                                    setState(() {
+                                      filterSemester = 'Semestre';
+                                    });
+                                    updateFilterDef();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Column(
+                          children: <Widget>[
+                            ...classListFiltered.map(
+                              (ClassModel eachClass) => SubjectCard(
+                                subjectTitle: eachClass.className,
+                                profesor: eachClass.career,
+                                type: eachClass.type,
+                                image: eachClass.image,
+                                time:
+                                    '''${eachClass.semester.length > 1 ? 'Semestre mixto: ' : ''}${eachClass.semester.length > 1 ? semestersNumbers(
+                                        eachClass.semester,
+                                      ) : eachClass.semester[0]}''',
+                                onTap: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (BuildContext ctx) => SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      child: ModalCase(
+                                        'Añadir materia',
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          child: AddClassesModal(
+                                            className: eachClass.className,
+                                            onPressedAccept: () {
+                                              addClassBloc.add(
+                                                AddAClass(
+                                                  classToAdd: eachClass,
+                                                ),
+                                              );
+                                              Get.back();
+                                            },
+                                          ),
                                         ),
-                                        child: AddClassesModal(
-                                          className: eachClass.className,
-                                          onPressedAccept: () {
-                                            //
-                                            Get.back();
-                                          },
-                                        ),
+                                        height: 200,
                                       ),
-                                      height: 200,
                                     ),
-                                  ),
-                                );
-                              },
-                              isForAdding: true,
+                                  );
+                                },
+                                isForAdding: true,
+                              ),
                             ),
-                          ),
-                          if (classListFiltered.isEmpty)
-                            const WarningMessage(
-                              message: 'No hay clases para este filtro',
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: 56),
-                    ],
+                            if (classListFiltered.isEmpty)
+                              const WarningMessage(
+                                message: 'No hay clases para este filtro',
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: 56),
+                      ],
+                    ),
                   ),
                 );
               } else {

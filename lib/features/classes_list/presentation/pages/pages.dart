@@ -11,7 +11,8 @@ import '../../../../core/ui/layout.dart';
 import '../../../common_widgets/widgets.dart';
 import '../../../profile_user/presentation/widgets/modal_case.dart';
 import '../../data/models/class_model.dart';
-import '../bloc/add_subject/add_subject_bloc.dart';
+import '../bloc/add_class_bloc/add_class_bloc.dart';
+import '../bloc/fetch_subject/fetch_subject_bloc.dart';
 import '../widgets/widgets.dart';
 
 part './subject_screen.dart';

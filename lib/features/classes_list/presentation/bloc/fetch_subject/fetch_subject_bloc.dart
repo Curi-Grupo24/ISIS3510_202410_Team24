@@ -5,20 +5,20 @@ import '../../../../../injection_container.dart';
 import '../../../data/models/class_model.dart';
 import '../../../domain/usecases/fetch_all_classes_usecase.dart';
 
-part 'add_subject_event.dart';
-part 'add_subject_state.dart';
+part 'fetch_subject_event.dart';
+part 'fetch_subject_state.dart';
 
-class AddSubjectBloc extends Bloc<AddSubjectEvent, AddSubjectState> {
-  AddSubjectBloc() : super(AddSubjectInitial()) {
+class FetchSubjectBloc extends Bloc<FetchSubjectEvent, FetchSubjectState> {
+  FetchSubjectBloc() : super(FetchClassInitial()) {
     on<FetchAllClases>(
-        (AddSubjectEvent event, Emitter<AddSubjectState> emit) async {
-      emit(const AddSubjectLoading());
+        (FetchSubjectEvent event, Emitter<FetchSubjectState> emit) async {
+      emit(const FetchClassLoading());
       FetchAllClassesUseCase usecase = sl<FetchAllClassesUseCase>();
 
       await usecase().then((dynamic value) {
         value.fold(
           (String l) => emit(
-            AddSubjectError(
+            FetchClassError(
               errorMessage: l,
             ),
           ),

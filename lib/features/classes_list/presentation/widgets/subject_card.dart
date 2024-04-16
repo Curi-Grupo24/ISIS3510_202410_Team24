@@ -9,7 +9,7 @@ class SubjectCard extends StatefulWidget {
     this.type,
     this.image = 'assets/images/image_asset1.png',
     this.isForAdding = false,
-    this.isForDeleting=false,
+    this.isForDeleting = false,
     super.key,
   });
 
@@ -84,7 +84,8 @@ class _SubjectCardState extends State<SubjectCard> {
                                   ),
                                 ),
                                 const SizedBox(height: UILayout.medium),
-                                if (widget.type != null)
+                                if (widget.type != null &&
+                                    widget.type!.isNotEmpty)
                                   Text(
                                     widget.type!,
                                     style: const TextStyle(
@@ -133,7 +134,7 @@ class _SubjectCardState extends State<SubjectCard> {
                       child: FloatingActionButton(
                         heroTag: widget.subjectTitle,
                         elevation: 0,
-                        backgroundColor:  Colors.sunset[40],
+                        backgroundColor: Colors.sunset[40],
                         onPressed: widget.onTap,
                         child: const Icon(Icons.delete),
                       ),

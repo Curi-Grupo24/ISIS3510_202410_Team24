@@ -12,17 +12,20 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
   List<String> possibleCarreers = <String>[];
   List<String> possibleTypes = <String>[];
   List<String> possibleSemesters = <String>[];
-  List<Map<String, dynamic>> classListFiltered = <Map<String, dynamic>>[];
+  List<ClassModel> classListFiltered = <ClassModel>[];
   String filterCarreer = '';
   String filterType = '';
   String filterSemester = '';
   TextEditingController? controller = TextEditingController();
+  AddSubjectBloc addClassBloc = AddSubjectBloc();
+  List<ClassModel> classList = <ClassModel>[];
+  int count = 0;
 
   void updatePossibleCarreers() {
     List<String> updatedList = <String>[];
-    for (Map<String, dynamic> element in classList) {
-      if (!updatedList.contains(element['career'])) {
-        updatedList.add(element['career']);
+    for (ClassModel element in classList) {
+      if (!updatedList.contains(element.career)) {
+        updatedList.add(element.career);
       }
     }
     setState(() {
@@ -32,9 +35,11 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
 
   void updatePossibleClassType() {
     List<String> updatedList = <String>[];
-    for (Map<String, dynamic> element in classList) {
-      if (element['type'] != null && !updatedList.contains(element['type'])) {
-        updatedList.add(element['type']);
+    for (ClassModel element in classList) {
+      if (element.type != null &&
+          element.type!.isNotEmpty &&
+          !updatedList.contains(element.type)) {
+        updatedList.add(element.type!);
       }
     }
     setState(() {
@@ -44,8 +49,8 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
 
   void updatePossibleSemester() {
     List<String> updatedList = <String>[];
-    for (Map<String, dynamic> element in classList) {
-      for (String classSemester in element['semester']) {
+    for (ClassModel element in classList) {
+      for (String classSemester in element.semester) {
         if (!updatedList.contains(classSemester)) {
           updatedList.add(classSemester);
         }
@@ -61,7 +66,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
       filterCarreer = text;
       classListFiltered = classListFiltered
           .where(
-            (Map<String, dynamic> eachClass) => eachClass['career'] == text,
+            (ClassModel eachClass) => eachClass.career == text,
           )
           .toList();
     });
@@ -72,7 +77,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
       filterType = text;
       classListFiltered = classListFiltered
           .where(
-            (Map<String, dynamic> eachClass) => eachClass['type'] == text,
+            (ClassModel eachClass) => eachClass.type == text,
           )
           .toList();
     });
@@ -83,8 +88,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
       filterSemester = text;
       classListFiltered = classListFiltered
           .where(
-            (Map<String, dynamic> eachClass) =>
-                eachClass['semester'].contains(text),
+            (ClassModel eachClass) => eachClass.semester.contains(text),
           )
           .toList();
     });
@@ -103,8 +107,8 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
       if ((controller?.text.isNotEmpty ?? false) && value.isNotEmpty) {
         classListFiltered = classListFiltered
             .where(
-              (Map<String, dynamic> eachClass) =>
-                  eachClass['className'].toLowerCase().contains(
+              (ClassModel eachClass) =>
+                  eachClass.className.toLowerCase().contains(
                         value.toLowerCase(),
                       ),
             )
@@ -182,10 +186,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
     filterCarreer = 'Carrera';
     filterType = 'Tipo';
     filterSemester = 'Semestre';
-    classListFiltered = classList;
-    updatePossibleCarreers();
-    updatePossibleClassType();
-    updatePossibleSemester();
+    addClassBloc.add(const FetchAllClases());
     super.initState();
   }
 
@@ -211,161 +212,203 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SearchInput(
-                hintText: 'Name',
-                controller: controller,
-                onChangedController: (String value) {
-                  updateFilterDef();
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Text(
-                  'Filtrar por',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.gray[90],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 8,
-                  top: 8,
-                  bottom: 16,
-                ),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
+        body: BlocListener<AddSubjectBloc, AddSubjectState>(
+          bloc: addClassBloc,
+          listener: (BuildContext context, AddSubjectState state) {
+            if (state is FetchAllClasesSuccessful) {
+              setState(() {
+                classList = state.classesList;
+                if (count < 1) {
+                  classListFiltered = classList;
+                  count++;
+                }
+              });
+              updatePossibleCarreers();
+              updatePossibleClassType();
+              updatePossibleSemester();
+            }
+          },
+          child: BlocBuilder<AddSubjectBloc, AddSubjectState>(
+            bloc: addClassBloc,
+            builder: (BuildContext context, AddSubjectState state) {
+              if (state is AddSubjectError) {
+                return Column(
+                  children: <Widget>[
+                    WarningMessage(
+                      isError: true,
+                      message: state.errorMessage,
+                      padding: 0,
+                    ),
+                  ],
+                );
+              }
+              if (state is FetchAllClasesSuccessful) {
+                // classListFiltered = classList;
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SortButton(
-                        text: filterCarreer,
-                        onPressed: () {
-                          showModalStatesToFilter(
-                            possibleCarreers, 'select_carreer'.tr,
-                            parentAction: (String value) {
-                              setState(() {
-                                filterCarreer = value;
-                              });
-                              updateFilterDef();
-                            },
-                            //  _updateCarreerFilter,
-                          );
-                        },
-                        crossEnabled: filterCarreer != 'Carrera',
-                        onCrossTapped: () {
-                          setState(() {
-                            filterCarreer = 'Carrera';
-                            // classListFiltered = classList;
-                          });
+                      SearchInput(
+                        hintText: 'Name',
+                        controller: controller,
+                        onChangedController: (String value) {
                           updateFilterDef();
-                          // filterListToShow();
                         },
                       ),
-                      SortButton(
-                        text: filterType,
-                        onPressed: () {
-                          showModalStatesToFilter(
-                            possibleTypes, 'Escoge el tipo de la materia'.tr,
-                            parentAction: (String value) {
-                              setState(() {
-                                filterType = value;
-                              });
-                              updateFilterDef();
-                            },
-                            // _updateTypeFilter,
-                          );
-                        },
-                        crossEnabled: filterType != 'Tipo',
-                        onCrossTapped: () {
-                          setState(() {
-                            filterType = 'Tipo';
-                            // classListFiltered = classList;
-                          });
-                          updateFilterDef();
-                
-                          // filterListToShow();
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Text(
+                          'Filtrar por',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.gray[90],
+                          ),
+                        ),
                       ),
-                      SortButton(
-                        text: filterSemester,
-                        onPressed: () {
-                          showModalStatesToFilter(
-                            possibleSemesters, 'Escoge el semestre'.tr,
-                            parentAction: (String value) {
-                              setState(() {
-                                filterSemester = value;
-                              });
-                              updateFilterDef();
-                            },
-                            // _updateSemesterFilter,
-                          );
-                        },
-                        crossEnabled: filterSemester != 'Semestre',
-                        onCrossTapped: () {
-                          setState(() {
-                            filterSemester = 'Semestre';
-                          });
-                          updateFilterDef();
-                
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Column(
-                children: <Widget>[
-                  ...classListFiltered.map(
-                    (Map<String, dynamic> eachClass) => SubjectCard(
-                      subjectTitle: eachClass['className'],
-                      profesor: eachClass['career'],
-                      type: eachClass['type'],
-                      image: eachClass['image'],
-                      time:
-                          '''${eachClass['semester'].length > 1 ? 'Semestre mixto: ' : ''}${eachClass['semester'].length > 1 ? semestersNumbers(
-                              eachClass['semester'],
-                            ) : eachClass['semester'][0]}''',
-                      onTap: () async {
-                        await showDialog(
-                          context: context,
-                          builder: (BuildContext ctx) => SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            child: ModalCase(
-                              'Añadir materia',
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                ),
-                                child: AddClassesModal(
-                                  className: eachClass['className'],
-                                  onPressedAccept: () {
-                                    //
-                                    Get.back();
-                                  },
-                                ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 8,
+                          top: 8,
+                          bottom: 16,
+                        ),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: <Widget>[
+                              SortButton(
+                                text: filterCarreer,
+                                onPressed: () {
+                                  showModalStatesToFilter(
+                                    possibleCarreers,
+                                    'select_carreer'.tr,
+                                    parentAction: (String value) {
+                                      setState(() {
+                                        filterCarreer = value;
+                                      });
+                                      updateFilterDef();
+                                    },
+                                  );
+                                },
+                                crossEnabled: filterCarreer != 'Carrera',
+                                onCrossTapped: () {
+                                  setState(() {
+                                    filterCarreer = 'Carrera';
+                                    // classListFiltered = classList;
+                                  });
+                                  updateFilterDef();
+                                  // filterListToShow();
+                                },
                               ),
-                              height: 200,
+                              SortButton(
+                                text: filterType,
+                                onPressed: () {
+                                  showModalStatesToFilter(
+                                    possibleTypes,
+                                    'Escoge el tipo de la materia'.tr,
+                                    parentAction: (String value) {
+                                      setState(() {
+                                        filterType = value;
+                                      });
+                                      updateFilterDef();
+                                    },
+                                    // _updateTypeFilter,
+                                  );
+                                },
+                                crossEnabled: filterType != 'Tipo',
+                                onCrossTapped: () {
+                                  setState(() {
+                                    filterType = 'Tipo';
+                                    // classListFiltered = classList;
+                                  });
+                                  updateFilterDef();
+
+                                  // filterListToShow();
+                                },
+                              ),
+                              SortButton(
+                                text: filterSemester,
+                                onPressed: () {
+                                  showModalStatesToFilter(
+                                    possibleSemesters, 'Escoge el semestre'.tr,
+                                    parentAction: (String value) {
+                                      setState(() {
+                                        filterSemester = value;
+                                      });
+                                      updateFilterDef();
+                                    },
+                                    // _updateSemesterFilter,
+                                  );
+                                },
+                                crossEnabled: filterSemester != 'Semestre',
+                                onCrossTapped: () {
+                                  setState(() {
+                                    filterSemester = 'Semestre';
+                                  });
+                                  updateFilterDef();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Column(
+                        children: <Widget>[
+                          ...classListFiltered.map(
+                            (ClassModel eachClass) => SubjectCard(
+                              subjectTitle: eachClass.className,
+                              profesor: eachClass.career,
+                              type: eachClass.type,
+                              image: eachClass.image,
+                              time:
+                                  '''${eachClass.semester.length > 1 ? 'Semestre mixto: ' : ''}${eachClass.semester.length > 1 ? semestersNumbers(
+                                      eachClass.semester,
+                                    ) : eachClass.semester[0]}''',
+                              onTap: () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (BuildContext ctx) => SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    child: ModalCase(
+                                      'Añadir materia',
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                        ),
+                                        child: AddClassesModal(
+                                          className: eachClass.className,
+                                          onPressedAccept: () {
+                                            //
+                                            Get.back();
+                                          },
+                                        ),
+                                      ),
+                                      height: 200,
+                                    ),
+                                  ),
+                                );
+                              },
+                              isForAdding: true,
                             ),
                           ),
-                        );
-                      },
-                      isForAdding: true,
-                    ),
+                          if (classListFiltered.isEmpty)
+                            const WarningMessage(
+                              message: 'No hay clases para este filtro',
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 56),
+                    ],
                   ),
-                  if (classListFiltered.isEmpty)
-                    const WarningMessage(
-                      message: 'No hay clases para este filtro',
-                    ),
-                ],
-              ),
-              const SizedBox(height: 56),
-            ],
+                );
+              } else {
+                return SpinKitRotatingCircle(
+                  color: Colors.sunset[20],
+                  size: 50,
+                );
+              }
+            },
           ),
         ),
       );
@@ -471,53 +514,4 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
           ],
         ),
       );
-
-  List<Map<String, dynamic>> classList = <Map<String, dynamic>>[
-    <String, dynamic>{
-      'className': 'Probabilidad & Estadistica 1',
-      'career': 'Ingeniería industrial',
-      'image': 'assets/images/image_asset1.png',
-      'semester': <String>[
-        'Segundo Semestre',
-        'Tercer Semestre',
-        'Cuarto Semestre',
-      ],
-    },
-    <String, dynamic>{
-      'className': 'Analisis de decisión e inversión',
-      'career': 'Ingeniería industrial',
-      'image': 'assets/images/image_asset2.png',
-      'semester': <String>[
-        'Segundo Semestre',
-        'Tercer Semestre',
-        'Cuarto Semestre',
-      ],
-    },
-    <String, dynamic>{
-      'className': 'Diseño y analisis de algoritmos',
-      'career': 'Ingeniería de sistemas',
-      'image': 'assets/images/image_asset4.png',
-      'semester': <String>[
-        'Cuarto Semestre',
-      ],
-    },
-    <String, dynamic>{
-      'className': 'El ciclo de Macondo',
-      'career': 'Literatura',
-      'image': 'assets/images/image_asset6.png',
-      'type': 'Tipo E',
-      'semester': <String>[
-        'Cuarto Semestre',
-      ],
-    },
-    <String, dynamic>{
-      'className': 'Tecnologías de la información',
-      'career': 'Ingeniería de sistemas',
-      'image': 'assets/images/image_asset6.png',
-      'type': 'Tipo E',
-      'semester': <String>[
-        'Cuarto Semestre',
-      ],
-    },
-  ];
 }

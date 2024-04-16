@@ -12,6 +12,7 @@ import 'features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'features/auth/presentation/bloc/register_bloc/register_bloc.dart';
 import 'features/classes_list/data/repositories/classes_repository_impl.dart';
 import 'features/classes_list/domain/repositories/classes_repository.dart';
+import 'features/classes_list/domain/usecases/fetch_all_classes_usecase.dart';
 import 'features/dashboard/data/repositories/dashboard_repository_impl.dart';
 import 'features/dashboard/domain/repositories/dashboard_repository.dart';
 import 'features/dashboard/domain/usecases/get_user_info.dart';
@@ -58,6 +59,9 @@ void init() {
   );
   sl.registerLazySingleton(
     () => ForgotPasswordUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton(
+    () => FetchAllClassesUseCase(repository: sl()),
   );
 
   //Repositories

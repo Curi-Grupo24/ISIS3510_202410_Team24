@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart' hide Colors;
 import 'package:get/get.dart';
 
@@ -9,8 +10,12 @@ import '../widgets/notification_card.dart';
 class NotificationHome extends StatelessWidget {
   const NotificationHome({super.key});
 
+
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+  RemoteMessage? message = Get.arguments?['message']??RemoteMessage();
+
+    return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white[0],
           elevation: 0,
@@ -35,8 +40,8 @@ class NotificationHome extends StatelessWidget {
           child: Column(
             children: <Widget>[
               CardNotification(
-                title: 'Tu monitoría se acerca!',
-                detail: 'Ten todo listo para la hora de tu monitoría',
+                title: message?.notification?.title?.toString()??'',
+                detail:  message?.notification?.body?.toString()??'',
                 onTap: () {},
               ),
               Spacing.spacingV12,
@@ -56,4 +61,5 @@ class NotificationHome extends StatelessWidget {
           ),
         ),
       );
+  }
 }

@@ -395,7 +395,7 @@ class _ChooseClassToTutorState extends State<ChooseClassToTutor> {
                                           onPressedAccept: () {
                                             Get..back()
                                             ..toNamed(
-                                              '/enroll_questionnaire',
+                                              '/enroll_monitor_home',
                                               arguments: eachClass,
                                             );
                                           },

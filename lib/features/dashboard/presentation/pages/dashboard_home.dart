@@ -302,7 +302,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                             '''Inscribete como monitor de la materias que te hayan gustado''',
                         title: 'Apuntate para monitor!',
                         onPressed: () {
-                          Get.toNamed('/enroll_monitor_home');
+                          Get.toNamed('/choose_class_tutoring');
                         },
                         backgroundColor: state.user.myClasses.isEmpty
                             ? Colors.ocean[5]

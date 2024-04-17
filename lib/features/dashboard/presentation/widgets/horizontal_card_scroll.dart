@@ -93,7 +93,18 @@ class HorizontalCardScroll extends StatelessWidget {
                                       },
                                       arguments: sortedCards[index],
                                     )
-                                  : Get.toNamed('/waiting_confirmation');
+                                  : isTutorAvailableToTutor(sortedCards[index])
+                                      ? Get.toNamed(
+                                          '/class_dashboard',
+                                          parameters: <String, String>{
+                                            'className':
+                                                sortedCards[index].className,
+                                          },
+                                          arguments: sortedCards[index],
+                                        )
+                                      : isOnWaitingArea(sortedCards[index])
+                                          ? Get.toNamed('/waiting_confirmation')
+                                          : Get.toNamed('error_page');
                             },
                           ),
                         ),
@@ -113,4 +124,14 @@ class HorizontalCardScroll extends StatelessWidget {
           ],
         ),
       );
+
+  bool isTutorAvailableToTutor(ClassModel classToCheck) {
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    return classToCheck.availableTutors.contains(userId);
+  }
+
+  bool isOnWaitingArea(ClassModel classToCheck) {
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    return classToCheck.waitingAreaTutors.contains(userId);
+  }
 }

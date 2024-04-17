@@ -6,6 +6,8 @@ class ClassModel {
     this.image = '',
     this.type = '',
     this.semester = const <String>[],
+    this.availableTutors = const <String>[],
+    this.waitingAreaTutors = const <String>[],
   });
 
   factory ClassModel.fromJson(Map<String, dynamic> json) => ClassModel(
@@ -17,6 +19,12 @@ class ClassModel {
         semester: (json['semester'] as List<dynamic>?) 
             ?.cast<String>() 
             ?? const <String>[], 
+        waitingAreaTutors: (json['waitingAreaTutors'] as List<dynamic>?) 
+            ?.cast<String>() 
+            ?? const <String>[], 
+        availableTutors: (json['availableTutors'] as List<dynamic>?) 
+            ?.cast<String>() 
+            ?? const <String>[], 
       );
 
   final String className;
@@ -25,4 +33,6 @@ class ClassModel {
   final String? image;
   final String? type;
   final List<String> semester;
+  final List<String> waitingAreaTutors;
+  final List<String> availableTutors;
 }

@@ -5,7 +5,7 @@ class WaitingConfirmation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
           backgroundColor: Colors.white[0],
           elevation: 0,
           leading: IconButton(
@@ -25,5 +25,45 @@ class WaitingConfirmation extends StatelessWidget {
             ),
           ),
         ),
-    );
+        body: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(UILayout.medium),
+              child: Column(
+                children: <Widget>[
+                  Image.asset(
+                    'assets/images/image_waiting.png',
+                    height: 250,
+                  ),
+                  const SizedBox(
+                    height: UILayout.medium,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          '''De momento debes esperar a que confirmemos tu información, esperamos pronto seas parte de nuestro equipo!'''
+                              .tr,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.gray[90],
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: UILayout.medium,
+                  ),
+                  SunsetButton(
+                    text: 'Aceptar',
+                    onPressed: Get.back,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
 }

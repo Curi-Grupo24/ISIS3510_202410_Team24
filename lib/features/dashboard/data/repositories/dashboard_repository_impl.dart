@@ -68,4 +68,37 @@ class DashboardRepositoryImpl implements DashboardRepository {
       return Left<String, List<ClassModel>>(e.toString());
     }
   }
+
+   @override
+  Future<Either<String, List<ClassModel>>> getMyTutorClasses() async {
+    try {
+      FirebaseAuth _auth = FirebaseAuth.instance;
+      String userId = _auth.currentUser?.uid ?? '';
+      UsersRepositoryImpl userData = UsersRepositoryImpl();
+      Map<String, dynamic> rawData =
+          await userData.getUser(userId) ?? <String, dynamic>{};
+      List<String> listClasses =
+          (rawData['myTutorClasses'] as List<dynamic>?)?.cast<String>() ??
+              const <String>[];
+      List<ClassModel> classModelList = <ClassModel>[];
+
+      for (String element in listClasses) {
+        CollectionReference<Object?> _collectionRef =
+            FirebaseFirestore.instance.collection('classses');
+        Query<Object?> query = _collectionRef.where('uid', isEqualTo: element);
+        QuerySnapshot<Object?> querySnapshot = await query.get();
+        if (querySnapshot.docs.isEmpty) {
+          return const Left<String, List<ClassModel>>(
+            'No tienes clases inscritas',
+          );
+        }
+        QueryDocumentSnapshot<Object?> doc = querySnapshot.docs.first;
+        classModelList
+            .add(ClassModel.fromJson(doc.data()! as Map<String, dynamic>));
+      }
+      return Right<String, List<ClassModel>>(classModelList);
+    } catch (e) {
+      return Left<String, List<ClassModel>>(e.toString());
+    }
+  }
 }

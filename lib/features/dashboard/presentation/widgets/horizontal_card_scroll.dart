@@ -7,6 +7,7 @@ class HorizontalCardScroll extends StatelessWidget {
     required this.textScaleFactor,
     required this.title,
     required this.onTapViewMore,
+    this.isFromTutoring = false,
     super.key,
   });
 
@@ -15,6 +16,7 @@ class HorizontalCardScroll extends StatelessWidget {
   final double textScaleFactor;
   final String title;
   final void Function()? onTapViewMore;
+  final bool isFromTutoring;
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
@@ -78,12 +80,15 @@ class HorizontalCardScroll extends StatelessWidget {
                       message: '2024-1',
                       cardWidth: aproxCardWidth * textScaleFactor,
                       onTap: () {
-                        Get.toNamed(
-                          '/class_dashboard',
-                          parameters: <String, String>{
-                            'className': sortedCards[index].className,
-                          },
-                        );
+                        !isFromTutoring
+                            ? Get.toNamed(
+                                '/class_dashboard',
+                                parameters: <String, String>{
+                                  'className': sortedCards[index].className,
+                                },
+                                arguments: sortedCards[index],
+                              )
+                            : Get.toNamed('/waiting_confirmation');
                       },
                     ),
                   ),

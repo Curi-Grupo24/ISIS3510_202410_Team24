@@ -8,15 +8,13 @@ class ClassDashboard extends StatefulWidget {
 }
 
 class _ClassDashboardState extends State<ClassDashboard> {
-  // bool isSelectedDate = false;
-//   final AnimationController _controller = AnimationController(
-//   duration: const Duration(milliseconds: 500), vsync: this,
-// );
   String className = '';
+  ClassModel? actualClass;
   @override
   void initState() {
     super.initState();
     className = Get.parameters['className'] ?? '';
+    actualClass = Get.arguments;
   }
 
   List<Map<String, dynamic>> favTutorsList = <Map<String, dynamic>>[

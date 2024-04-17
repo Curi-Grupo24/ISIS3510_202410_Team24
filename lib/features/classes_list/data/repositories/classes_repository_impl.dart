@@ -17,10 +17,16 @@ class ClasessRepositoryImpl implements ClassRepository {
       UsersRepositoryImpl userData = UsersRepositoryImpl();
       Map<String, dynamic> rawData =
           await userData.getUser(userId) ?? <String, dynamic>{};
-      List<String> listClasses = (rawData['myClasses']as List<dynamic>?) 
-            ?.cast<String>() 
-            ?? const <String>[]
-        ..add(classToAdd.uid);
+      List<String> listClasses =
+          (rawData['myClasses'] as List<dynamic>?)?.cast<String>() ??
+              const <String>[];
+      if (!listClasses.contains(classToAdd.uid)) {
+        listClasses.add(classToAdd.uid);
+      } else {
+        return Left<String, String>(
+          '''Ya tenías inscrita la clase de: ${classToAdd.className}''',
+        );
+      }
 
       await FirebaseFirestore.instance
           .collection('users')
@@ -70,12 +76,34 @@ class ClasessRepositoryImpl implements ClassRepository {
   }
 
   @override
-  Future<String> deleteClasess(String uid) async {
+  Future<Either<String, String>> deleteClass(ClassModel classtoDelete) async {
     try {
-      await FirebaseFirestore.instance.collection('classes').doc(uid).delete();
-      return 'Se elimino la clase';
+      FirebaseAuth _auth = FirebaseAuth.instance;
+      String userId = _auth.currentUser?.uid ?? '';
+      UsersRepositoryImpl userData = UsersRepositoryImpl();
+      Map<String, dynamic> rawData =
+          await userData.getUser(userId) ?? <String, dynamic>{};
+      List<String> listClasses =
+          (rawData['myClasses'] as List<dynamic>?)?.cast<String>() ??
+              const <String>[];
+      if (listClasses.contains(classtoDelete.uid)) {
+        listClasses.remove(classtoDelete.uid);
+      } else {
+        return Left<String, String>(
+          '''Ya se ha eliminado la clase: ${classtoDelete.className}''',
+        );
+      }
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .update(<String, dynamic>{'myClasses': listClasses});
+
+      return Right<String, String>(
+        'Se eliminó correctamente \" ${classtoDelete.className}\"',
+      );
     } catch (e) {
-      return 'No se encontro la clase';
+      return Left<String, String>(e.toString());
     }
   }
 

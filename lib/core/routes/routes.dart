@@ -9,6 +9,7 @@ import '../../features/enroll_as_monitor/presentation/pages/pages.dart';
 import '../../features/notifications/presentation/pages/notifications_home.dart';
 import '../../features/profile_user/presentation/pages/pages.dart';
 import '../../features/schedule/presentation/pages/pages.dart';
+import '../../features/tutors_class_flow/presentation/pages/pages.dart';
 
 List<GetPage<dynamic>> get getRoutes {
   const Duration transitionDuration = Duration(milliseconds: 350);
@@ -105,6 +106,12 @@ List<GetPage<dynamic>> get getRoutes {
     GetPage<dynamic>(
       name: '/chats_home',
       page: ChatHomeViewDashboard.new,
+      transitionDuration: transitionDuration,
+      middlewares: <GetMiddleware>[GetMiddleware()],
+    ),
+    GetPage<dynamic>(
+      name: '/waiting_confirmation',
+      page: WaitingConfirmation.new,
       transitionDuration: transitionDuration,
       middlewares: <GetMiddleware>[GetMiddleware()],
     ),

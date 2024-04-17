@@ -46,17 +46,6 @@ class _FooterActionsIntroEnroll extends State<FooterActionsIntroEnroll> {
           ),
 
           Spacing.spacingV12,
-          // Button(
-          //   buttonType: ButtonType.primary,
-          //   text: 'friendly_risk_profiling.intro.later'.tr(),
-          //   color: Colors.white[0],
-          //   textColor: Colors.meadown[20],
-          //   borderColor: Colors.meadown[20],
-          //   onPressed: () async {
-          //     await ref.read(navigation.notifier).navToDashboard();
-          //   },
-          //   fitWidth: true,
-          // ),
           Spacing.spacingV12,
         ],
       );

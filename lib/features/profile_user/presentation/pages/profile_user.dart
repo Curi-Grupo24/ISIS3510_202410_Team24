@@ -155,20 +155,16 @@ class _ProfileUserState extends State<ProfileUser> {
                                               ),
                                             ),
                                           )
-                                        : ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                            child: SizedBox(
-                                              height: UILayout.xlarge,
-                                              width: UILayout.xlarge,
-                                              child: FittedBox(
-                                                fit: BoxFit.cover,
-                                                child: Image.file(
-                                                  File(photo!.path),
-                                                ),
-                                              ),
+                                        : SizedBox(
+                                          height: UILayout.xlarge,
+                                          width: UILayout.xlarge,
+                                          child: CircleAvatar(
+                                            radius: UILayout.xlarge,
+                                            child: Image.file(
+                                              File(photo!.path),
                                             ),
                                           ),
+                                        ),
                                   ),
                                 ),
                                 Text(

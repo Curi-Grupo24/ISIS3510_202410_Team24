@@ -6,4 +6,5 @@ Map<String, String> authEsCo = <String, String>{
   'log_in': 'Ingresar',
   'dont_have_an_account': '¿No tienes cuenta? ',
   'register': 'Regístrate',
+  'select_carreer': 'Escoge la carrera',
 };

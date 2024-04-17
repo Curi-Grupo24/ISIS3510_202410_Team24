@@ -7,6 +7,7 @@ class OtherProductsCard extends StatelessWidget {
     this.message,
     this.badge,
     this.onTap,
+    this.image ='assets/images/image_asset1.png',
     Key? key,
   }) : super(key: key);
 
@@ -15,6 +16,7 @@ class OtherProductsCard extends StatelessWidget {
   final String? message;
   final ProductBadgeType? badge;
   final VoidCallback? onTap;
+  final String? image;
 
   @override
   Widget build(BuildContext context) => Opacity(
@@ -49,8 +51,9 @@ class OtherProductsCard extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8,),
                           child: Image.asset(
-                            'assets/images/image_asset1.png',
+                            image!,
                             width: 85,
+                            height: 85,
                           ),
                         ),
                       ),

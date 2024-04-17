@@ -2,10 +2,11 @@ part of com.curi.app.enrollasmonitor.widgets;
 
 class RiskProfileQuestionnaireContainer extends StatelessWidget {
   const RiskProfileQuestionnaireContainer(
-    // this.data, {
-    // required this.onChanged,
-    // this.group,
-    {Key? key,
+      // this.data, {
+      // required this.onChanged,
+      // this.group,
+      {
+    Key? key,
   }) : super(key: key);
   // final RiskProfileQuestion data;
   // final RiskProfileQuestionAnswer? group;
@@ -59,7 +60,7 @@ class RiskProfileQuestionnaireCard extends StatelessWidget {
   Widget build(BuildContext context) => DecoratedBox(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.gray[40]!),
-          
+
           // boxShadow: <BoxShadow>[shadowB4],
           color: Colors.white[0],
         ),
@@ -79,9 +80,9 @@ class RiskProfileQuestionnaireCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     width: UILayout.large,
-                    // child: 
+                    // child:
                     // Radio<RiskProfileQuestionAnswer>(
                     //   // value: InvalidType,
                     //   activeColor: Colors.meadown[20],

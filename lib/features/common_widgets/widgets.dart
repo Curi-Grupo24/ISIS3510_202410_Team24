@@ -17,5 +17,6 @@ part './input.dart';
 part './sunset_button.dart';
 part './tooltip_ocean.dart';
 part './drop_down_button.dart';
+part './warning_message.dart';
 
 enum TextInputFormatterType { none, custom, money, creditCart, phone }

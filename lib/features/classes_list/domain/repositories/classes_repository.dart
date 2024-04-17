@@ -10,7 +10,7 @@ abstract class ClassRepository {
     String uid,
     Map<String, dynamic> changingClass,
   );
-  Future<String> deleteClasess(String uid);
+  Future<Either<String, String>> deleteClass(ClassModel deletedClass);
   Future<Either<String, List<ClassModel>>> fetchAllClasess();
 
 }

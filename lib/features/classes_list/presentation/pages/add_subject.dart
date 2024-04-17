@@ -294,7 +294,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: WarningMessage(
                               isError: true,
-                              message: responseToadd,
+                              message: errorResponse,
                               padding: 0,
                             ),
                           ),

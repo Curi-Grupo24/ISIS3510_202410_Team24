@@ -13,8 +13,10 @@ import 'features/auth/presentation/bloc/register_bloc/register_bloc.dart';
 import 'features/classes_list/data/repositories/classes_repository_impl.dart';
 import 'features/classes_list/domain/repositories/classes_repository.dart';
 import 'features/classes_list/domain/usecases/add_class_usecase.dart';
+import 'features/classes_list/domain/usecases/delete_class_usecase.dart';
 import 'features/classes_list/domain/usecases/fetch_all_classes_usecase.dart';
 import 'features/classes_list/presentation/bloc/add_class_bloc/add_class_bloc.dart';
+import 'features/classes_list/presentation/bloc/delete_class/delete_class_bloc.dart';
 import 'features/dashboard/data/repositories/dashboard_repository_impl.dart';
 import 'features/dashboard/domain/repositories/dashboard_repository.dart';
 import 'features/dashboard/domain/usecases/get_my_classes.dart';
@@ -53,6 +55,9 @@ void init() {
   sl.registerLazySingleton<AddClassBloc>(
     () => AddClassBloc(),
   );
+  sl.registerLazySingleton<DeleteClassBloc>(
+    () => DeleteClassBloc(),
+  );
 
   //Use Cases
   sl.registerLazySingleton(
@@ -78,6 +83,9 @@ void init() {
   );
   sl.registerLazySingleton(
     () => GetMyClassesUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton(
+    () => DeleteClassUseCase(repository: sl()),
   );
 
   //Repositories

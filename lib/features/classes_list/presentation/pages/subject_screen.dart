@@ -18,7 +18,10 @@ class _SubjectScreenState extends State<SubjectScreen> {
   String filterSemester = '';
   TextEditingController? controller = TextEditingController();
   bool deletingClasses = false;
-  List <ClassModel>classList= <ClassModel>[];
+  List<ClassModel> classList = <ClassModel>[];
+  String errorMessage = '';
+  String successMessage = '';
+  DeleteClassBloc deleteClassBloc = DeleteClassBloc();
 
   void updatePossibleCarreers() {
     List<String> updatedList = <String>[];
@@ -85,8 +88,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
       filterSemester = text;
       classListFiltered = classListFiltered
           .where(
-            (ClassModel eachClass) =>
-                eachClass.semester.contains(text),
+            (ClassModel eachClass) => eachClass.semester.contains(text),
           )
           .toList();
     });
@@ -220,187 +222,230 @@ class _SubjectScreenState extends State<SubjectScreen> {
                   deletingClasses = !deletingClasses;
                 });
               },
-              icon:  Icon(
+              icon: Icon(
                 Icons.edit,
                 color: Colors.gray[50],
               ),
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SunsetCardFollow(
-                onPressed: () {
-                  Get.toNamed('/add_class_view');
-                },
-              ),
-              SearchInput(
-                hintText: 'Name',
-                controller: controller,
-                onChangedController: (String value) {
-                  updateFilterDef();
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Text(
-                  'Filtrar por',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.gray[90],
+        body: BlocListener<DeleteClassBloc, DeleteClassState>(
+          bloc: deleteClassBloc,
+          listener: (BuildContext context, DeleteClassState state) async {
+            if (state is DeleteClassError) {
+              setState(() {
+                successMessage = '';
+                errorMessage = state.errorMessage;
+              });
+              Get.back();
+            } else if (state is DeleteClassLoading) {
+              await showDialog(
+                context: context,
+                builder: (BuildContext ctx) => SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: SpinKitRotatingCircle(
+                    color: Colors.sunset[20],
+                    size: 50,
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 8,
-                  top: 8,
-                  bottom: 16,
+              );
+            } else if (state is DeleteClassSuccessfull) {
+              setState(() {
+                successMessage = state.successMessage;
+                errorMessage = '';
+              });
+              Get.back();
+            }
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SunsetCardFollow(
+                  onPressed: () {
+                    Get.toNamed('/add_class_view');
+                  },
                 ),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: <Widget>[
-                      SortButton(
-                        text: filterCarreer,
-                        onPressed: () {
-                          showModalStatesToFilter(
-                            possibleCarreers, 'select_carreer'.tr,
-                            parentAction: (String value) {
-                              setState(() {
-                                filterCarreer = value;
-                              });
-                              updateFilterDef();
-                            },
-                            //  _updateCarreerFilter,
-                          );
-                        },
-                        crossEnabled: filterCarreer != 'Carrera',
-                        onCrossTapped: () {
-                          setState(() {
-                            filterCarreer = 'Carrera';
-                            // classListFiltered = classList;
-                          });
-                          updateFilterDef();
-                          // filterListToShow();
-                        },
-                      ),
-                      SortButton(
-                        text: filterType,
-                        onPressed: () {
-                          showModalStatesToFilter(
-                            possibleTypes, 'Escoge el tipo de la materia'.tr,
-                            parentAction: (String value) {
-                              setState(() {
-                                filterType = value;
-                              });
-                              updateFilterDef();
-                            },
-                            // _updateTypeFilter,
-                          );
-                        },
-                        crossEnabled: filterType != 'Tipo',
-                        onCrossTapped: () {
-                          setState(() {
-                            filterType = 'Tipo';
-                            // classListFiltered = classList;
-                          });
-                          updateFilterDef();
                 
-                          // filterListToShow();
-                        },
-                      ),
-                      SortButton(
-                        text: filterSemester,
-                        onPressed: () {
-                          showModalStatesToFilter(
-                            possibleSemesters, 'Escoge el semestre'.tr,
-                            parentAction: (String value) {
-                              setState(() {
-                                filterSemester = value;
-                              });
-                              updateFilterDef();
-                            },
-                            // _updateSemesterFilter,
-                          );
-                        },
-                        crossEnabled: filterSemester != 'Semestre',
-                        onCrossTapped: () {
-                          setState(() {
-                            filterSemester = 'Semestre';
-                            // classListFiltered = classList;
-                          });
-                          updateFilterDef();
-                
-                          // filterListToShow();
-                        },
-                      ),
-                    ],
+                SearchInput(
+                  hintText: 'Name',
+                  controller: controller,
+                  onChangedController: (String value) {
+                    updateFilterDef();
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Text(
+                    'Filtrar por',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.gray[90],
+                    ),
                   ),
                 ),
-              ),
-              Column(
-                children: <Widget>[
-                  ...classListFiltered.map(
-                    (ClassModel eachClass) => SubjectCard(
-                      subjectTitle: eachClass.className,
-                      profesor: eachClass.career,
-                      type: eachClass.type,
-                      image: eachClass.image,
-                      time:
-                          '''${eachClass.semester.length > 1 ? 'Semestre mixto: ' : ''}${eachClass.semester.length > 1 ? semestersNumbers(
-                              eachClass.semester,
-                            ) : eachClass.semester[0]}''',
-                      onTap:
-                      deletingClasses?
-                       () async {
-                        await showDialog(
-                          context: context,
-                          builder: (BuildContext ctx) => SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            child: ModalCase(
-                              'Eliminar materia',
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                ),
-                                child: AddClassesModal(
-                                  deletingClasses: true,
-                                  className: eachClass.className,
-                                  onPressedAccept: () {
-                                    //
-                                    Get.back();
-                                  },
-                                ),
-                              ),
-                              height: 200,
-                            ),
-                          ),
-                        );
-                      }:
-                      
-                       () {
-                        Get.toNamed(
-                          '/class_dashboard',
-                          parameters: <String, String>{
-                            'className': eachClass.className,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 8,
+                    top: 8,
+                    bottom: 16,
+                  ),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: <Widget>[
+                        SortButton(
+                          text: filterCarreer,
+                          onPressed: () {
+                            showModalStatesToFilter(
+                              possibleCarreers,
+                              'select_carreer'.tr,
+                              parentAction: (String value) {
+                                setState(() {
+                                  filterCarreer = value;
+                                });
+                                updateFilterDef();
+                              },
+                            );
                           },
-                        );
-                      },
-                      isForDeleting: deletingClasses,
+                          crossEnabled: filterCarreer != 'Carrera',
+                          onCrossTapped: () {
+                            setState(() {
+                              filterCarreer = 'Carrera';
+                            });
+                            updateFilterDef();
+                          },
+                        ),
+                        SortButton(
+                          text: filterType,
+                          onPressed: () {
+                            showModalStatesToFilter(
+                              possibleTypes,
+                              'Escoge el tipo de la materia'.tr,
+                              parentAction: (String value) {
+                                setState(() {
+                                  filterType = value;
+                                });
+                                updateFilterDef();
+                              },
+                            );
+                          },
+                          crossEnabled: filterType != 'Tipo',
+                          onCrossTapped: () {
+                            setState(() {
+                              filterType = 'Tipo';
+                            });
+                            updateFilterDef();
+                          },
+                        ),
+                        SortButton(
+                          text: filterSemester,
+                          onPressed: () {
+                            showModalStatesToFilter(
+                              possibleSemesters,
+                              'Escoge el semestre'.tr,
+                              parentAction: (String value) {
+                                setState(() {
+                                  filterSemester = value;
+                                });
+                                updateFilterDef();
+                              },
+                            );
+                          },
+                          crossEnabled: filterSemester != 'Semestre',
+                          onCrossTapped: () {
+                            setState(() {
+                              filterSemester = 'Semestre';
+                            });
+                            updateFilterDef();
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                  if (classListFiltered.isEmpty)
-                    const WarningMessage(
-                      message: 'No hay clases para este filtro',
+                ),
+                if (successMessage.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: WarningMessage(
+                      isSuccess: true,
+                      message: successMessage,
+                      padding: 0,
                     ),
-                ],
-              ),
-              const SizedBox(height: 56),
-            ],
+                  ),
+                if (errorMessage.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: WarningMessage(
+                      isError: true,
+                      message: errorMessage,
+                      padding: 0,
+                    ),
+                  ),
+                Column(
+                  children: <Widget>[
+                    ...classListFiltered.map(
+                      (ClassModel eachClass) => SubjectCard(
+                        subjectTitle: eachClass.className,
+                        profesor: eachClass.career,
+                        type: eachClass.type,
+                        image: eachClass.image,
+                        time:
+                            '''${eachClass.semester.length > 1 ? 'Semestre mixto: ' : ''}${eachClass.semester.length > 1 ? semestersNumbers(
+                                eachClass.semester,
+                              ) : eachClass.semester[0]}''',
+                        onTap: deletingClasses
+                            ? () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (BuildContext ctx) => SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    child: ModalCase(
+                                      'Eliminar materia',
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                        ),
+                                        child: AddClassesModal(
+                                          deletingClasses: true,
+                                          className: eachClass.className,
+                                          onPressedAccept: () {
+                                            deleteClassBloc.add(
+                                              DeleteAClass(
+                                                classToDelete: eachClass,
+                                              ),
+                                            );
+                                            Get.back();
+                                          },
+                                        ),
+                                      ),
+                                      height: 200,
+                                    ),
+                                  ),
+                                );
+                              }
+                            : () {
+                                Get.toNamed(
+                                  '/class_dashboard',
+                                  parameters: <String, String>{
+                                    'className': eachClass.className,
+                                  },
+                                );
+                              },
+                        isForDeleting: deletingClasses,
+                      ),
+                    ),
+                    if (classListFiltered.isEmpty)
+                      const WarningMessage(
+                        message: 'No hay clases para este filtro',
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 56),
+              ],
+            ),
           ),
         ),
       );

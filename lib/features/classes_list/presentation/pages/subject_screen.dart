@@ -483,8 +483,12 @@ class _SubjectScreenState extends State<SubjectScreen> {
                         ),
                       ),
                       if (classListFiltered.isEmpty)
-                        const WarningMessage(
-                          message: 'No hay clases para este filtro',
+                        WarningMessage(
+                          message: (filterCarreer == 'Carrera' &&
+                                  filterType == 'Tipo' &&
+                                  filterSemester == 'Semestre')
+                              ? '''No hay clases inscritas, te invitamos a añadir nuevas materias'''
+                              : 'No hay clases para este filtro',
                         ),
                     ],
                   ),

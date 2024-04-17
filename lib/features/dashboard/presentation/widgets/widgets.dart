@@ -16,6 +16,7 @@ import '../../../../core/ui/layout.dart';
 import '../../../../core/ui/spacing.dart';
 import '../../../../core/ui/typography.dart';
 import '../../../classes_list/data/models/class_model.dart';
+import '../../../classes_list/presentation/widgets/widgets.dart';
 
 part './calendar_home_dashboard.dart';
 part './class_card.dart';

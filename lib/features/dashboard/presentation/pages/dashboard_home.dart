@@ -163,8 +163,12 @@ class _DashboardHomeState extends State<DashboardHome> {
                         description:
                             '''Podrás empezar a buscar monitores en las clases que necesites''',
                         title: '''Añade las materias que estás viendo!''',
-                        onPressed: () {
-                          Get.toNamed('/add_class_view');
+                        onPressed: () async {
+                          String reloadView = '';
+                          reloadView = await Get.toNamed('/add_class_view');
+                          if (reloadView.isNotEmpty) {
+                            setState(() {});
+                          }
                         },
                       ),
                     if (state.user.myClasses.isNotEmpty)
@@ -216,11 +220,15 @@ class _DashboardHomeState extends State<DashboardHome> {
                           if (state is GetMyClassesSuccessfull) {
                             return HorizontalCardScroll(
                               title: 'Mis materias',
-                              onTapViewMore: () {
-                                Get.toNamed(
+                              onTapViewMore: () async {
+                                String reloadView = '';
+                                reloadView = await Get.toNamed(
                                   '/classes_list',
                                   arguments: state.listClasses,
                                 );
+                                if (reloadView.isNotEmpty) {
+                                  setState(() {});
+                                }
                               },
                               sortedCards: state.listClasses,
                               aproxCardWidth: aproxCardWidth,

@@ -110,7 +110,7 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
                       onChanged: (String? answer) {
                         // viewModel
                         //   ..onAnswerChanged(answer, index)
-                        //   ..changeTab(index + 1);
+                        carouselController.animateToPage(questionnaireIndex+1);
                       },
                       // answer: state.answers?[index],
                     ),

@@ -20,9 +20,11 @@ import 'features/classes_list/presentation/bloc/delete_class/delete_class_bloc.d
 import 'features/dashboard/data/repositories/dashboard_repository_impl.dart';
 import 'features/dashboard/domain/repositories/dashboard_repository.dart';
 import 'features/dashboard/domain/usecases/get_my_classes.dart';
+import 'features/dashboard/domain/usecases/get_my_tutor_classes.dart';
 import 'features/dashboard/domain/usecases/get_user_info.dart';
 import 'features/dashboard/presentation/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'features/dashboard/presentation/bloc/my_classes/my_classes_bloc.dart';
+import 'features/dashboard/presentation/bloc/my_tutor_classes/my_tutor_classes_bloc.dart';
 import 'features/profile_user/data/respositories/profile_repository_impl.dart';
 import 'features/profile_user/domain/repositories/profile_repository.dart';
 import 'features/profile_user/domain/usecases/get_user_info.dart';
@@ -58,6 +60,9 @@ void init() {
   sl.registerLazySingleton<DeleteClassBloc>(
     () => DeleteClassBloc(),
   );
+  sl.registerLazySingleton<MyTutorClassesBloc>(
+    () => MyTutorClassesBloc(),
+  );
 
   //Use Cases
   sl.registerLazySingleton(
@@ -86,6 +91,9 @@ void init() {
   );
   sl.registerLazySingleton(
     () => DeleteClassUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton(
+    () => GetMyTutorClassesUseCase(repository: sl()),
   );
 
   //Repositories

@@ -13,6 +13,7 @@ class _DashboardHomeState extends State<DashboardHome> {
   late List<DashboardTabData> tabs;
   DashboardBloc dashboardBloc = DashboardBloc();
   MyClassesBloc myClassesBloc = MyClassesBloc();
+  MyTutorClassesBloc myTutorsClassesBloc = MyTutorClassesBloc();
   String username = '';
 
   @override
@@ -133,6 +134,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                 );
               } else if (state is DashboardSuccessfull) {
                 myClassesBloc.add(const GetMyClasses());
+                myTutorsClassesBloc.add(const GetMyTutorClasses());
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -168,8 +170,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                     if (state.user.myClasses.isNotEmpty)
                       BlocBuilder<MyClassesBloc, MyClassesState>(
                         bloc: myClassesBloc,
-                        builder:
-                            (BuildContext context, MyClassesState state) {
+                        builder: (BuildContext context, MyClassesState state) {
                           if (state is GetMyClassesLoading) {
                             return const ShimmerDashboardClasses();
                           }
@@ -216,7 +217,10 @@ class _DashboardHomeState extends State<DashboardHome> {
                             return HorizontalCardScroll(
                               title: 'Mis materias',
                               onTapViewMore: () {
-                                Get.toNamed('/classes_list', arguments: state.listClasses);
+                                Get.toNamed(
+                                  '/classes_list',
+                                  arguments: state.listClasses,
+                                );
                               },
                               sortedCards: state.listClasses,
                               aproxCardWidth: aproxCardWidth,
@@ -229,14 +233,67 @@ class _DashboardHomeState extends State<DashboardHome> {
                       ),
                     Spacing.spacingV12,
                     if (state.user.type != 'student')
-                      HorizontalCardScroll(
-                        title: 'En las  que soy monitor',
-                        onTapViewMore: () {
-                          Get.toNamed('/classes_list');
+                      BlocBuilder<MyTutorClassesBloc, MyTutorClassesState>(
+                        bloc: myTutorsClassesBloc,
+                        builder:
+                            (BuildContext context, MyTutorClassesState state) {
+                          if (state is GetMyTutorClassesLoading) {
+                            return const ShimmerDashboardClasses();
+                          }
+                          if (state is GetMyTutorClassesError) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: Colors.gray[20],
+                                  borderRadius: radius8,
+                                ),
+                                child: Column(
+                                  children: <Widget>[
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                      ),
+                                      child: Text(
+                                        '''${state.errorMessage}, esperamos pronto poder mostrarte tus clases :D''',
+                                        style:
+                                            TextStyle(color: Colors.gray[80]),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.face_3,
+                                      color: Colors.gray[80],
+                                    ),
+                                    const SizedBox(
+                                      width: double.infinity,
+                                      height: 8,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                          if (state is GetMyTutorClassesSuccessfull) {
+                            return HorizontalCardScroll(
+                              title: 'En las  que soy monitor',
+                              onTapViewMore: () {
+                                // Get.toNamed('/waiting_confirmation');
+                              },
+                              sortedCards: state.listClasses,
+                              aproxCardWidth: aproxCardWidth,
+                              textScaleFactor: textScaleFactor,
+                              isFromTutoring: true,
+                            );
+                          } else {
+                            return const ShimmerDashboardClasses();
+                          }
                         },
-                        sortedCards: const <ClassModel>[],
-                        aproxCardWidth: aproxCardWidth,
-                        textScaleFactor: textScaleFactor,
                       ),
                     Spacing.spacingV12,
                     if (state.user.type == 'student')

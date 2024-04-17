@@ -283,7 +283,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                             return HorizontalCardScroll(
                               title: 'En las  que soy monitor',
                               onTapViewMore: () {
-                                // Get.toNamed('/waiting_confirmation');
+                                // Get.toNamed('/choose_class_tutoring');
                               },
                               sortedCards: state.listClasses,
                               aproxCardWidth: aproxCardWidth,

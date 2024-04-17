@@ -20,7 +20,7 @@ class UserModel {
         myClasses: (json['myClasses']  as List<dynamic>?) 
             ?.cast<String>() 
             ?? const <String>[],
-        myTutorsClasses: (json['myTutorsClasses']  as List<dynamic>?) 
+        myTutorsClasses: (json['myTutorClasses']  as List<dynamic>?) 
             ?.cast<String>() 
             ?? const <String>[], 
       );

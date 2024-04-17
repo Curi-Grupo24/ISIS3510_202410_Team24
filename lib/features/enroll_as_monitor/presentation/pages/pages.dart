@@ -22,3 +22,4 @@ import '../widgets/widgets.dart';
 part './enroll_home.dart';
 part './questionnaire_view.dart';
 part './first_question_view.dart';
+part './result_view.dart';

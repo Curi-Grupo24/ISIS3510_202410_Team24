@@ -10,6 +10,7 @@ import '../../../../core/ui/colors_brand.dart';
 import '../../../../core/ui/layout.dart';
 import '../../../../core/ui/spacing.dart';
 import '../../../../core/ui/typography.dart';
+import '../../../classes_list/data/models/class_model.dart';
 
 part './footer_intro_actions.dart';
 part './questionnaire_stepper.dart';

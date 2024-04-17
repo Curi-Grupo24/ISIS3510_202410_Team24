@@ -11,6 +11,7 @@ class CommonQuestionnaireView extends StatefulWidget {
 class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
   CarouselController carouselController = CarouselController();
   int questionnaireIndex = 0;
+  late ClassModel classToApplyFor;
 
   List<Map<String, dynamic>> questions = <Map<String, dynamic>>[
     <String, dynamic>{
@@ -42,7 +43,7 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
     },
     <String, dynamic>{
       'question':
-          '''Por ultimo, si nos quisieras contar un poco más de ti y tu experiencia, lo puedes hacer acá :DD''',
+          '''Por último, si nos quisieras contar un poco más de ti y tu experiencia, lo puedes hacer acá :DD''',
       'answers': <String>[
         '',
       ],
@@ -57,6 +58,20 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
       carouselController.animateToPage(1);
     }
   }
+
+  @override
+  void initState() {
+    classToApplyFor = Get.arguments;
+    super.initState();
+  }
+
+  int indexSelected = 0;
+  List<Map<int, String>> listAnswers = <Map<int, String>>[
+    <int, String>{-1: ''},
+    <int, String>{-1: ''},
+    <int, String>{-1: ''},
+    <int, String>{-1: ''},
+  ];
 
   @override
   Widget build(
@@ -83,7 +98,7 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
             children: <Widget>[
               StepperChecks(
                 steps: 4,
-                currentStep:  questionnaireIndex + 1,
+                currentStep: questionnaireIndex + 1,
                 activeColor: Colors.sunset[10]!,
                 inactiveColor: Colors.sunset[20]!,
               ),
@@ -106,11 +121,27 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
                       questionsLength: 4,
                       answersLength: 5,
                       color: Colors.sunset[40],
+                      indexAnswer:
+                          listAnswers[questions.indexOf(question)].keys.first,
                       possibleAnswers: question['answers'],
-                      onChanged: (String? answer) {
+                      onChanged: (Map<int, String>? answer) {
+                        // indexSelected =answer?.keys.first??-1;
+                        setState(() {
+                          listAnswers.replaceRange(
+                            questions.indexOf(question),
+                            questions.indexOf(
+                              question,
+                            ),
+                            <Map<int, String>>[
+                              answer!,
+                            ],
+                          );
+                        });
+
                         // viewModel
                         //   ..onAnswerChanged(answer, index)
-                        carouselController.animateToPage(questionnaireIndex+1);
+                        carouselController
+                            .animateToPage(questionnaireIndex + 1);
                       },
                       // answer: state.answers?[index],
                     ),
@@ -135,7 +166,8 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
                   replacement: Spacing.spacingV48,
                   child: GestureDetector(
                     onTap: () {
-                      // viewModel.evaluate();
+                      Get.offAllNamed('/result_enrollment_page',
+                          arguments: classToApplyFor);
                     },
                     child: Container(
                       decoration: BoxDecoration(

@@ -128,6 +128,12 @@ List<GetPage<dynamic>> get getRoutes {
       transitionDuration: transitionDuration,
       middlewares: <GetMiddleware>[GetMiddleware()],
     ),
+    GetPage<dynamic>(
+      name: '/result_enrollment_page',
+      page: ResultEnrollmentView.new,
+      transitionDuration: transitionDuration,
+      middlewares: <GetMiddleware>[GetMiddleware()],
+    ),
     // GetPage<dynamic>(
     //   name: '/chat_view',
     //   page: ChatPage.new,

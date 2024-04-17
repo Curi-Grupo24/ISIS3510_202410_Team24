@@ -9,6 +9,8 @@ class QuestionCard extends StatefulWidget {
     required this.color,
     required this.possibleAnswers,
     required this.onChanged,
+    this.indexAnswer = -1,
+
     // required this.answer,
     Key? key,
   }) : super(key: key);
@@ -20,7 +22,8 @@ class QuestionCard extends StatefulWidget {
   final int answersLength;
   final Color? color;
   final List<String> possibleAnswers;
-  final ValueChanged<String?> onChanged;
+  final ValueChanged<Map<int, String>?> onChanged;
+  final int? indexAnswer;
   // final RiskProfileQuestionAnswer? answer;
 
   @override
@@ -31,10 +34,7 @@ class _QuestionCardState extends State<QuestionCard> {
   late num selectedIndex = -1;
   @override
   void initState() {
-    // int? indexAnswer = widget.question.answers?.indexWhere(
-    //   (RiskProfileQuestionAnswer ans) => ans.score == widget.answer?.score,
-    // );
-    // selectedIndex = indexAnswer ?? -1;
+    selectedIndex = -1;
     super.initState();
   }
 
@@ -74,7 +74,12 @@ class _QuestionCardState extends State<QuestionCard> {
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: GestureDetector(
                             onTap: () {
-                              widget.onChanged(eachAnswer);
+                              widget.onChanged(
+                                <int, String>{
+                                  widget.possibleAnswers.indexOf(eachAnswer):
+                                      eachAnswer,
+                                },
+                              );
                               setState(() {
                                 selectedIndex =
                                     widget.possibleAnswers.indexOf(eachAnswer);
@@ -83,8 +88,11 @@ class _QuestionCardState extends State<QuestionCard> {
                             child: AnswerTile(
                               answerText: eachAnswer,
                               colorTile: selectedIndex ==
-                                      (widget.possibleAnswers
-                                          .indexOf(eachAnswer))
+                                          (widget.possibleAnswers
+                                              .indexOf(eachAnswer)) ||
+                                      widget.indexAnswer ==
+                                          (widget.possibleAnswers
+                                              .indexOf(eachAnswer))
                                   ? Colors.sunset[5]
                                   : Colors.white[0],
                             ),

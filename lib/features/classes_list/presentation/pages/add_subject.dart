@@ -203,7 +203,9 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
               Icons.arrow_back_ios,
               color: Color(0xFFF3962E),
             ),
-            onPressed: Get.back,
+            onPressed: () {
+              Get.back(result: 'should rebuild');
+            },
           ),
           title: const Text(
             'Añade materias',
@@ -263,15 +265,15 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                     }
                     if (state is AddSubjectError) {
                       setState(() {
-                      responseToadd ='';
-                      errorResponse=state.errorMessage;
+                        responseToadd = '';
+                        errorResponse = state.errorMessage;
                       });
                       Get.back();
                     }
                     if (state is AddSubjectSuccessfull) {
                       setState(() {
-                      responseToadd = state.successMessage;
-                      errorResponse='';
+                        responseToadd = state.successMessage;
+                        errorResponse = '';
                       });
                       Get.back();
                     }

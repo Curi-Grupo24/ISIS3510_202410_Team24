@@ -38,15 +38,16 @@ class HorizontalCardScroll extends StatelessWidget {
                     ),
                   ),
                   Spacing.spacingV8,
-                  InkWell(
-                    onTap: onTapViewMore,
-                    child: Text(
-                      'ver todos'.tr,
-                      style: Headings.mH5.copyWith(
-                        color: Colors.sunset[40],
+                  if (sortedCards.isNotEmpty)
+                    InkWell(
+                      onTap: onTapViewMore,
+                      child: Text(
+                        'ver todos'.tr,
+                        style: Headings.mH5.copyWith(
+                          color: Colors.sunset[40],
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -61,42 +62,76 @@ class HorizontalCardScroll extends StatelessWidget {
                         1.1,
                       ),
                 ),
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: sortedCards.length > 4 ? 4 : sortedCards.length,
-                  itemBuilder: (BuildContext context, int index) => Padding(
-                    padding: EdgeInsets.only(
-                      left: index == 0 ? UILayout.medium : 0,
-                      right: index == (sortedCards.length) - 1
-                          ? UILayout.medium
-                          : 0,
-                      bottom: UILayout.medium,
-                    ),
-                    child: OtherProductsCard(
-                      productName: sortedCards[index].className,
-                      badge: ProductBadgeType.latest,
-                      image: sortedCards[index].image,
-                      message: '2024-1',
-                      cardWidth: aproxCardWidth * textScaleFactor,
-                      onTap: () {
-                        !isFromTutoring
-                            ? Get.toNamed(
-                                '/class_dashboard',
-                                parameters: <String, String>{
-                                  'className': sortedCards[index].className,
-                                },
-                                arguments: sortedCards[index],
-                              )
-                            : Get.toNamed('/waiting_confirmation');
-                      },
-                    ),
-                  ),
-                  separatorBuilder: (_, int index) => Spacing.spacingH8,
-                ),
+                child: (sortedCards.isNotEmpty)
+                    ? ListView.separated(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount:
+                            sortedCards.length > 4 ? 4 : sortedCards.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            Padding(
+                          padding: EdgeInsets.only(
+                            left: index == 0 ? UILayout.medium : 0,
+                            right: index == (sortedCards.length) - 1
+                                ? UILayout.medium
+                                : 0,
+                            bottom: UILayout.medium,
+                          ),
+                          child: OtherProductsCard(
+                            productName: sortedCards[index].className,
+                            badge: ProductBadgeType.latest,
+                            image: sortedCards[index].image,
+                            message: '2024-1',
+                            cardWidth: aproxCardWidth * textScaleFactor,
+                            onTap: () {
+                              !isFromTutoring
+                                  ? Get.toNamed(
+                                      '/class_dashboard',
+                                      parameters: <String, String>{
+                                        'className':
+                                            sortedCards[index].className,
+                                      },
+                                      arguments: sortedCards[index],
+                                    )
+                                  : isTutorAvailableToTutor(sortedCards[index])
+                                      ? Get.toNamed(
+                                          '/class_dashboard',
+                                          parameters: <String, String>{
+                                            'className':
+                                                sortedCards[index].className,
+                                          },
+                                          arguments: sortedCards[index],
+                                        )
+                                      : isOnWaitingArea(sortedCards[index])
+                                          ? Get.toNamed('/waiting_confirmation')
+                                          : Get.toNamed('error_page');
+                            },
+                          ),
+                        ),
+                        separatorBuilder: (_, int index) => Spacing.spacingH8,
+                      )
+                    : SunsetCardFollow(
+                        description:
+                            '''Podrás empezar a buscar monitores en las clases que necesites''',
+                        title: '''Añade las materias que estás viendo!''',
+                        onPressed: () {
+                          Get.toNamed('/add_class_view');
+                        },
+                        backgroundColor: Colors.transparent,
+                      ),
               ),
             ),
           ],
         ),
       );
+
+  bool isTutorAvailableToTutor(ClassModel classToCheck) {
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    return classToCheck.availableTutors.contains(userId);
+  }
+
+  bool isOnWaitingArea(ClassModel classToCheck) {
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    return classToCheck.waitingAreaTutors.contains(userId);
+  }
 }

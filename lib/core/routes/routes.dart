@@ -4,6 +4,7 @@ import '../../features/auth/presentation/pages/pages.dart';
 import '../../features/chats/presentation/pages/pages.dart';
 import '../../features/class_flow/presentation/pages/pages.dart';
 import '../../features/classes_list/presentation/pages/pages.dart';
+import '../../features/common_pages/pages.dart';
 import '../../features/dashboard/presentation/pages/pages.dart';
 import '../../features/enroll_as_monitor/presentation/pages/pages.dart';
 import '../../features/notifications/presentation/pages/notifications_home.dart';
@@ -112,6 +113,18 @@ List<GetPage<dynamic>> get getRoutes {
     GetPage<dynamic>(
       name: '/waiting_confirmation',
       page: WaitingConfirmation.new,
+      transitionDuration: transitionDuration,
+      middlewares: <GetMiddleware>[GetMiddleware()],
+    ),
+    GetPage<dynamic>(
+      name: '/choose_class_tutoring',
+      page: ChooseClassToTutor.new,
+      transitionDuration: transitionDuration,
+      middlewares: <GetMiddleware>[GetMiddleware()],
+    ),
+    GetPage<dynamic>(
+      name: '/error_page',
+      page: ErrorPageView.new,
       transitionDuration: transitionDuration,
       middlewares: <GetMiddleware>[GetMiddleware()],
     ),

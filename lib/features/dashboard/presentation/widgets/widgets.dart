@@ -3,6 +3,7 @@ library com.curi.app.dashboard.widgets;
 import 'dart:math' as math;
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide Colors;
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +17,7 @@ import '../../../../core/ui/layout.dart';
 import '../../../../core/ui/spacing.dart';
 import '../../../../core/ui/typography.dart';
 import '../../../classes_list/data/models/class_model.dart';
+import '../../../classes_list/presentation/widgets/widgets.dart';
 
 part './calendar_home_dashboard.dart';
 part './class_card.dart';

@@ -69,7 +69,7 @@ class DashboardRepositoryImpl implements DashboardRepository {
     }
   }
 
-   @override
+  @override
   Future<Either<String, List<ClassModel>>> getMyTutorClasses() async {
     try {
       FirebaseAuth _auth = FirebaseAuth.instance;

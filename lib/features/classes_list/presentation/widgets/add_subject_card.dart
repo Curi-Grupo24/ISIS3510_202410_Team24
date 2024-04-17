@@ -40,6 +40,7 @@ class _SunsetCardFollowState extends State<SunsetCardFollow> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Text(
                           widget.title,

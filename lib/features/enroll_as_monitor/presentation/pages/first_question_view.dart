@@ -202,7 +202,9 @@ class _ChooseClassToTutorState extends State<ChooseClassToTutor> {
               Icons.arrow_back_ios,
               color: Color(0xFFF3962E),
             ),
-            onPressed: Get.back,
+            onPressed: () {
+              Get.back(result: 'Should reload');
+            },
           ),
           title: const Text(
             'Escoge materia para ser monitor',
@@ -393,11 +395,12 @@ class _ChooseClassToTutorState extends State<ChooseClassToTutor> {
                                           className: eachClass.className,
                                           isForTutoring: true,
                                           onPressedAccept: () {
-                                            Get..back()
-                                            ..toNamed(
-                                              '/enroll_monitor_home',
-                                              arguments: eachClass,
-                                            );
+                                            Get
+                                              ..back()
+                                              ..toNamed(
+                                                '/enroll_monitor_home',
+                                                arguments: eachClass,
+                                              );
                                           },
                                         ),
                                       ),

@@ -309,8 +309,13 @@ class _DashboardHomeState extends State<DashboardHome> {
                         description:
                             '''Inscribete como monitor de la materias que te hayan gustado''',
                         title: 'Apuntate para monitor!',
-                        onPressed: () {
-                          Get.toNamed('/choose_class_tutoring');
+                        onPressed: ()async {
+                          String shouldReload = '';
+                         shouldReload= await Get.toNamed('/choose_class_tutoring');
+                         if(shouldReload.isNotEmpty){
+                          setState(() {
+                          });
+                         }
                         },
                         backgroundColor: state.user.myClasses.isEmpty
                             ? Colors.ocean[5]

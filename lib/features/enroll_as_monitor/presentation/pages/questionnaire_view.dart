@@ -10,6 +10,9 @@ class CommonQuestionnaireView extends StatefulWidget {
 
 class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
   CarouselController carouselController = CarouselController();
+  TextEditingController controllerLastQuestion = TextEditingController();
+  String errorMessage = '';
+
   int questionnaireIndex = 0;
   late ClassModel classToApplyFor;
 
@@ -44,9 +47,7 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
     <String, dynamic>{
       'question':
           '''Por último, si nos quisieras contar un poco más de ti y tu experiencia, lo puedes hacer acá :DD''',
-      'answers': <String>[
-        '',
-      ],
+      'answers': <String>[],
     },
   ];
 
@@ -72,6 +73,8 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
     <int, String>{-1: ''},
     <int, String>{-1: ''},
   ];
+  List<Map<int, Map<int, String>>> listAnswersUpdated =
+      <Map<int, Map<int, String>>>[];
 
   @override
   Widget build(
@@ -93,63 +96,74 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
               color: Colors.white[0],
             ),
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              StepperChecks(
-                steps: 4,
-                currentStep: questionnaireIndex + 1,
-                activeColor: Colors.sunset[10]!,
-                inactiveColor: Colors.sunset[20]!,
-              ),
-              Spacing.spacingV32,
-              CarouselSlider(
-                carouselController: carouselController,
-                options: CarouselOptions(
-                  height: MediaQuery.of(context).size.height * 0.63,
-                  viewportFraction: 0.82,
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: false,
-                  scrollDirection: Axis.horizontal,
-                  onPageChanged: swipeChangedTap,
-                ),
-                items: <Widget>[
-                  ...questions.map(
-                    (Map<String, dynamic> question) => QuestionCard(
-                      question: question['question'],
-                      currentStep: questionnaireIndex,
-                      questionsLength: 4,
-                      answersLength: 5,
-                      color: Colors.sunset[40],
-                      indexAnswer:
-                          listAnswers[questions.indexOf(question)].keys.first,
-                      possibleAnswers: question['answers'],
-                      onChanged: (Map<int, String>? answer) {
-                        // indexSelected =answer?.keys.first??-1;
-                        setState(() {
-                          listAnswers.replaceRange(
-                            questions.indexOf(question),
-                            questions.indexOf(
-                              question,
-                            ),
-                            <Map<int, String>>[
-                              answer!,
-                            ],
-                          );
-                        });
-
-                        // viewModel
-                        //   ..onAnswerChanged(answer, index)
-                        carouselController
-                            .animateToPage(questionnaireIndex + 1);
-                      },
-                      // answer: state.answers?[index],
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                if (errorMessage.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: WarningMessage(
+                      isError: true,
+                      message: errorMessage,
+                      padding: 0,
                     ),
                   ),
-                ],
-                // items: questionCards,
-              ),
-            ],
+                StepperChecks(
+                  steps: 4,
+                  currentStep: questionnaireIndex + 1,
+                  activeColor: Colors.sunset[10]!,
+                  inactiveColor: Colors.sunset[20]!,
+                ),
+                Spacing.spacingV32,
+                CarouselSlider(
+                  carouselController: carouselController,
+                  options: CarouselOptions(
+                    height: MediaQuery.of(context).size.height * 0.63,
+                    viewportFraction: 0.82,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: false,
+                    scrollDirection: Axis.horizontal,
+                    onPageChanged: swipeChangedTap,
+                  ),
+                  items: <Widget>[
+                    ...questions.map(
+                      (Map<String, dynamic> question) => QuestionCard(
+                        question: question['question'],
+                        currentStep: questionnaireIndex,
+                        questionsLength: 4,
+                        answersLength: 5,
+                        color: Colors.sunset[40],
+                        controllerLastQuestion: controllerLastQuestion,
+                        indexAnswer:
+                            listAnswers[questions.indexOf(question)].keys.first,
+                        possibleAnswers: question['answers'],
+                        onChanged: (Map<int, String>? answer) {
+                          setState(() {
+                            listAnswers.replaceRange(
+                              questions.indexOf(question),
+                              questions.indexOf(
+                                question,
+                              ),
+                              <Map<int, String>>[
+                                answer!,
+                              ],
+                            );
+                            agregarRespuestaSinDuplicados(
+                                questions.indexOf(question), answer,);
+                          });
+                          carouselController
+                              .animateToPage(questionnaireIndex + 1);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.fromLTRB(
@@ -166,8 +180,16 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
                   replacement: Spacing.spacingV48,
                   child: GestureDetector(
                     onTap: () {
-                      Get.offAllNamed('/result_enrollment_page',
-                          arguments: classToApplyFor);
+                      listAnswersUpdated.length == 3 &&
+                              controllerLastQuestion.text.trim().isNotEmpty
+                          ? Get.offAllNamed(
+                              '/result_enrollment_page',
+                              arguments: classToApplyFor,
+                            )
+                          : setState(() {
+                              errorMessage =
+                                  '''Asegurate de llenar toda la información''';
+                            });
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -187,4 +209,34 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
           ),
         ),
       );
+
+  void agregarRespuestaSinDuplicados(
+    int preguntaIndice,
+    Map<int, String> respuesta,
+  ) {
+    bool claveExiste = listAnswersUpdated.any(
+      (
+        Map<int, Map<int, String>> mapaExistente,
+      ) =>
+          mapaExistente.containsKey(preguntaIndice),
+    );
+    if (claveExiste) {
+      setState(() {
+        int indiceRespuestaExistente = listAnswersUpdated.indexWhere(
+          (Map<int, Map<int, String>> mapaExistente) =>
+              mapaExistente.containsKey(preguntaIndice),
+        );
+
+        listAnswersUpdated[indiceRespuestaExistente] = <int, Map<int, String>>{
+          preguntaIndice: respuesta,
+        };
+      });
+    } else {
+      setState(() {
+        listAnswersUpdated.add(
+          <int, Map<int, String>>{preguntaIndice: respuesta},
+        );
+      });
+    }
+  }
 }

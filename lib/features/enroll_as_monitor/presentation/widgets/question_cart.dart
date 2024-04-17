@@ -9,13 +9,11 @@ class QuestionCard extends StatefulWidget {
     required this.color,
     required this.possibleAnswers,
     required this.onChanged,
+    required this.controllerLastQuestion,
     this.indexAnswer = -1,
-
-    // required this.answer,
     Key? key,
   }) : super(key: key);
 
-  // final RiskProfileQuestion question;
   final String question;
   final int currentStep;
   final int questionsLength;
@@ -24,7 +22,8 @@ class QuestionCard extends StatefulWidget {
   final List<String> possibleAnswers;
   final ValueChanged<Map<int, String>?> onChanged;
   final int? indexAnswer;
-  // final RiskProfileQuestionAnswer? answer;
+  final TextEditingController controllerLastQuestion ;
+   
 
   @override
   State<QuestionCard> createState() => _QuestionCardState();
@@ -69,36 +68,41 @@ class _QuestionCardState extends State<QuestionCard> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
-                      ...widget.possibleAnswers.map(
-                        (String eachAnswer) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: GestureDetector(
-                            onTap: () {
-                              widget.onChanged(
-                                <int, String>{
-                                  widget.possibleAnswers.indexOf(eachAnswer):
-                                      eachAnswer,
-                                },
-                              );
-                              setState(() {
-                                selectedIndex =
-                                    widget.possibleAnswers.indexOf(eachAnswer);
-                              });
-                            },
-                            child: AnswerTile(
-                              answerText: eachAnswer,
-                              colorTile: selectedIndex ==
-                                          (widget.possibleAnswers
-                                              .indexOf(eachAnswer)) ||
-                                      widget.indexAnswer ==
-                                          (widget.possibleAnswers
-                                              .indexOf(eachAnswer))
-                                  ? Colors.sunset[5]
-                                  : Colors.white[0],
+                      if (widget.possibleAnswers.isNotEmpty)
+                        ...widget.possibleAnswers.map(
+                          (String eachAnswer) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: GestureDetector(
+                              onTap: () {
+                                widget.onChanged(
+                                  <int, String>{
+                                    widget.possibleAnswers.indexOf(eachAnswer):
+                                        eachAnswer,
+                                  },
+                                );
+                                setState(() {
+                                  selectedIndex = widget.possibleAnswers
+                                      .indexOf(eachAnswer);
+                                });
+                              },
+                              child: AnswerTile(
+                                answerText: eachAnswer,
+                                colorTile: selectedIndex ==
+                                            (widget.possibleAnswers
+                                                .indexOf(eachAnswer)) ||
+                                        widget.indexAnswer ==
+                                            (widget.possibleAnswers
+                                                .indexOf(eachAnswer))
+                                    ? Colors.sunset[5]
+                                    : Colors.white[0],
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      if (widget.possibleAnswers.isEmpty)
+                        Input(
+                          controller: widget.controllerLastQuestion,
+                        ),
                     ],
                   ),
                 ),

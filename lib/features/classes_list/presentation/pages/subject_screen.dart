@@ -432,6 +432,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                   parameters: <String, String>{
                                     'className': eachClass.className,
                                   },
+                                  arguments: eachClass,
                                 );
                               },
                         isForDeleting: deletingClasses,

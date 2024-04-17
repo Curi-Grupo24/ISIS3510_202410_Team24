@@ -83,6 +83,7 @@ class HorizontalCardScroll extends StatelessWidget {
                           parameters: <String, String>{
                             'className': sortedCards[index].className,
                           },
+                          arguments: sortedCards[index],
                         );
                       },
                     ),

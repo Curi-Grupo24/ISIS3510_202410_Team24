@@ -24,6 +24,7 @@ migrate_working_dir/
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
+.dart_tool/*
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
@@ -79,6 +80,7 @@ unlinked_spec.ds
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Runner/GoogleService-info.plist
 # Symbolication related
 app.*.symbols
 

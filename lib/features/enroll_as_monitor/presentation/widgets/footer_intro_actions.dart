@@ -20,7 +20,7 @@ class _FooterActionsIntroEnroll extends State<FooterActionsIntroEnroll> {
         children: <Widget>[
           ElevatedButton(
             onPressed: () {
-              Get.toNamed('/choose_class_tutoring');
+              Get.toNamed('/enroll_questionnaire');
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(

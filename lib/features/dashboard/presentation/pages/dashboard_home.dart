@@ -14,6 +14,7 @@ class _DashboardHomeState extends State<DashboardHome> {
   DashboardBloc dashboardBloc = DashboardBloc();
   MyClassesBloc myClassesBloc = MyClassesBloc();
   MyTutorClassesBloc myTutorsClassesBloc = MyTutorClassesBloc();
+  List<ClassModel> myClassesList = <ClassModel>[];
   String username = '';
 
   @override
@@ -218,6 +219,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                             );
                           }
                           if (state is GetMyClassesSuccessfull) {
+                            myClassesList = state.listClasses;
                             return HorizontalCardScroll(
                               title: 'Mis materias',
                               onTapViewMore: () async {
@@ -309,13 +311,13 @@ class _DashboardHomeState extends State<DashboardHome> {
                         description:
                             '''Inscribete como monitor de la materias que te hayan gustado''',
                         title: 'Apuntate para monitor!',
-                        onPressed: ()async {
+                        onPressed: () async {
                           String shouldReload = '';
-                         shouldReload= await Get.toNamed('/choose_class_tutoring');
-                         if(shouldReload.isNotEmpty){
-                          setState(() {
-                          });
-                         }
+                          shouldReload =
+                              await Get.toNamed('/choose_class_tutoring', arguments: myClassesList);
+                          if (shouldReload.isNotEmpty) {
+                            setState(() {});
+                          }
                         },
                         backgroundColor: state.user.myClasses.isEmpty
                             ? Colors.ocean[5]

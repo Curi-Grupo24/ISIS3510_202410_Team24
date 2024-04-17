@@ -19,8 +19,10 @@ class _ChooseClassToTutorState extends State<ChooseClassToTutor> {
   TextEditingController? controller = TextEditingController();
   FetchSubjectBloc fetchClassBloc = FetchSubjectBloc();
   List<ClassModel> classList = <ClassModel>[];
+  List<ClassModel> myClassesList = <ClassModel>[];
   String responseToadd = '';
   String errorResponse = '';
+  String errorMessageToAdd = '';
   int count = 0;
 
   void updatePossibleCarreers() {
@@ -189,6 +191,7 @@ class _ChooseClassToTutorState extends State<ChooseClassToTutor> {
     filterType = 'Tipo';
     filterSemester = 'Semestre';
     fetchClassBloc.add(const FetchAllClases());
+    myClassesList = Get.arguments;
     super.initState();
   }
 
@@ -266,6 +269,15 @@ class _ChooseClassToTutorState extends State<ChooseClassToTutor> {
                           child: WarningMessage(
                             isError: true,
                             message: errorResponse,
+                            padding: 0,
+                          ),
+                        ),
+                      if (errorMessageToAdd.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: WarningMessage(
+                            isError: true,
+                            message: errorMessageToAdd,
                             padding: 0,
                           ),
                         ),
@@ -395,12 +407,25 @@ class _ChooseClassToTutorState extends State<ChooseClassToTutor> {
                                           className: eachClass.className,
                                           isForTutoring: true,
                                           onPressedAccept: () {
-                                            Get
-                                              ..back()
-                                              ..toNamed(
-                                                '/enroll_monitor_home',
-                                                arguments: eachClass,
-                                              );
+                                            if (!myClassesList.any(
+                                              (ClassModel classInMyList) =>
+                                                  classInMyList.uid ==
+                                                  eachClass.uid,
+                                            )) {
+                                              Get
+                                                ..back()
+                                                ..toNamed(
+                                                  '/enroll_monitor_home',
+                                                  arguments: eachClass,
+                                                );
+                                            }
+                                            else {
+                                              setState(() {
+                                                errorMessageToAdd =
+                                                    '''No puedes ser monitor de una clase de la que eres estudiante''';
+                                              });
+                                              Get.back();
+                                            }
                                           },
                                         ),
                                       ),

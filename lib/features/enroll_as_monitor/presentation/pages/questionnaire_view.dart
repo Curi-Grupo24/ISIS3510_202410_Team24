@@ -11,7 +11,9 @@ class CommonQuestionnaireView extends StatefulWidget {
 class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
   CarouselController carouselController = CarouselController();
   TextEditingController controllerLastQuestion = TextEditingController();
+  EnrollTutorBloc enrollClassTutorBloc = EnrollTutorBloc();
   String errorMessage = '';
+  String errorResponseBloc = '';
 
   int questionnaireIndex = 0;
   late ClassModel classToApplyFor;
@@ -97,72 +99,117 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
             ),
           ),
           body: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                if (errorMessage.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    child: WarningMessage(
-                      isError: true,
-                      message: errorMessage,
-                      padding: 0,
-                    ),
-                  ),
-                StepperChecks(
-                  steps: 4,
-                  currentStep: questionnaireIndex + 1,
-                  activeColor: Colors.sunset[10]!,
-                  inactiveColor: Colors.sunset[20]!,
-                ),
-                Spacing.spacingV32,
-                CarouselSlider(
-                  carouselController: carouselController,
-                  options: CarouselOptions(
-                    height: MediaQuery.of(context).size.height * 0.63,
-                    viewportFraction: 0.82,
-                    enlargeCenterPage: true,
-                    enableInfiniteScroll: false,
-                    scrollDirection: Axis.horizontal,
-                    onPageChanged: swipeChangedTap,
-                  ),
-                  items: <Widget>[
-                    ...questions.map(
-                      (Map<String, dynamic> question) => QuestionCard(
-                        question: question['question'],
-                        currentStep: questionnaireIndex,
-                        questionsLength: 4,
-                        answersLength: 5,
-                        color: Colors.sunset[40],
-                        controllerLastQuestion: controllerLastQuestion,
-                        indexAnswer:
-                            listAnswers[questions.indexOf(question)].keys.first,
-                        possibleAnswers: question['answers'],
-                        onChanged: (Map<int, String>? answer) {
-                          setState(() {
-                            listAnswers.replaceRange(
-                              questions.indexOf(question),
-                              questions.indexOf(
-                                question,
-                              ),
-                              <Map<int, String>>[
-                                answer!,
-                              ],
-                            );
-                            agregarRespuestaSinDuplicados(
-                                questions.indexOf(question), answer,);
-                          });
-                          carouselController
-                              .animateToPage(questionnaireIndex + 1);
-                        },
+            child: BlocListener<EnrollTutorBloc, EnrollTutorState>(
+              bloc: enrollClassTutorBloc,
+              listener: (BuildContext context, EnrollTutorState state) async {
+                if (state is EnrollTutorError) {
+                  Get.back();
+                  setState(() {
+                    errorResponseBloc = state.errorMessage;
+                  });
+                } else if (state is EnrollTutorLoading) {
+                  await showDialog(
+                    context: context,
+                    builder: (BuildContext ctx) => SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: SpinKitRotatingCircle(
+                        color: Colors.sunset[20],
+                        size: 50,
                       ),
                     ),
-                  ],
-                ),
-              ],
+                  );
+                }
+                if (state is EnrollTutorSuccessfull) {
+                  errorResponseBloc = '';
+                  Get.back();
+                  await Get.offAllNamed(
+                    '/result_enrollment_page',
+                    arguments: classToApplyFor,
+                  );
+                }
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  if (errorMessage.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: WarningMessage(
+                        isError: true,
+                        message: errorMessage,
+                        padding: 0,
+                      ),
+                    ),
+                  if (errorResponseBloc.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: WarningMessage(
+                        isError: true,
+                        message: errorResponseBloc,
+                        padding: 0,
+                      ),
+                    ),
+                  StepperChecks(
+                    steps: 4,
+                    currentStep: questionnaireIndex + 1,
+                    activeColor: Colors.sunset[10]!,
+                    inactiveColor: Colors.sunset[20]!,
+                  ),
+                  Spacing.spacingV32,
+                  CarouselSlider(
+                    carouselController: carouselController,
+                    options: CarouselOptions(
+                      height: MediaQuery.of(context).size.height * 0.63,
+                      viewportFraction: 0.82,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: false,
+                      scrollDirection: Axis.horizontal,
+                      onPageChanged: swipeChangedTap,
+                    ),
+                    items: <Widget>[
+                      ...questions.map(
+                        (Map<String, dynamic> question) => QuestionCard(
+                          question: question['question'],
+                          currentStep: questionnaireIndex,
+                          questionsLength: 4,
+                          answersLength: 5,
+                          color: Colors.sunset[40],
+                          controllerLastQuestion: controllerLastQuestion,
+                          indexAnswer: listAnswers[questions.indexOf(question)]
+                              .keys
+                              .first,
+                          possibleAnswers: question['answers'],
+                          onChanged: (Map<int, String>? answer) {
+                            setState(() {
+                              listAnswers.replaceRange(
+                                questions.indexOf(question),
+                                questions.indexOf(
+                                  question,
+                                ),
+                                <Map<int, String>>[
+                                  answer!,
+                                ],
+                              );
+                              agregarRespuestaSinDuplicados(
+                                questions.indexOf(question),
+                                answer,
+                              );
+                            });
+                            carouselController
+                                .animateToPage(questionnaireIndex + 1);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           bottomNavigationBar: Padding(
@@ -182,9 +229,12 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
                     onTap: () {
                       listAnswersUpdated.length == 3 &&
                               controllerLastQuestion.text.trim().isNotEmpty
-                          ? Get.offAllNamed(
-                              '/result_enrollment_page',
-                              arguments: classToApplyFor,
+                          ? enrollClassTutorBloc.add(
+                              EnroolToAClass(
+                                answersList: listAnswersUpdated,
+                                classToAdd: classToApplyFor,
+                                lastAnswer: controllerLastQuestion.text,
+                              ),
                             )
                           : setState(() {
                               errorMessage =

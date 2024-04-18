@@ -25,6 +25,10 @@ import 'features/dashboard/domain/usecases/get_user_info.dart';
 import 'features/dashboard/presentation/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'features/dashboard/presentation/bloc/my_classes/my_classes_bloc.dart';
 import 'features/dashboard/presentation/bloc/my_tutor_classes/my_tutor_classes_bloc.dart';
+import 'features/enroll_as_monitor/data/repositories/enroll_tutor_repository_impl.dart';
+import 'features/enroll_as_monitor/domain/repositories/enroll_tutor_repository.dart';
+import 'features/enroll_as_monitor/domain/usecases/enroll_tutor_usecase.dart';
+import 'features/enroll_as_monitor/presentation/bloc/enroll_bloc/enroll_tutor_bloc.dart';
 import 'features/profile_user/data/respositories/profile_repository_impl.dart';
 import 'features/profile_user/domain/repositories/profile_repository.dart';
 import 'features/profile_user/domain/usecases/get_user_info.dart';
@@ -63,6 +67,9 @@ void init() {
   sl.registerLazySingleton<MyTutorClassesBloc>(
     () => MyTutorClassesBloc(),
   );
+  sl.registerLazySingleton<EnrollTutorBloc>(
+    () => EnrollTutorBloc(),
+  );
 
   //Use Cases
   sl.registerLazySingleton(
@@ -95,6 +102,9 @@ void init() {
   sl.registerLazySingleton(
     () => GetMyTutorClassesUseCase(repository: sl()),
   );
+  sl.registerLazySingleton(
+    () => EnrollTutorUseCase(repository: sl()),
+  );
 
   //Repositories
   sl.registerLazySingleton<AuthRepository>(
@@ -123,7 +133,11 @@ void init() {
 
   sl.registerLazySingleton<ProfileRepository>(
     () => ProfileRepositoryImpl(
-
+        // datasource: sl(),
+        ),
+  );
+  sl.registerLazySingleton<EnrollTutorRepository>(
+    () => EnrollTutorRepositoryImpl(
         // datasource: sl(),
         ),
   );

@@ -10,7 +10,13 @@ class CommonQuestionnaireView extends StatefulWidget {
 
 class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
   CarouselController carouselController = CarouselController();
+  TextEditingController controllerLastQuestion = TextEditingController();
+  EnrollTutorBloc enrollClassTutorBloc = EnrollTutorBloc();
+  String errorMessage = '';
+  String errorResponseBloc = '';
+
   int questionnaireIndex = 0;
+  late ClassModel classToApplyFor;
 
   List<Map<String, dynamic>> questions = <Map<String, dynamic>>[
     <String, dynamic>{
@@ -42,10 +48,8 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
     },
     <String, dynamic>{
       'question':
-          '''Por ultimo, si nos quisieras contar un poco más de ti y tu experiencia, lo puedes hacer acá :DD''',
-      'answers': <String>[
-        '',
-      ],
+          '''Por último, si nos quisieras contar un poco más de ti y tu experiencia, lo puedes hacer acá :DD''',
+      'answers': <String>[],
     },
   ];
 
@@ -57,6 +61,22 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
       carouselController.animateToPage(1);
     }
   }
+
+  @override
+  void initState() {
+    classToApplyFor = Get.arguments;
+    super.initState();
+  }
+
+  int indexSelected = 0;
+  List<Map<int, String>> listAnswers = <Map<int, String>>[
+    <int, String>{-1: ''},
+    <int, String>{-1: ''},
+    <int, String>{-1: ''},
+    <int, String>{-1: ''},
+  ];
+  List<Map<int, Map<int, String>>> listAnswersUpdated =
+      <Map<int, Map<int, String>>>[];
 
   @override
   Widget build(
@@ -78,47 +98,119 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
               color: Colors.white[0],
             ),
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              StepperChecks(
-                steps: 4,
-                currentStep:  questionnaireIndex + 1,
-                activeColor: Colors.sunset[10]!,
-                inactiveColor: Colors.sunset[20]!,
-              ),
-              Spacing.spacingV32,
-              CarouselSlider(
-                carouselController: carouselController,
-                options: CarouselOptions(
-                  height: MediaQuery.of(context).size.height * 0.63,
-                  viewportFraction: 0.82,
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: false,
-                  scrollDirection: Axis.horizontal,
-                  onPageChanged: swipeChangedTap,
-                ),
-                items: <Widget>[
-                  ...questions.map(
-                    (Map<String, dynamic> question) => QuestionCard(
-                      question: question['question'],
-                      currentStep: questionnaireIndex,
-                      questionsLength: 4,
-                      answersLength: 5,
-                      color: Colors.sunset[40],
-                      possibleAnswers: question['answers'],
-                      onChanged: (String? answer) {
-                        // viewModel
-                        //   ..onAnswerChanged(answer, index)
-                        carouselController.animateToPage(questionnaireIndex+1);
-                      },
-                      // answer: state.answers?[index],
+          body: SingleChildScrollView(
+            child: BlocListener<EnrollTutorBloc, EnrollTutorState>(
+              bloc: enrollClassTutorBloc,
+              listener: (BuildContext context, EnrollTutorState state) async {
+                if (state is EnrollTutorError) {
+                  Get.back();
+                  setState(() {
+                    errorResponseBloc = state.errorMessage;
+                  });
+                } else if (state is EnrollTutorLoading) {
+                  await showDialog(
+                    context: context,
+                    builder: (BuildContext ctx) => SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: SpinKitRotatingCircle(
+                        color: Colors.sunset[20],
+                        size: 50,
+                      ),
                     ),
+                  );
+                }
+                if (state is EnrollTutorSuccessfull) {
+                  errorResponseBloc = '';
+                  Get.back();
+                  await Get.offAllNamed(
+                    '/result_enrollment_page',
+                    arguments: classToApplyFor,
+                  );
+                }
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  if (errorMessage.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: WarningMessage(
+                        isError: true,
+                        message: errorMessage,
+                        padding: 0,
+                      ),
+                    ),
+                  if (errorResponseBloc.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: WarningMessage(
+                        isError: true,
+                        message: errorResponseBloc,
+                        padding: 0,
+                      ),
+                    ),
+                  StepperChecks(
+                    steps: 4,
+                    currentStep: questionnaireIndex + 1,
+                    activeColor: Colors.sunset[10]!,
+                    inactiveColor: Colors.sunset[20]!,
+                  ),
+                  Spacing.spacingV32,
+                  CarouselSlider(
+                    carouselController: carouselController,
+                    options: CarouselOptions(
+                      height: MediaQuery.of(context).size.height * 0.63,
+                      viewportFraction: 0.82,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: false,
+                      scrollDirection: Axis.horizontal,
+                      onPageChanged: swipeChangedTap,
+                    ),
+                    items: <Widget>[
+                      ...questions.map(
+                        (Map<String, dynamic> question) => QuestionCard(
+                          question: question['question'],
+                          currentStep: questionnaireIndex,
+                          questionsLength: 4,
+                          answersLength: 5,
+                          color: Colors.sunset[40],
+                          controllerLastQuestion: controllerLastQuestion,
+                          indexAnswer: listAnswers[questions.indexOf(question)]
+                              .keys
+                              .first,
+                          possibleAnswers: question['answers'],
+                          onChanged: (Map<int, String>? answer) {
+                            setState(() {
+                              listAnswers.replaceRange(
+                                questions.indexOf(question),
+                                questions.indexOf(
+                                  question,
+                                ),
+                                <Map<int, String>>[
+                                  answer!,
+                                ],
+                              );
+                              agregarRespuestaSinDuplicados(
+                                questions.indexOf(question),
+                                answer,
+                              );
+                            });
+                            carouselController
+                                .animateToPage(questionnaireIndex + 1);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ],
-                // items: questionCards,
               ),
-            ],
+            ),
           ),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.fromLTRB(
@@ -135,7 +227,19 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
                   replacement: Spacing.spacingV48,
                   child: GestureDetector(
                     onTap: () {
-                      // viewModel.evaluate();
+                      listAnswersUpdated.length == 3 &&
+                              controllerLastQuestion.text.trim().isNotEmpty
+                          ? enrollClassTutorBloc.add(
+                              EnroolToAClass(
+                                answersList: listAnswersUpdated,
+                                classToAdd: classToApplyFor,
+                                lastAnswer: controllerLastQuestion.text,
+                              ),
+                            )
+                          : setState(() {
+                              errorMessage =
+                                  '''Asegurate de llenar toda la información''';
+                            });
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -155,4 +259,34 @@ class _CommonQuestionnaireViewState extends State<CommonQuestionnaireView> {
           ),
         ),
       );
+
+  void agregarRespuestaSinDuplicados(
+    int preguntaIndice,
+    Map<int, String> respuesta,
+  ) {
+    bool claveExiste = listAnswersUpdated.any(
+      (
+        Map<int, Map<int, String>> mapaExistente,
+      ) =>
+          mapaExistente.containsKey(preguntaIndice),
+    );
+    if (claveExiste) {
+      setState(() {
+        int indiceRespuestaExistente = listAnswersUpdated.indexWhere(
+          (Map<int, Map<int, String>> mapaExistente) =>
+              mapaExistente.containsKey(preguntaIndice),
+        );
+
+        listAnswersUpdated[indiceRespuestaExistente] = <int, Map<int, String>>{
+          preguntaIndice: respuesta,
+        };
+      });
+    } else {
+      setState(() {
+        listAnswersUpdated.add(
+          <int, Map<int, String>>{preguntaIndice: respuesta},
+        );
+      });
+    }
+  }
 }

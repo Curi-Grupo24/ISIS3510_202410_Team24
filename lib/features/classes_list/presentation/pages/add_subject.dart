@@ -12,17 +12,23 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
   List<String> possibleCarreers = <String>[];
   List<String> possibleTypes = <String>[];
   List<String> possibleSemesters = <String>[];
-  List<Map<String, dynamic>> classListFiltered = <Map<String, dynamic>>[];
+  List<ClassModel> classListFiltered = <ClassModel>[];
   String filterCarreer = '';
   String filterType = '';
   String filterSemester = '';
   TextEditingController? controller = TextEditingController();
+  FetchSubjectBloc fetchClassBloc = FetchSubjectBloc();
+  AddClassBloc addClassBloc = AddClassBloc();
+  List<ClassModel> classList = <ClassModel>[];
+  String responseToadd = '';
+  String errorResponse = '';
+  int count = 0;
 
   void updatePossibleCarreers() {
     List<String> updatedList = <String>[];
-    for (Map<String, dynamic> element in classList) {
-      if (!updatedList.contains(element['career'])) {
-        updatedList.add(element['career']);
+    for (ClassModel element in classList) {
+      if (!updatedList.contains(element.career)) {
+        updatedList.add(element.career);
       }
     }
     setState(() {
@@ -32,9 +38,11 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
 
   void updatePossibleClassType() {
     List<String> updatedList = <String>[];
-    for (Map<String, dynamic> element in classList) {
-      if (element['type'] != null && !updatedList.contains(element['type'])) {
-        updatedList.add(element['type']);
+    for (ClassModel element in classList) {
+      if (element.type != null &&
+          element.type!.isNotEmpty &&
+          !updatedList.contains(element.type)) {
+        updatedList.add(element.type!);
       }
     }
     setState(() {
@@ -44,8 +52,8 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
 
   void updatePossibleSemester() {
     List<String> updatedList = <String>[];
-    for (Map<String, dynamic> element in classList) {
-      for (String classSemester in element['semester']) {
+    for (ClassModel element in classList) {
+      for (String classSemester in element.semester) {
         if (!updatedList.contains(classSemester)) {
           updatedList.add(classSemester);
         }
@@ -61,7 +69,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
       filterCarreer = text;
       classListFiltered = classListFiltered
           .where(
-            (Map<String, dynamic> eachClass) => eachClass['career'] == text,
+            (ClassModel eachClass) => eachClass.career == text,
           )
           .toList();
     });
@@ -72,7 +80,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
       filterType = text;
       classListFiltered = classListFiltered
           .where(
-            (Map<String, dynamic> eachClass) => eachClass['type'] == text,
+            (ClassModel eachClass) => eachClass.type == text,
           )
           .toList();
     });
@@ -83,8 +91,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
       filterSemester = text;
       classListFiltered = classListFiltered
           .where(
-            (Map<String, dynamic> eachClass) =>
-                eachClass['semester'].contains(text),
+            (ClassModel eachClass) => eachClass.semester.contains(text),
           )
           .toList();
     });
@@ -103,8 +110,8 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
       if ((controller?.text.isNotEmpty ?? false) && value.isNotEmpty) {
         classListFiltered = classListFiltered
             .where(
-              (Map<String, dynamic> eachClass) =>
-                  eachClass['className'].toLowerCase().contains(
+              (ClassModel eachClass) =>
+                  eachClass.className.toLowerCase().contains(
                         value.toLowerCase(),
                       ),
             )
@@ -182,10 +189,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
     filterCarreer = 'Carrera';
     filterType = 'Tipo';
     filterSemester = 'Semestre';
-    classListFiltered = classList;
-    updatePossibleCarreers();
-    updatePossibleClassType();
-    updatePossibleSemester();
+    fetchClassBloc.add(const FetchAllClases());
     super.initState();
   }
 
@@ -199,7 +203,9 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
               Icons.arrow_back_ios,
               color: Color(0xFFF3962E),
             ),
-            onPressed: Get.back,
+            onPressed: () {
+              Get.back(result: 'should rebuild');
+            },
           ),
           title: const Text(
             'Añade materias',
@@ -211,161 +217,249 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SearchInput(
-                hintText: 'Name',
-                controller: controller,
-                onChangedController: (String value) {
-                  updateFilterDef();
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Text(
-                  'Filtrar por',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.gray[90],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 8,
-                  top: 8,
-                  bottom: 16,
-                ),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: <Widget>[
-                      SortButton(
-                        text: filterCarreer,
-                        onPressed: () {
-                          showModalStatesToFilter(
-                            possibleCarreers, 'select_carreer'.tr,
-                            parentAction: (String value) {
-                              setState(() {
-                                filterCarreer = value;
-                              });
-                              updateFilterDef();
-                            },
-                            //  _updateCarreerFilter,
-                          );
-                        },
-                        crossEnabled: filterCarreer != 'Carrera',
-                        onCrossTapped: () {
-                          setState(() {
-                            filterCarreer = 'Carrera';
-                            // classListFiltered = classList;
-                          });
-                          updateFilterDef();
-                          // filterListToShow();
-                        },
-                      ),
-                      SortButton(
-                        text: filterType,
-                        onPressed: () {
-                          showModalStatesToFilter(
-                            possibleTypes, 'Escoge el tipo de la materia'.tr,
-                            parentAction: (String value) {
-                              setState(() {
-                                filterType = value;
-                              });
-                              updateFilterDef();
-                            },
-                            // _updateTypeFilter,
-                          );
-                        },
-                        crossEnabled: filterType != 'Tipo',
-                        onCrossTapped: () {
-                          setState(() {
-                            filterType = 'Tipo';
-                            // classListFiltered = classList;
-                          });
-                          updateFilterDef();
-                
-                          // filterListToShow();
-                        },
-                      ),
-                      SortButton(
-                        text: filterSemester,
-                        onPressed: () {
-                          showModalStatesToFilter(
-                            possibleSemesters, 'Escoge el semestre'.tr,
-                            parentAction: (String value) {
-                              setState(() {
-                                filterSemester = value;
-                              });
-                              updateFilterDef();
-                            },
-                            // _updateSemesterFilter,
-                          );
-                        },
-                        crossEnabled: filterSemester != 'Semestre',
-                        onCrossTapped: () {
-                          setState(() {
-                            filterSemester = 'Semestre';
-                          });
-                          updateFilterDef();
-                
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Column(
-                children: <Widget>[
-                  ...classListFiltered.map(
-                    (Map<String, dynamic> eachClass) => SubjectCard(
-                      subjectTitle: eachClass['className'],
-                      profesor: eachClass['career'],
-                      type: eachClass['type'],
-                      image: eachClass['image'],
-                      time:
-                          '''${eachClass['semester'].length > 1 ? 'Semestre mixto: ' : ''}${eachClass['semester'].length > 1 ? semestersNumbers(
-                              eachClass['semester'],
-                            ) : eachClass['semester'][0]}''',
-                      onTap: () async {
-                        await showDialog(
-                          context: context,
-                          builder: (BuildContext ctx) => SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            child: ModalCase(
-                              'Añadir materia',
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                ),
-                                child: AddClassesModal(
-                                  className: eachClass['className'],
-                                  onPressedAccept: () {
-                                    //
-                                    Get.back();
-                                  },
-                                ),
-                              ),
-                              height: 200,
+        body: BlocListener<FetchSubjectBloc, FetchSubjectState>(
+          bloc: fetchClassBloc,
+          listener: (BuildContext context, FetchSubjectState state) {
+            if (state is FetchAllClasesSuccessful) {
+              setState(() {
+                classList = state.classesList;
+                if (count < 1) {
+                  classListFiltered = classList;
+                  count++;
+                }
+              });
+              updatePossibleCarreers();
+              updatePossibleClassType();
+              updatePossibleSemester();
+            }
+          },
+          child: BlocBuilder<FetchSubjectBloc, FetchSubjectState>(
+            bloc: fetchClassBloc,
+            builder: (BuildContext context, FetchSubjectState state) {
+              if (state is FetchClassError) {
+                return Column(
+                  children: <Widget>[
+                    WarningMessage(
+                      isError: true,
+                      message: state.errorMessage,
+                      padding: 0,
+                    ),
+                  ],
+                );
+              }
+              if (state is FetchAllClasesSuccessful) {
+                return BlocListener<AddClassBloc, AddClassState>(
+                  bloc: addClassBloc,
+                  listener: (BuildContext context, AddClassState state) async {
+                    if (state is AddSubjectLoading) {
+                      await showDialog(
+                        context: context,
+                        builder: (BuildContext ctx) => SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          child: SpinKitRotatingCircle(
+                            color: Colors.sunset[20],
+                            size: 50,
+                          ),
+                        ),
+                      );
+                    }
+                    if (state is AddSubjectError) {
+                      setState(() {
+                        responseToadd = '';
+                        errorResponse = state.errorMessage;
+                      });
+                      Get.back();
+                    }
+                    if (state is AddSubjectSuccessfull) {
+                      setState(() {
+                        responseToadd = state.successMessage;
+                        errorResponse = '';
+                      });
+                      Get.back();
+                    }
+                  },
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        if (responseToadd.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: WarningMessage(
+                              isSuccess: true,
+                              message: responseToadd,
+                              padding: 0,
                             ),
                           ),
-                        );
-                      },
-                      isForAdding: true,
+                        if (errorResponse.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: WarningMessage(
+                              isError: true,
+                              message: errorResponse,
+                              padding: 0,
+                            ),
+                          ),
+                        SearchInput(
+                          hintText: 'Name',
+                          controller: controller,
+                          onChangedController: (String value) {
+                            updateFilterDef();
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Text(
+                            'Filtrar por',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.gray[90],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 8,
+                            top: 8,
+                            bottom: 16,
+                          ),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: <Widget>[
+                                SortButton(
+                                  text: filterCarreer,
+                                  onPressed: () {
+                                    showModalStatesToFilter(
+                                      possibleCarreers,
+                                      'select_carreer'.tr,
+                                      parentAction: (String value) {
+                                        setState(() {
+                                          filterCarreer = value;
+                                        });
+                                        updateFilterDef();
+                                      },
+                                    );
+                                  },
+                                  crossEnabled: filterCarreer != 'Carrera',
+                                  onCrossTapped: () {
+                                    setState(() {
+                                      filterCarreer = 'Carrera';
+                                    });
+                                    updateFilterDef();
+                                  },
+                                ),
+                                SortButton(
+                                  text: filterType,
+                                  onPressed: () {
+                                    showModalStatesToFilter(
+                                      possibleTypes,
+                                      'Escoge el tipo de la materia'.tr,
+                                      parentAction: (String value) {
+                                        setState(() {
+                                          filterType = value;
+                                        });
+                                        updateFilterDef();
+                                      },
+                                    );
+                                  },
+                                  crossEnabled: filterType != 'Tipo',
+                                  onCrossTapped: () {
+                                    setState(() {
+                                      filterType = 'Tipo';
+                                    });
+                                    updateFilterDef();
+                                  },
+                                ),
+                                SortButton(
+                                  text: filterSemester,
+                                  onPressed: () {
+                                    showModalStatesToFilter(
+                                      possibleSemesters,
+                                      'Escoge el semestre'.tr,
+                                      parentAction: (String value) {
+                                        setState(() {
+                                          filterSemester = value;
+                                        });
+                                        updateFilterDef();
+                                      },
+                                    );
+                                  },
+                                  crossEnabled: filterSemester != 'Semestre',
+                                  onCrossTapped: () {
+                                    setState(() {
+                                      filterSemester = 'Semestre';
+                                    });
+                                    updateFilterDef();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Column(
+                          children: <Widget>[
+                            ...classListFiltered.map(
+                              (ClassModel eachClass) => SubjectCard(
+                                subjectTitle: eachClass.className,
+                                profesor: eachClass.career,
+                                type: eachClass.type,
+                                image: eachClass.image,
+                                time:
+                                    '''${eachClass.semester.length > 1 ? 'Semestre mixto: ' : ''}${eachClass.semester.length > 1 ? semestersNumbers(
+                                        eachClass.semester,
+                                      ) : eachClass.semester[0]}''',
+                                onTap: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (BuildContext ctx) => SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      child: ModalCase(
+                                        'Añadir materia',
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          child: AddClassesModal(
+                                            className: eachClass.className,
+                                            onPressedAccept: () {
+                                              addClassBloc.add(
+                                                AddAClass(
+                                                  classToAdd: eachClass,
+                                                ),
+                                              );
+                                              Get.back();
+                                            },
+                                          ),
+                                        ),
+                                        height: 200,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                isForAdding: true,
+                              ),
+                            ),
+                            if (classListFiltered.isEmpty)
+                              const WarningMessage(
+                                message: 'No hay clases para este filtro',
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: 56),
+                      ],
                     ),
                   ),
-                  if (classListFiltered.isEmpty)
-                    const WarningMessage(
-                      message: 'No hay clases para este filtro',
-                    ),
-                ],
-              ),
-              const SizedBox(height: 56),
-            ],
+                );
+              } else {
+                return SpinKitRotatingCircle(
+                  color: Colors.sunset[20],
+                  size: 50,
+                );
+              }
+            },
           ),
         ),
       );
@@ -471,53 +565,4 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
           ],
         ),
       );
-
-  List<Map<String, dynamic>> classList = <Map<String, dynamic>>[
-    <String, dynamic>{
-      'className': 'Probabilidad & Estadistica 1',
-      'career': 'Ingeniería industrial',
-      'image': 'assets/images/image_asset1.png',
-      'semester': <String>[
-        'Segundo Semestre',
-        'Tercer Semestre',
-        'Cuarto Semestre',
-      ],
-    },
-    <String, dynamic>{
-      'className': 'Analisis de decisión e inversión',
-      'career': 'Ingeniería industrial',
-      'image': 'assets/images/image_asset2.png',
-      'semester': <String>[
-        'Segundo Semestre',
-        'Tercer Semestre',
-        'Cuarto Semestre',
-      ],
-    },
-    <String, dynamic>{
-      'className': 'Diseño y analisis de algoritmos',
-      'career': 'Ingeniería de sistemas',
-      'image': 'assets/images/image_asset4.png',
-      'semester': <String>[
-        'Cuarto Semestre',
-      ],
-    },
-    <String, dynamic>{
-      'className': 'El ciclo de Macondo',
-      'career': 'Literatura',
-      'image': 'assets/images/image_asset6.png',
-      'type': 'Tipo E',
-      'semester': <String>[
-        'Cuarto Semestre',
-      ],
-    },
-    <String, dynamic>{
-      'className': 'Tecnologías de la información',
-      'career': 'Ingeniería de sistemas',
-      'image': 'assets/images/image_asset6.png',
-      'type': 'Tipo E',
-      'semester': <String>[
-        'Cuarto Semestre',
-      ],
-    },
-  ];
 }

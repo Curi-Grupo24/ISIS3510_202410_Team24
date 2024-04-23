@@ -17,8 +17,12 @@ class UserModel {
         email: json['email'] ?? '',
         carreer: json['career'] ?? '',
         studentCode: json['studentCode'] ?? '',
-        myClasses: json['myClasses'] ??<String>[],
-        myTutorsClasses: json['myTutorsClasses'] ??<String>[],
+        myClasses: (json['myClasses']  as List<dynamic>?) 
+            ?.cast<String>() 
+            ?? const <String>[],
+        myTutorsClasses: (json['myTutorClasses']  as List<dynamic>?) 
+            ?.cast<String>() 
+            ?? const <String>[], 
       );
 
   final String email;

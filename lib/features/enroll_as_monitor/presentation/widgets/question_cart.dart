@@ -5,33 +5,35 @@ class QuestionCard extends StatefulWidget {
     required this.answersLength,
     required this.questionsLength,
     required this.currentStep,
-    // required this.question,
+    required this.question,
     required this.color,
-    // required this.onChanged,
-    // required this.answer,
+    required this.possibleAnswers,
+    required this.onChanged,
+    required this.controllerLastQuestion,
+    this.indexAnswer = -1,
     Key? key,
   }) : super(key: key);
 
-  // final RiskProfileQuestion question;
+  final String question;
   final int currentStep;
   final int questionsLength;
   final int answersLength;
   final Color? color;
-  // final ValueChanged<RiskProfileQuestionAnswer?> onChanged;
-  // final RiskProfileQuestionAnswer? answer;
+  final List<String> possibleAnswers;
+  final ValueChanged<Map<int, String>?> onChanged;
+  final int? indexAnswer;
+  final TextEditingController controllerLastQuestion ;
+   
 
   @override
   State<QuestionCard> createState() => _QuestionCardState();
 }
 
 class _QuestionCardState extends State<QuestionCard> {
-  late num selectedIndex;
+  late num selectedIndex = -1;
   @override
   void initState() {
-    // int? indexAnswer = widget.question.answers?.indexWhere(
-    //   (RiskProfileQuestionAnswer ans) => ans.score == widget.answer?.score,
-    // );
-    // selectedIndex = indexAnswer ?? -1;
+    selectedIndex = -1;
     super.initState();
   }
 
@@ -56,8 +58,7 @@ class _QuestionCardState extends State<QuestionCard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                '¿Cuál es tu experiencia en la materia que deseas monitorizar?'
-                    .tr,
+                widget.question.tr,
                 key: const Key('current_question_label'),
                 style: Headings.h6.copyWith(color: Colors.white[0]),
                 textAlign: TextAlign.center,
@@ -67,79 +68,44 @@ class _QuestionCardState extends State<QuestionCard> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          // widget.onChanged(widget.question.answers?[index]);
-                          // selectedIndex = index;
-                        },
-                        child: AnswerTile(
-                          answerText:
-                              '''Tengo un conocimiento profundo y saqué excelentes calificaciones en cursos relacionados.''',
-                          colorTile: Colors.white[0],
+                      if (widget.possibleAnswers.isNotEmpty)
+                        ...widget.possibleAnswers.map(
+                          (String eachAnswer) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: GestureDetector(
+                              onTap: () {
+                                widget.onChanged(
+                                  <int, String>{
+                                    widget.possibleAnswers.indexOf(eachAnswer):
+                                        eachAnswer,
+                                  },
+                                );
+                                setState(() {
+                                  selectedIndex = widget.possibleAnswers
+                                      .indexOf(eachAnswer);
+                                });
+                              },
+                              child: AnswerTile(
+                                answerText: eachAnswer,
+                                colorTile: selectedIndex ==
+                                            (widget.possibleAnswers
+                                                .indexOf(eachAnswer)) ||
+                                        widget.indexAnswer ==
+                                            (widget.possibleAnswers
+                                                .indexOf(eachAnswer))
+                                    ? Colors.sunset[5]
+                                    : Colors.white[0],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      Spacing.spacingV12,
-                      GestureDetector(
-                        onTap: () {
-                          // widget.onChanged(widget.question.answers?[index]);
-                          // selectedIndex = index;
-                        },
-                        child: AnswerTile(
-                          answerText:
-                              '''Tengo un conocimiento básico de la materia y he aprobado los cursos relacionados.''',
-                          colorTile: Colors.sunset[5],
+                      if (widget.possibleAnswers.isEmpty)
+                        Input(
+                          controller: widget.controllerLastQuestion,
                         ),
-                      ),
-                      Spacing.spacingV12,
-                
-                      GestureDetector(
-                        onTap: () {
-                          // widget.onChanged(widget.question.answers?[index]);
-                          // selectedIndex = index;
-                        },
-                        child: AnswerTile(
-                          answerText:
-                              '''No tengo experiencia formal en la materia, pero estoy dispuesto a aprender y ayudar a los demás.''',
-                          colorTile: Colors.white[0],
-                        ),
-                      ),
-                      Spacing.spacingV12,
-                      GestureDetector(
-                        onTap: () {
-                          // widget.onChanged(widget.question.answers?[index]);
-                          // selectedIndex = index;
-                        },
-                        child: AnswerTile(
-                          answerText:
-                              'No he sido monitor, quisiera serlo.',
-                          colorTile: Colors.white[0],
-                        ),
-                      ),
-
                     ],
                   ),
                 ),
-
-                // ListView.separated(
-                //   shrinkWrap: true,
-                //   physics: const ClampingScrollPhysics(),
-                //   itemBuilder: (BuildContext context, int index) =>
-                //       GestureDetector(
-                //     onTap: () {
-                //       // widget.onChanged(widget.question.answers?[index]);
-                //       // selectedIndex = index;
-                //     },
-                //     child: AnswerTile(
-                //       answerText:
-                //           'widget.question.answers?[index].response ?? ',
-                //       colorTile:
-                //           index == selectedIndex ? Colors.sunset[5] : null,
-                //     ),
-                //   ),
-                //   separatorBuilder: (BuildContext context, int index) =>
-                //       Spacing.spacingV16,
-                //   itemCount: widget.answersLength,
-                // ),
               ),
               Spacing.spacingV32,
               Text(
@@ -175,7 +141,6 @@ class AnswerTile extends StatelessWidget {
             answerText ?? '',
             textAlign: TextAlign.center,
             style: Paragraphs.small.copyWith(color: Colors.gray[80]),
-            
           ),
         ),
       );

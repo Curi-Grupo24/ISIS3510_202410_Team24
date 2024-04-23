@@ -2,8 +2,10 @@ part of com.curi.app.enrollasmonitor.widgets;
 
 class FooterActionsIntroEnroll extends StatefulWidget {
   const FooterActionsIntroEnroll({
+    required this.classToApplyFor,
     Key? key,
   }) : super(key: key);
+  final ClassModel classToApplyFor;
 
   @override
   State<FooterActionsIntroEnroll> createState() => _FooterActionsIntroEnroll();
@@ -20,7 +22,7 @@ class _FooterActionsIntroEnroll extends State<FooterActionsIntroEnroll> {
         children: <Widget>[
           ElevatedButton(
             onPressed: () {
-              Get.toNamed('/enroll_questionnaire');
+              Get.toNamed('/enroll_questionnaire', arguments: widget.classToApplyFor);
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(
@@ -46,17 +48,6 @@ class _FooterActionsIntroEnroll extends State<FooterActionsIntroEnroll> {
           ),
 
           Spacing.spacingV12,
-          // Button(
-          //   buttonType: ButtonType.primary,
-          //   text: 'friendly_risk_profiling.intro.later'.tr(),
-          //   color: Colors.white[0],
-          //   textColor: Colors.meadown[20],
-          //   borderColor: Colors.meadown[20],
-          //   onPressed: () async {
-          //     await ref.read(navigation.notifier).navToDashboard();
-          //   },
-          //   fitWidth: true,
-          // ),
           Spacing.spacingV12,
         ],
       );

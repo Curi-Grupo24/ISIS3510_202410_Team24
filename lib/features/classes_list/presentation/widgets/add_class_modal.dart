@@ -5,17 +5,21 @@ class AddClassesModal extends StatelessWidget {
     required this.className,
     required this.onPressedAccept,
     this.deletingClasses = false,
+    this.isForTutoring = false,
     super.key,
   });
   final String className;
   final void Function()? onPressedAccept;
   final bool deletingClasses;
+  final bool isForTutoring;
 
   @override
   Widget build(BuildContext context) => Column(
         children: <Widget>[
           Text(
-            '''Estás seguro de ${deletingClasses ? 'eliminar' : 'añadir'} $className a tu lista de materias?''',
+            !isForTutoring
+                ? '''Estás seguro de ${deletingClasses ? 'eliminar' : 'añadir'} $className a tu lista de materias?'''
+                : '''Estás seguro de aplicar como monitor de $className? ''',
             style: TextStyle(
               color: Colors.gray[80],
             ),

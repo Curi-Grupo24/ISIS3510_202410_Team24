@@ -29,7 +29,7 @@ class WarningMessage extends StatelessWidget {
                     : Colors.sunset[5],
             dense: true,
             leading: Icon(
-             isSuccess? Icons.mail : Icons.warning_amber_rounded,
+             isSuccess ? Icons.mail : Icons.warning_amber_rounded,
               color: isError
                   ? Colors.blooming[30]
                   : isSuccess
@@ -41,7 +41,7 @@ class WarningMessage extends StatelessWidget {
               child: Text(
                 message,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                   color: Colors.gray[80],
                 ),

@@ -10,7 +10,7 @@ class ChatHomeViewDashboard extends StatefulWidget {
 }
 
 class _ChatHomeViewDashboardState extends State<ChatHomeViewDashboard> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) => Scaffold(
         body: _buildUserList(),

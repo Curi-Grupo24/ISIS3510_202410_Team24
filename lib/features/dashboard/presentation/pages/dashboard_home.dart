@@ -291,7 +291,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                           }
                           if (state is GetMyTutorClassesSuccessfull) {
                             return HorizontalCardScroll(
-                              title: 'En las  que soy monitor',
+                              title: 'En las que soy monitor',
                               onTapViewMore: () {
                                 // Get.toNamed('/choose_class_tutoring');
                               },

@@ -162,6 +162,27 @@ class _ScheduleHomeState extends State<ScheduleHome> {
                       color: Color(0xFF111007),
                     ),
                   ),
+                  Column(
+                    children: <Widget>[
+                      EventCardCalendarDashboard(
+                        eventGuest: 'Boris Reyes',
+                        eventHours: '3:30 p.m - 4:30 p.m',
+                        eventLocation: 'Discord',
+                        titleEvent: 'Monitoría Eda'.tr,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: UILayout.medium,
+                  ),
+                  Text(
+                    'Recordatorios'.tr,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xFF111007),
+                    ),
+                  ),
                 ],
               ),
             ),

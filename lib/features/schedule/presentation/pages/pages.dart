@@ -8,6 +8,8 @@ import '../../../../core/constants/dates_constants.dart';
 import '../../../../core/ui/colors_brand.dart';
 import '../../../../core/ui/layout.dart';
 import '../../../class_flow/presentation/widgets/widgets.dart';
+import '../../../common_widgets/widgets.dart';
+import '../widgets/widgets.dart';
 
 part './schedule_home.dart';
 part './schedule_register.dart';

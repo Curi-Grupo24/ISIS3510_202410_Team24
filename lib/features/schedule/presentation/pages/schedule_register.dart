@@ -10,6 +10,8 @@ class ScheduleRegister extends StatefulWidget {
 class _ScheduleRegisterState extends State<ScheduleRegister> {
   bool isSelectedDate = false;
   int selectedIndex = 0;
+  String endTime = '';
+  String initilTime = '';
   TextEditingController eventNameController = TextEditingController();
   Map<String, String> selectedDate = <String, String>{
     'day': '''${diasSemana[DateTime.now().weekday]}''',
@@ -138,6 +140,130 @@ class _ScheduleRegisterState extends State<ScheduleRegister> {
                   const SizedBox(
                     height: UILayout.medium,
                   ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Inicio'.tr,
+                              style: TextStyle(
+                                color: Colors.gray[90],
+                                fontSize: 18,
+                              ),
+                            ),
+                            Center(
+                              child: GestureDetector(
+                                onTap: () async {
+                                  TimeOfDay? selectedTime =
+                                      await showTimePicker(
+                                    initialTime: TimeOfDay.now(),
+                                    initialEntryMode:
+                                        TimePickerEntryMode.inputOnly,
+                                    context: context,
+                                  );
+                                  setState(() {
+                                    initilTime = selectedTime
+                                        .toString()
+                                        .replaceAll(
+                                          'TimeOfDay(',
+                                          '',
+                                        )
+                                        .replaceAll(
+                                          ')',
+                                          '',
+                                        );
+                                  });
+                                },
+                                child: Card(
+                                  elevation: 0,
+                                  color: Colors.gray[20],
+                                  child: Column(
+                                    children: <Widget>[
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        initilTime.isEmpty
+                                            ? 'Hora inicial'
+                                            : initilTime,
+                                        style: TextStyle(
+                                          color: Colors.gray[90],
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                        width: double.infinity,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Final'.tr,
+                              style: TextStyle(
+                                color: Colors.gray[90],
+                                fontSize: 18,
+                              ),
+                            ),
+                            Center(
+                              child: GestureDetector(
+                                onTap: () async {
+                                  TimeOfDay? selectedTime =
+                                      await showTimePicker(
+                                    initialTime: TimeOfDay.now(),
+                                    initialEntryMode:
+                                        TimePickerEntryMode.inputOnly,
+                                    context: context,
+                                  );
+                                  setState(() {
+                                    endTime = selectedDate.toString();
+                                  });
+                                },
+                                child: Card(
+                                  elevation: 0,
+                                  color: Colors.gray[20],
+                                  child: Column(
+                                    children: <Widget>[
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        'hora'.tr,
+                                        style: TextStyle(
+                                          color: Colors.gray[90],
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                        width: double.infinity,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: UILayout.medium,
+                  ),
                   Text(
                     'Nombre del evento'.tr,
                     style: const TextStyle(
@@ -233,18 +359,17 @@ class _ScheduleRegisterState extends State<ScheduleRegister> {
                     controller: eventNameController,
                     suffix: const Icon(Icons.edit),
                     hintText: 'Notas adicionales...',
-                    maxLines: 5,
+                    maxLines: 3,
+                  ),
+                  const SizedBox(
+                    height: UILayout.medium,
                   ),
                   SunsetButton(
-                    text: 'text',
-                    onPressed: () {
-                      Future<TimeOfDay?> selectedTime = showTimePicker(
-                        initialTime: TimeOfDay.now(),
-                        initialEntryMode: TimePickerEntryMode.inputOnly,
-                        context: context,
-                        
-                      );
-                    },
+                    text: 'Aceptar',
+                    onPressed: () {},
+                  ),
+                  const SizedBox(
+                    height: UILayout.medium,
                   ),
                 ],
               ),

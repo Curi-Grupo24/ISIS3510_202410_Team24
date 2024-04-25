@@ -363,6 +363,17 @@ class _ClassDashboardState extends State<ClassDashboard> {
               ),
               child: SunsetButton(
                 text: 'Iniciar chat'.tr,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => ChatPage(
+                        receiverUserEmail: tutor.email ?? '',
+                        receiverUserID: tutor.uid ?? '',
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ],

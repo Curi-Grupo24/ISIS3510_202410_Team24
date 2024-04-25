@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 import '../../../../core/ui/colors_brand.dart';
 import '../../../../core/ui/layout.dart';
-import '../../../auth/data/models/user_model.dart';
+import '../../../chats/presentation/pages/pages.dart';
 import '../../../classes_list/data/models/class_model.dart';
 import '../../../classes_list/presentation/widgets/widgets.dart';
 import '../../../common_widgets/widgets.dart';

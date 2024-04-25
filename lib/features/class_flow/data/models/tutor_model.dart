@@ -2,6 +2,8 @@ class TutorModel {
   TutorModel({
     required this.name,
     this.rate = '',
+    this.uid = '',
+    this.email = '',
     this.price = '',
     this.description = '',
     this.tutoringClasses = const <String>[],
@@ -11,6 +13,8 @@ class TutorModel {
   factory TutorModel.fromJson(Map<String, dynamic> json) => TutorModel(
         name: json['name'] as String,
         rate: json['rate'] ?? '',
+        uid: json['uid'] ?? '',
+        email: json['email'] ?? '',
         price: json['career'] ?? '',
         description: json['description'] ?? '',
         tutoringClasses:
@@ -22,6 +26,8 @@ class TutorModel {
 
   final String name;
   final String? rate;
+  final String? uid;
+  final String? email;
   final String? price;
   final String? description;
   final List<String> tutoringClasses;

@@ -125,7 +125,7 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                         child: const SizedBox(
                           width: 80,
                           height: 90,
-                          child:  CircleAvatar(
+                          child: CircleAvatar(
                             radius: 120,
                             backgroundImage: NetworkImage(
                               'https://picsum.photos/id/237/200/300',
@@ -195,7 +195,7 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                       ),
                       child: FavTutorsCard(
                         name: tutor.name,
-                        rate: tutor.rate??'',
+                        rate: tutor.rate ?? '',
                         image: 'https://picsum.photos/id/237/200/300',
                         onTap: () {
                           tutorModalDetail(
@@ -247,7 +247,7 @@ class _FindTutorsViewState extends State<FindTutorsView> {
               ),
               child: MonitorCardDetail(
                 name: name,
-                tutor: tutor ,
+                tutor: tutor,
               ),
             ),
             const SizedBox(
@@ -263,6 +263,17 @@ class _FindTutorsViewState extends State<FindTutorsView> {
               ),
               child: SunsetButton(
                 text: 'Iniciar chat'.tr,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => ChatPage(
+                        receiverUserEmail: tutor.email ?? '',
+                        receiverUserID: tutor.uid ?? '',
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ],

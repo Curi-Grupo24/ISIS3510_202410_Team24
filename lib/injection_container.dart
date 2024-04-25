@@ -35,6 +35,7 @@ import 'features/profile_user/domain/usecases/get_user_info.dart';
 import 'features/profile_user/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'features/schedule/data/repositories/schedule_repository_impl.dart';
 import 'features/schedule/domain/repositories/schedule_repository.dart';
+import 'features/schedule/domain/usecases/register_event_usecase.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -104,6 +105,9 @@ void init() {
   );
   sl.registerLazySingleton(
     () => EnrollTutorUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton(
+    () => RegisterEventUseCase(repository: sl()),
   );
 
   //Repositories

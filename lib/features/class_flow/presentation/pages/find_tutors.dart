@@ -13,6 +13,7 @@ class _FindTutorsViewState extends State<FindTutorsView> {
   TextEditingController? controller = TextEditingController();
   String filterRating = 'Calificación';
   String filterPrice = 'Precio';
+  List<TutorModel> tutorsList = <TutorModel>[];
 
   List<int> listTutors = <int>[
     1,
@@ -55,6 +56,7 @@ class _FindTutorsViewState extends State<FindTutorsView> {
     super.initState();
     className = Get.parameters['className'] ?? '';
     type = Get.parameters['type'] ?? 'none';
+    tutorsList = Get.arguments['tutors'];
   }
 
   @override
@@ -110,19 +112,20 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                     child: ListView.separated(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: listTutors.length,
+                      itemCount: tutorsList.length,
                       itemBuilder: (BuildContext context, int index) =>
                           GestureDetector(
                         onTap: () {
                           tutorModalDetail(
                             context,
-                            name: 'Nombre',
+                            name: tutorsList[index].name,
+                            tutor: tutorsList[index],
                           );
                         },
                         child: const SizedBox(
                           width: 80,
                           height: 90,
-                          child:  CircleAvatar(
+                          child: CircleAvatar(
                             radius: 120,
                             backgroundImage: NetworkImage(
                               'https://picsum.photos/id/237/200/300',
@@ -185,19 +188,20 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                   const SizedBox(
                     height: UILayout.medium,
                   ),
-                  ...favTutorsList.map(
-                    (Map<String, dynamic> tutor) => Padding(
+                  ...tutorsList.map(
+                    (TutorModel tutor) => Padding(
                       padding: const EdgeInsets.only(
                         bottom: UILayout.medium,
                       ),
                       child: FavTutorsCard(
-                        name: tutor['name'],
-                        rate: tutor['rate'],
-                        image: tutor['image'],
+                        name: tutor.name,
+                        rate: tutor.rate ?? '',
+                        image: 'https://picsum.photos/id/237/200/300',
                         onTap: () {
                           tutorModalDetail(
                             context,
-                            name: tutor['name'],
+                            name: tutor.name,
+                            tutor: tutor,
                           );
                         },
                       ),
@@ -212,6 +216,7 @@ class _FindTutorsViewState extends State<FindTutorsView> {
   Future<dynamic> tutorModalDetail(
     BuildContext context, {
     required String name,
+    required TutorModel tutor,
   }) =>
       showModalBottomSheet(
         context: context,
@@ -242,6 +247,7 @@ class _FindTutorsViewState extends State<FindTutorsView> {
               ),
               child: MonitorCardDetail(
                 name: name,
+                tutor: tutor,
               ),
             ),
             const SizedBox(
@@ -257,6 +263,17 @@ class _FindTutorsViewState extends State<FindTutorsView> {
               ),
               child: SunsetButton(
                 text: 'Iniciar chat'.tr,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => ChatPage(
+                        receiverUserEmail: tutor.email ?? '',
+                        receiverUserID: tutor.uid ?? '',
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ],

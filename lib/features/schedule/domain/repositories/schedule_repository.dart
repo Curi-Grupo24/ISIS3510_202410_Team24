@@ -1,6 +1,7 @@
+import 'package:dartz/dartz.dart';
+
 abstract class ScheduleRepository {
-  Future<String> addSchedule(
-    String uid,
+  Future<Either<String, String>> addSoloSchedule(
     Map<String, dynamic> addedschedule,
   );
   Future<Map<String, dynamic>?> getSchedule(String uid);

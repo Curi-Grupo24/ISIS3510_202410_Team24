@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../../injection_container.dart';
-import '../../../../auth/data/models/user_model.dart';
+import '../../../data/models/tutor_model.dart';
 import '../../../domain/usecases/get_dashboard_class_info.dart';
 
 part 'class_dashboard_event.dart';
@@ -25,7 +25,7 @@ class ClassDashboardBloc
               errorMessage: l,
             ),
           ),
-          (List<UserModel> r) {
+          (List<TutorModel> r) {
             emit(
               GetDashboardInfoSuccessful(
                 tutorsList: r,

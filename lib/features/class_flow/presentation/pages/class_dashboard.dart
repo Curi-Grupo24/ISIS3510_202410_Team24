@@ -94,18 +94,19 @@ class _ClassDashboardState extends State<ClassDashboard> {
                       ),
                       if (state.tutorsList.isNotEmpty)
                         ...state.tutorsList.map(
-                          (UserModel tutor) => Padding(
+                          (TutorModel tutor) => Padding(
                             padding: const EdgeInsets.only(
                               bottom: UILayout.medium,
                             ),
                             child: FavTutorsCard(
-                              name: tutor.name!,
-                              rate: '4,5',
+                              name: tutor.name,
+                              rate: tutor.rate ?? '',
                               image: 'https://picsum.photos/id/237/200/300',
                               onTap: () {
                                 tutorModalDetail(
                                   context,
-                                  name: tutor.name!,
+                                  name: tutor.name,
+                                  tutor: tutor,
                                 );
                               },
                             ),
@@ -149,6 +150,9 @@ class _ClassDashboardState extends State<ClassDashboard> {
                                   'className': className,
                                   'type': 'none',
                                 },
+                                arguments: <String, dynamic>{
+                                  'tutors': state.tutorsList,
+                                },
                               );
                             },
                             child: Text(
@@ -174,6 +178,9 @@ class _ClassDashboardState extends State<ClassDashboard> {
                                     'className': className,
                                     'type': 'prices',
                                   },
+                                  arguments: <String, dynamic>{
+                                  'tutors': state.tutorsList,
+                                },
                                 );
                               },
                               child: DecoratedBox(
@@ -228,6 +235,9 @@ class _ClassDashboardState extends State<ClassDashboard> {
                                     'className': className,
                                     'type': 'rating',
                                   },
+                                  arguments: <String, dynamic>{
+                                  'tutors': state.tutorsList,
+                                },
                                 );
                               },
                               child: DecoratedBox(
@@ -306,6 +316,7 @@ class _ClassDashboardState extends State<ClassDashboard> {
   Future<dynamic> tutorModalDetail(
     BuildContext context, {
     required String name,
+    required TutorModel tutor,
   }) =>
       showModalBottomSheet(
         context: context,
@@ -336,6 +347,7 @@ class _ClassDashboardState extends State<ClassDashboard> {
               ),
               child: MonitorCardDetail(
                 name: name,
+                tutor: tutor,
               ),
             ),
             const SizedBox(

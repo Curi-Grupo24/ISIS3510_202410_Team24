@@ -15,7 +15,7 @@ class GetDashboardError extends ClassDashboardState {
 }
 class GetDashboardInfoSuccessful extends ClassDashboardState {
   const GetDashboardInfoSuccessful({required this.tutorsList});
-  final List<UserModel> tutorsList;
+  final List<TutorModel> tutorsList;
 }
 
 class GetDashboardLoading extends ClassDashboardState {

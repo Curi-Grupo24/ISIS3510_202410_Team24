@@ -7,6 +7,7 @@ import '../../../../core/constants/dates_constants.dart';
 import '../../../../core/ui/colors_brand.dart';
 import '../../../../core/ui/constants.dart';
 import '../../../../core/ui/layout.dart';
+import '../../data/models/tutor_model.dart';
 
 part './date_card_button.dart';
 part './important_dates_widget.dart';

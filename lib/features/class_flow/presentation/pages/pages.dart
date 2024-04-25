@@ -11,6 +11,7 @@ import '../../../auth/data/models/user_model.dart';
 import '../../../classes_list/data/models/class_model.dart';
 import '../../../classes_list/presentation/widgets/widgets.dart';
 import '../../../common_widgets/widgets.dart';
+import '../../data/models/tutor_model.dart';
 import '../bloc/class_dashboard/class_dashboard_bloc.dart';
 import '../widgets/widgets.dart';
 

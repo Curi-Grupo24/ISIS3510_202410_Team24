@@ -10,6 +10,10 @@ import 'features/auth/domain/usecases/register_account.dart';
 import 'features/auth/presentation/bloc/forgot_password_bloc/forgot_password_bloc.dart';
 import 'features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'features/auth/presentation/bloc/register_bloc/register_bloc.dart';
+import 'features/class_flow/data/repositories/class_flow_repository_impl.dart';
+import 'features/class_flow/domain/repositories/class_flow_repository.dart';
+import 'features/class_flow/domain/usecases/get_dashboard_class_info.dart';
+import 'features/class_flow/presentation/bloc/class_dashboard/class_dashboard_bloc.dart';
 import 'features/classes_list/data/repositories/classes_repository_impl.dart';
 import 'features/classes_list/domain/repositories/classes_repository.dart';
 import 'features/classes_list/domain/usecases/add_class_usecase.dart';
@@ -71,6 +75,9 @@ void init() {
   sl.registerLazySingleton<EnrollTutorBloc>(
     () => EnrollTutorBloc(),
   );
+  sl.registerLazySingleton<ClassDashboardBloc>(
+    () => ClassDashboardBloc(),
+  );
 
   //Use Cases
   sl.registerLazySingleton(
@@ -109,6 +116,9 @@ void init() {
   sl.registerLazySingleton(
     () => RegisterEventUseCase(repository: sl()),
   );
+  sl.registerLazySingleton(
+    () => FetchDashbaordClassInfoUseCase(repository: sl()),
+  );
 
   //Repositories
   sl.registerLazySingleton<AuthRepository>(
@@ -142,6 +152,11 @@ void init() {
   );
   sl.registerLazySingleton<EnrollTutorRepository>(
     () => EnrollTutorRepositoryImpl(
+        // datasource: sl(),
+        ),
+  );
+  sl.registerLazySingleton<ClassFlowRepository>(
+    () => ClassFlowRepositoryImpl(
         // datasource: sl(),
         ),
   );

@@ -13,41 +13,10 @@ class _FindTutorsViewState extends State<FindTutorsView> {
   TextEditingController? controller = TextEditingController();
   String filterRating = 'Calificación';
   String filterPrice = 'Precio';
-
-  List<int> listTutors = <int>[
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-  ];
-
-  List<Map<String, dynamic>> favTutorsList = <Map<String, dynamic>>[
-    <String, dynamic>{
-      'name': 'Juan',
-      'rate': '4,5',
-      'price': '15000 /h',
-      'image': 'https://picsum.photos/id/237/200/300',
-      'description': '',
-      'tutoringClasses': <String>[
-        'Probabilidad y Estadistica',
-      ],
-    },
-    <String, dynamic>{
-      'name': 'Alexa',
-      'rate': '4,7',
-      'price': '30.000 /h',
-      'image': 'https://picsum.photos/id/237/200/300',
-      'description': '',
-      'tutoringClasses': <String>[
-        'Probabilidad y Estadistica',
-        'Calculo diferencial',
-      ],
-    }
+  List<TutorModel> tutorsList = <TutorModel>[];
+  List<String> possibleFiltersStates = <String>[
+    'Menor a mayor',
+    'Mayor a menor',
   ];
 
   @override
@@ -55,6 +24,7 @@ class _FindTutorsViewState extends State<FindTutorsView> {
     super.initState();
     className = Get.parameters['className'] ?? '';
     type = Get.parameters['type'] ?? 'none';
+    tutorsList = Get.arguments['tutors'];
   }
 
   @override
@@ -110,19 +80,20 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                     child: ListView.separated(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: listTutors.length,
+                      itemCount: tutorsList.length,
                       itemBuilder: (BuildContext context, int index) =>
                           GestureDetector(
                         onTap: () {
                           tutorModalDetail(
                             context,
-                            name: 'Nombre',
+                            name: tutorsList[index].name,
+                            tutor: tutorsList[index],
                           );
                         },
                         child: const SizedBox(
                           width: 80,
                           height: 90,
-                          child:  CircleAvatar(
+                          child: CircleAvatar(
                             radius: 120,
                             backgroundImage: NetworkImage(
                               'https://picsum.photos/id/237/200/300',
@@ -164,20 +135,54 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: <Widget>[
+                        if (filterRating != 'Calificación') Text('Calificación'),
                         SortButton(
-                          text: 'Calificación',
-                          onPressed: () {},
+                          text: filterRating,
+                          onPressed: () {
+                            showModalStatesToFilter(
+                              possibleFiltersStates,
+                              'Escoge el filtro de Calificación'.tr,
+                              parentAction: (String value) {
+                                setState(() {
+                                  filterRating = value;
+                                });
+                                // updateFilterDef();
+                              },
+                            );
+                          },
                           crossEnabled: filterRating != 'Calificación',
-                          onCrossTapped: () {},
+                          onCrossTapped: () {
+                            setState(() {
+                              filterRating = 'Calificación';
+                            });
+                            // updateFilterDef();
+                          },
                         ),
                         const SizedBox(
                           width: UILayout.small,
                         ),
+                        if (filterPrice != 'Precio') Text('Precio'),
                         SortButton(
-                          text: 'Precio',
-                          onPressed: () {},
+                          text: filterPrice,
+                          onPressed: () {
+                            showModalStatesToFilter(
+                              possibleFiltersStates,
+                              'Escoge el filtro de Precio'.tr,
+                              parentAction: (String value) {
+                                setState(() {
+                                  filterPrice = value;
+                                });
+                                // updateFilterDef();
+                              },
+                            );
+                          },
                           crossEnabled: filterPrice != 'Precio',
-                          onCrossTapped: () {},
+                          onCrossTapped: () {
+                            setState(() {
+                              filterPrice = 'Precio';
+                            });
+                            // updateFilterDef();
+                          },
                         ),
                       ],
                     ),
@@ -185,19 +190,21 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                   const SizedBox(
                     height: UILayout.medium,
                   ),
-                  ...favTutorsList.map(
-                    (Map<String, dynamic> tutor) => Padding(
+                  ...tutorsList.map(
+                    (TutorModel tutor) => Padding(
                       padding: const EdgeInsets.only(
                         bottom: UILayout.medium,
                       ),
                       child: FavTutorsCard(
-                        name: tutor['name'],
-                        rate: tutor['rate'],
-                        image: tutor['image'],
+                        name: tutor.name,
+                        rate: tutor.rate ?? '',
+                        price: tutor.price ?? '',
+                        image: 'https://picsum.photos/id/237/200/300',
                         onTap: () {
                           tutorModalDetail(
                             context,
-                            name: tutor['name'],
+                            name: tutor.name,
+                            tutor: tutor,
                           );
                         },
                       ),
@@ -212,6 +219,7 @@ class _FindTutorsViewState extends State<FindTutorsView> {
   Future<dynamic> tutorModalDetail(
     BuildContext context, {
     required String name,
+    required TutorModel tutor,
   }) =>
       showModalBottomSheet(
         context: context,
@@ -242,6 +250,7 @@ class _FindTutorsViewState extends State<FindTutorsView> {
               ),
               child: MonitorCardDetail(
                 name: name,
+                tutor: tutor,
               ),
             ),
             const SizedBox(
@@ -257,6 +266,119 @@ class _FindTutorsViewState extends State<FindTutorsView> {
               ),
               child: SunsetButton(
                 text: 'Iniciar chat'.tr,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => ChatPage(
+                        receiverUserEmail: tutor.email ?? '',
+                        receiverUserID: tutor.uid ?? '',
+                        tutorModel: tutor,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+  Future<dynamic> showModalStatesToFilter(
+    List<String> possibleFilters,
+    String titleModal, {
+    required ValueChanged<String> parentAction,
+  }) =>
+      showModalBottomSheet(
+        backgroundColor: Colors.white[0],
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(19),
+          ),
+        ),
+        context: context,
+        builder: (BuildContext context) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 20,
+                  ),
+                  child: Text(
+                    titleModal,
+                    style: TextStyle(
+                      color: Colors.gray[90],
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: IconButton(
+                    iconSize: 18,
+                    onPressed: Get.back,
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.gray[90],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(height: 1),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    ...possibleFilters.map(
+                      (String carreersState) => SizedBox(
+                        width: double.infinity,
+                        child: TextButton(
+                          onPressed: () {
+                            parentAction(carreersState);
+                            Get.back();
+                          },
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(
+                                  MaterialState.pressed,
+                                )) {
+                                  return Colors.sunset[50]!;
+                                } else {
+                                  return Colors.white[0]!;
+                                }
+                              },
+                            ),
+                          ),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 16,
+                              ),
+                              child: Text(
+                                carreersState,
+                                style: TextStyle(
+                                  color: Colors.gray[90],
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 18,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

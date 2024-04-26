@@ -94,7 +94,9 @@ class _ProfileUserState extends State<ProfileUser> {
               Icons.arrow_back_ios,
               color: Color(0xFFF3962E),
             ),
-            onPressed: Get.back,
+            onPressed: () {
+              Get.back(result: 'should rebuild');
+            },
           ),
           title: const Text(
             'Perfil',
@@ -156,15 +158,15 @@ class _ProfileUserState extends State<ProfileUser> {
                                             ),
                                           )
                                         : SizedBox(
-                                          height: UILayout.xlarge,
-                                          width: UILayout.xlarge,
-                                          child: CircleAvatar(
-                                            radius: UILayout.xlarge,
-                                            child: Image.file(
-                                              File(photo!.path),
+                                            height: UILayout.xlarge,
+                                            width: UILayout.xlarge,
+                                            child: CircleAvatar(
+                                              radius: UILayout.xlarge,
+                                              child: Image.file(
+                                                File(photo!.path),
+                                              ),
                                             ),
                                           ),
-                                        ),
                                   ),
                                 ),
                                 Text(

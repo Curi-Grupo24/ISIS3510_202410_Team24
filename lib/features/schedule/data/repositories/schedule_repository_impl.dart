@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 import '../../domain/repositories/schedule_repository.dart';
 
@@ -6,18 +9,24 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   ScheduleRepositoryImpl();
 
   @override
-  Future<String> addSchedule(
-    String uid,
+  Future<Either<String, String>> addSoloSchedule(
     Map<String, dynamic> addedschedule,
   ) async {
     try {
+      FirebaseAuth _auth = FirebaseAuth.instance;
+      String uid = _auth.currentUser?.uid ?? '';
+      addedschedule.addAll(<String, dynamic>{'uid': uid});
       await FirebaseFirestore.instance
           .collection('schedule')
-          .doc(uid)
+          .doc()
           .set(addedschedule);
-      return 'Se pudo agregar schedule';
+      return Right<String, String>(
+        'Se Agregó correctamente a tu calendario'.tr,
+      );
     } catch (e) {
-      return 'No se pudo agregar schedule';
+      return Left<String, String>(
+        'No se pudo agendar tu schedule'.tr,
+      );
     }
   }
 

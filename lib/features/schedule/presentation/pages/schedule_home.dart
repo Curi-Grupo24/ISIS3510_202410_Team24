@@ -101,17 +101,13 @@ class _ScheduleHomeState extends State<ScheduleHome> {
                       itemCount: daysOffTheWeek.length,
                       itemBuilder: (BuildContext context, int index) {
                         String day =
-                            '''${diasSemana[((DateTime.now().weekday + index - 1) % 7 + 1)]}''';
-                        DateTime now = DateTime.now();
-                        int currentMonth = now.month;
-                        int nextMonth = currentMonth + 1;
-                        int nextYear =
-                            currentMonth == 1 ? now.year + 1 : now.year;
-                        int daysInnextMonth =
-                            DateTime(nextYear, nextMonth + 1, 0).day;
-                        String number =
-                            '''${DateTime.now().day + index == 0 ? daysInnextMonth : DateTime.now().day + index}''';
-                        bool isSelected = selectedIndex == index;
+                              '''${diasSemana[((DateTime.now().weekday + index - 1) % 7 + 1)]}''';
+                          DateTime now = DateTime.now();
+                          int actualDay = (DateTime.now().day + index - 1) %
+                                  DateTime(now.year, now.month + 1, 0).day +
+                              1;
+                          String number = actualDay.toString();
+                          bool isSelected = selectedIndex == index;
                         return Padding(
                           padding: EdgeInsets.only(
                             left: index == 0 ? UILayout.medium : 0,
@@ -156,6 +152,27 @@ class _ScheduleHomeState extends State<ScheduleHome> {
                   ),
                   Text(
                     '''Horario de ${selectedDate['number'] == '${DateTime.now().day}' ? 'hoy' : '${selectedDate['day']} ${selectedDate['number']}'}''',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xFF111007),
+                    ),
+                  ),
+                  Column(
+                    children: <Widget>[
+                      EventCardCalendarDashboard(
+                        eventGuest: 'Boris Reyes',
+                        eventHours: '3:30 p.m - 4:30 p.m',
+                        eventLocation: 'Discord',
+                        titleEvent: 'Monitoría Eda'.tr,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: UILayout.medium,
+                  ),
+                  Text(
+                    'Recordatorios'.tr,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,

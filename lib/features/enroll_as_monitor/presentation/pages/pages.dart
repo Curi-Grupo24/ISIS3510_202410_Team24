@@ -17,8 +17,10 @@ import '../../../classes_list/presentation/bloc/fetch_subject/fetch_subject_bloc
 import '../../../classes_list/presentation/widgets/widgets.dart';
 import '../../../common_widgets/widgets.dart';
 import '../../../profile_user/presentation/widgets/modal_case.dart';
+import '../bloc/enroll_bloc/enroll_tutor_bloc.dart';
 import '../widgets/widgets.dart';
 
 part './enroll_home.dart';
 part './questionnaire_view.dart';
 part './first_question_view.dart';
+part './result_view.dart';

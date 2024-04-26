@@ -9,9 +9,11 @@ class OnbordingView extends StatefulWidget {
 }
 
 class _OnbordingViewStateCL extends State<OnbordingView> {
+  late ClassModel applyingClass;
   @override
   void initState() {
     super.initState();
+    applyingClass = Get.arguments;
   }
 
   @override
@@ -105,7 +107,9 @@ class _OnbordingViewStateCL extends State<OnbordingView> {
                       ),
                     ),
                     Spacing.spacingV32,
-                    const FooterActionsIntroEnroll(),
+                    FooterActionsIntroEnroll(
+                      classToApplyFor: applyingClass,
+                    ),
                   ],
                 ),
               ),

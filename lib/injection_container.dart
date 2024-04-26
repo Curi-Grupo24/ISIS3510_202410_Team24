@@ -2,6 +2,7 @@
 
 import 'package:get_it/get_it.dart';
 
+import 'core/analytics/services/analytics_service.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
 import 'features/auth/domain/repositories/auth_repository.dart';
 import 'features/auth/domain/usecases/forgot_password_account.dart';
@@ -160,6 +161,9 @@ void init() {
         // datasource: sl(),
         ),
   );
+
+  //Services
+  sl.registerLazySingleton(() => AnalyticsService());
   //DataSources
 
   // Core

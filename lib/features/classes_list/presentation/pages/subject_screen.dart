@@ -1,5 +1,4 @@
 part of com.curi.app.classeslist.pages;
-
 class SubjectScreen extends StatefulWidget {
   const SubjectScreen({super.key});
 
@@ -8,6 +7,7 @@ class SubjectScreen extends StatefulWidget {
 }
 
 class _SubjectScreenState extends State<SubjectScreen> {
+  final AnalyticsService _analyticsService = sl<AnalyticsService>();
   String actualState = '';
   List<String> possibleCarreers = <String>[];
   List<String> possibleTypes = <String>[];
@@ -116,8 +116,9 @@ class _SubjectScreenState extends State<SubjectScreen> {
             )
             .toList();
       }
-    });
-  }
+    }
+    );
+  } 
 
   void updateFilterDef() {
     bool shouldResetFilter = filterCarreer == 'Carrera' &&
@@ -154,31 +155,39 @@ class _SubjectScreenState extends State<SubjectScreen> {
         });
       });
       searchForName(controller?.text ?? '');
+      _analyticsService.setUserFiltersHistory(course_name:controller?.text ?? '');
     } else if (careerAndType) {
       _updateCarreerFilter(filterCarreer);
       _updateTypeFilter(filterType);
+      _analyticsService.setUserFiltersHistory(major:filterCarreer, specialType:filterType);
       searchForName(controller?.text ?? '');
     } else if (careerAndSemester) {
       _updateCarreerFilter(filterCarreer);
       _updateSemesterFilter(filterSemester);
+      _analyticsService.setUserFiltersHistory(major:filterCarreer, semester:filterSemester);
       searchForName(controller?.text ?? '');
     } else if (career) {
       _updateCarreerFilter(filterCarreer);
+      _analyticsService.setUserFiltersHistory(major:filterCarreer);
       searchForName(controller?.text ?? '');
     } else if (typeAndSemester) {
       _updateSemesterFilter(filterSemester);
       _updateTypeFilter(filterType);
+      _analyticsService.setUserFiltersHistory(semester:filterSemester, specialType:filterType);
       searchForName(controller?.text ?? '');
     } else if (type) {
       _updateTypeFilter(filterType);
+      _analyticsService.setUserFiltersHistory(specialType:filterType);
       searchForName(controller?.text ?? '');
     } else if (semester) {
       _updateSemesterFilter(filterSemester);
+      _analyticsService.setUserFiltersHistory(semester: filterSemester);
       searchForName(controller?.text ?? '');
     } else {
       _updateCarreerFilter(filterCarreer);
       _updateTypeFilter(filterType);
       _updateSemesterFilter(filterSemester);
+      _analyticsService.setUserFiltersHistory(major:filterCarreer, specialType:filterType, semester:filterSemester);
       searchForName(controller?.text ?? '');
     }
   }

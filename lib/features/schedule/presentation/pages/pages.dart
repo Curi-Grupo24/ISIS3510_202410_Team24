@@ -12,6 +12,7 @@ import '../../../../core/ui/layout.dart';
 import '../../../class_flow/presentation/widgets/widgets.dart';
 import '../../../common_widgets/widgets.dart';
 import '../bloc/schedule_register/schedule_register_bloc.dart';
+import '../../../../injection_container.dart';
 import '../widgets/widgets.dart';
 
 part './schedule_home.dart';

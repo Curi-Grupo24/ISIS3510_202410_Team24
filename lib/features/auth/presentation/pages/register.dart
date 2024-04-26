@@ -17,7 +17,7 @@ class _RegisterViewState extends State<RegisterView> {
   String actualState = 'Selecciona Carrera';
   bool isSelectedCheckbox = false;
   final RegisterBloc registerBloc = sl<RegisterBloc>();
-  String registerError ='';
+  String registerError = '';
 
   bool isErrorMail = false;
   bool isErrorPassword = false;
@@ -113,11 +113,11 @@ class _RegisterViewState extends State<RegisterView> {
           ),
         ),
         body: BlocListener<RegisterBloc, RegisterState>(
-            bloc: registerBloc,
-          listener: (BuildContext context,RegisterState state) {
-            if(state is RegisterError){
+          bloc: registerBloc,
+          listener: (BuildContext context, RegisterState state) {
+            if (state is RegisterError) {
               setState(() {
-                registerError=state.errorMessage;
+                registerError = state.errorMessage;
               });
             }
           },
@@ -174,7 +174,10 @@ class _RegisterViewState extends State<RegisterView> {
                             onChange: (String string) {
                               if (!string.endsWith('@uniandes.edu.co') ||
                                   string.length <= 16 ||
-                                  string.contains(' ')) {
+                                  string.contains(' ') ||
+                                  string.contains('@@')||
+                                  string.contains('.@')||
+                                  string.contains('..')) {
                                 setState(() {
                                   isErrorMail = true;
                                 });

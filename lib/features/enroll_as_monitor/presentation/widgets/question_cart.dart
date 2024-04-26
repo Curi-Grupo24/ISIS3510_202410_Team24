@@ -102,6 +102,7 @@ class _QuestionCardState extends State<QuestionCard> {
                       if (widget.possibleAnswers.isEmpty)
                         Input(
                           controller: widget.controllerLastQuestion,
+                          hintText: 'Cuentanos un poco de ti...',
                         ),
                     ],
                   ),

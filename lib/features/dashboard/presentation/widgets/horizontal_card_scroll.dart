@@ -7,6 +7,7 @@ class HorizontalCardScroll extends StatelessWidget {
     required this.textScaleFactor,
     required this.title,
     required this.onTapViewMore,
+    required this.onTapSunsetCardFollow,
     this.isFromTutoring = false,
     super.key,
   });
@@ -17,6 +18,7 @@ class HorizontalCardScroll extends StatelessWidget {
   final String title;
   final void Function()? onTapViewMore;
   final bool isFromTutoring;
+  final void Function()? onTapSunsetCardFollow;
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
@@ -114,9 +116,7 @@ class HorizontalCardScroll extends StatelessWidget {
                         description:
                             '''Podrás empezar a buscar monitores en las clases que necesites''',
                         title: '''Añade las materias que estás viendo!''',
-                        onPressed: () {
-                          Get.toNamed('/add_class_view');
-                        },
+                        onPressed: onTapSunsetCardFollow!,
                         backgroundColor: Colors.transparent,
                       ),
               ),

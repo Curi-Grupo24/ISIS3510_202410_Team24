@@ -61,8 +61,12 @@ class _DashboardHomeState extends State<DashboardHome> {
                 width: 8,
               ),
               GestureDetector(
-                onTap: () {
-                  Get.toNamed('profile_user');
+                onTap: () async {
+                  String shouldReload = '';
+                  shouldReload = await Get.toNamed('/profile_user');
+                  if (shouldReload.isNotEmpty) {
+                    setState(() {});
+                  }
                 },
                 child: CircleAvatar(
                   backgroundColor: Colors.ocean[40],
@@ -166,9 +170,10 @@ class _DashboardHomeState extends State<DashboardHome> {
                         title: '''Añade las materias que estás viendo!''',
                         onPressed: () async {
                           String reloadView = '';
-                          reloadView = await Get.toNamed('/add_class_view');
+                          reloadView = await Get.toNamed('/add_class_view', arguments: '');
                           if (reloadView.isNotEmpty) {
                             setState(() {});
+                            dashboardBloc.add(const GetUserInfo());
                           }
                         },
                       ),
@@ -235,6 +240,17 @@ class _DashboardHomeState extends State<DashboardHome> {
                               sortedCards: state.listClasses,
                               aproxCardWidth: aproxCardWidth,
                               textScaleFactor: textScaleFactor,
+                              onTapSunsetCardFollow: () async {
+                                String shouldReload = '';
+                                shouldReload = await Get.toNamed(
+                                  '/add_class_view',
+                                  arguments: state.listClasses,
+                                );
+                                if (shouldReload.isNotEmpty) {
+                                  setState(() {});
+                                  dashboardBloc.add(const GetUserInfo());
+                                }
+                              },
                             );
                           } else {
                             return const ShimmerDashboardClasses();
@@ -299,6 +315,15 @@ class _DashboardHomeState extends State<DashboardHome> {
                               aproxCardWidth: aproxCardWidth,
                               textScaleFactor: textScaleFactor,
                               isFromTutoring: true,
+                              onTapSunsetCardFollow: () async {
+                                String shouldReload = '';
+                                shouldReload =
+                                    await Get.toNamed('/add_class_view');
+                                if (shouldReload.isNotEmpty) {
+                                  setState(() {});
+                                  dashboardBloc.add(const GetUserInfo());
+                                }
+                              },
                             );
                           } else {
                             return const ShimmerDashboardClasses();
@@ -313,8 +338,10 @@ class _DashboardHomeState extends State<DashboardHome> {
                         title: 'Apuntate para monitor!',
                         onPressed: () async {
                           String shouldReload = '';
-                          shouldReload =
-                              await Get.toNamed('/choose_class_tutoring', arguments: myClassesList);
+                          shouldReload = await Get.toNamed(
+                            '/choose_class_tutoring',
+                            arguments: myClassesList,
+                          );
                           if (shouldReload.isNotEmpty) {
                             setState(() {});
                           }

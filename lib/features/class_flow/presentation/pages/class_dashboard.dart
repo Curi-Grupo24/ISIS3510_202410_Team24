@@ -370,6 +370,7 @@ class _ClassDashboardState extends State<ClassDashboard> {
                       builder: (BuildContext context) => ChatPage(
                         receiverUserEmail: tutor.email ?? '',
                         receiverUserID: tutor.uid ?? '',
+                        tutorModel: tutor,
                       ),
                     ),
                   );

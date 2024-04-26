@@ -4,10 +4,12 @@ class ChatPage extends StatefulWidget {
   const ChatPage({
     required this.receiverUserEmail,
     required this.receiverUserID,
+    required this.tutorModel,
     super.key,
   });
   final String receiverUserEmail;
   final String receiverUserID;
+  final TutorModel tutorModel;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -28,8 +30,10 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.jelly[40],
           title: Text(
-            widget.receiverUserEmail,
+            widget.tutorModel.name,
+            style: TextStyle(color: Colors.white[0]),
           ),
         ),
         body: Column(
@@ -52,10 +56,23 @@ class _ChatPageState extends State<ChatPage> {
           AsyncSnapshot<QuerySnapshot<Object?>> snapshot,
         ) {
           if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error.toString()}');
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+              child: WarningMessage(
+                isError: true,
+                message: 'Error: ${snapshot.error.toString()}',
+                padding: 0,
+              ),
+            );
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return SpinKitRotatingCircle(
+              color: Colors.sunset[20],
+              size: 50,
+            );
           }
           return ListView(
             children: snapshot.data!.docs.map(_buildMessageItem).toList(),
@@ -65,22 +82,74 @@ class _ChatPageState extends State<ChatPage> {
 
   //Build Message item
 
-  Widget _buildMessageItem(DocumentSnapshot<Object?> document) {
+  Widget _buildMessageItem(
+    DocumentSnapshot<Object?> document,
+  ) {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
     Alignment alignment = (data['senderId'] == firebaseAuth.currentUser!.uid)
         ? Alignment.centerRight
         : Alignment.centerLeft;
+    Color colorBubble = (data['senderId'] == firebaseAuth.currentUser!.uid)
+        ? Colors.jelly[10]!
+        : Colors.sunset[5]!;
 
     return Container(
       alignment: alignment,
-      child: Column(
-        children: <Widget>[
-          Text(data['senderEmail']),
-          Text(
-            data['message'],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 4,
+        ),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: colorBubble,
+            borderRadius: BorderRadius.circular(8),
           ),
-        ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Column(
+                crossAxisAlignment:
+                    (data['senderId'] == firebaseAuth.currentUser!.uid)
+                        ? CrossAxisAlignment.end
+                        : CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  if (data['senderId'] != firebaseAuth.currentUser!.uid)
+                    Text(
+                      // firebaseAuth.currentUser
+                      widget.tutorModel.name,
+                      style: TextStyle(
+                        color:
+                            (data['senderId'] == firebaseAuth.currentUser!.uid)
+                                ? Colors.white[0]!
+                                : Colors.black[0]!,
+                      ),
+                    ),
+                  Text(
+                    data['message'],
+                    style: TextStyle(
+                      color: (data['senderId'] == firebaseAuth.currentUser!.uid)
+                          ? Colors.white[0]!
+                          : Colors.black[0]!,
+                    ),
+                    textAlign:
+                        (data['senderId'] == firebaseAuth.currentUser!.uid)
+                            ? TextAlign.start
+                            : TextAlign.end,
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

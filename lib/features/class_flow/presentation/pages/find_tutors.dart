@@ -270,6 +270,7 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                       builder: (BuildContext context) => ChatPage(
                         receiverUserEmail: tutor.email ?? '',
                         receiverUserID: tutor.uid ?? '',
+                        tutorModel: tutor,
                       ),
                     ),
                   );

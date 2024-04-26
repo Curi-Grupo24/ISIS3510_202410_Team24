@@ -14,41 +14,9 @@ class _FindTutorsViewState extends State<FindTutorsView> {
   String filterRating = 'Calificación';
   String filterPrice = 'Precio';
   List<TutorModel> tutorsList = <TutorModel>[];
-
-  List<int> listTutors = <int>[
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-  ];
-
-  List<Map<String, dynamic>> favTutorsList = <Map<String, dynamic>>[
-    <String, dynamic>{
-      'name': 'Juan',
-      'rate': '4,5',
-      'price': '15000 /h',
-      'image': 'https://picsum.photos/id/237/200/300',
-      'description': '',
-      'tutoringClasses': <String>[
-        'Probabilidad y Estadistica',
-      ],
-    },
-    <String, dynamic>{
-      'name': 'Alexa',
-      'rate': '4,7',
-      'price': '30.000 /h',
-      'image': 'https://picsum.photos/id/237/200/300',
-      'description': '',
-      'tutoringClasses': <String>[
-        'Probabilidad y Estadistica',
-        'Calculo diferencial',
-      ],
-    }
+  List<String> possibleFiltersStates = <String>[
+    'Menor a mayor',
+    'Mayor a menor',
   ];
 
   @override
@@ -167,20 +135,54 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: <Widget>[
+                        if (filterRating != 'Calificación') Text('Calificación'),
                         SortButton(
-                          text: 'Calificación',
-                          onPressed: () {},
+                          text: filterRating,
+                          onPressed: () {
+                            showModalStatesToFilter(
+                              possibleFiltersStates,
+                              'Escoge el filtro de Calificación'.tr,
+                              parentAction: (String value) {
+                                setState(() {
+                                  filterRating = value;
+                                });
+                                // updateFilterDef();
+                              },
+                            );
+                          },
                           crossEnabled: filterRating != 'Calificación',
-                          onCrossTapped: () {},
+                          onCrossTapped: () {
+                            setState(() {
+                              filterRating = 'Calificación';
+                            });
+                            // updateFilterDef();
+                          },
                         ),
                         const SizedBox(
                           width: UILayout.small,
                         ),
+                        if (filterPrice != 'Precio') Text('Precio'),
                         SortButton(
-                          text: 'Precio',
-                          onPressed: () {},
+                          text: filterPrice,
+                          onPressed: () {
+                            showModalStatesToFilter(
+                              possibleFiltersStates,
+                              'Escoge el filtro de Precio'.tr,
+                              parentAction: (String value) {
+                                setState(() {
+                                  filterPrice = value;
+                                });
+                                // updateFilterDef();
+                              },
+                            );
+                          },
                           crossEnabled: filterPrice != 'Precio',
-                          onCrossTapped: () {},
+                          onCrossTapped: () {
+                            setState(() {
+                              filterPrice = 'Precio';
+                            });
+                            // updateFilterDef();
+                          },
                         ),
                       ],
                     ),
@@ -196,6 +198,7 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                       child: FavTutorsCard(
                         name: tutor.name,
                         rate: tutor.rate ?? '',
+                        price: tutor.price ?? '',
                         image: 'https://picsum.photos/id/237/200/300',
                         onTap: () {
                           tutorModalDetail(
@@ -275,6 +278,107 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                     ),
                   );
                 },
+              ),
+            ),
+          ],
+        ),
+      );
+  Future<dynamic> showModalStatesToFilter(
+    List<String> possibleFilters,
+    String titleModal, {
+    required ValueChanged<String> parentAction,
+  }) =>
+      showModalBottomSheet(
+        backgroundColor: Colors.white[0],
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(19),
+          ),
+        ),
+        context: context,
+        builder: (BuildContext context) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 20,
+                  ),
+                  child: Text(
+                    titleModal,
+                    style: TextStyle(
+                      color: Colors.gray[90],
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: IconButton(
+                    iconSize: 18,
+                    onPressed: Get.back,
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.gray[90],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(height: 1),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    ...possibleFilters.map(
+                      (String carreersState) => SizedBox(
+                        width: double.infinity,
+                        child: TextButton(
+                          onPressed: () {
+                            parentAction(carreersState);
+                            Get.back();
+                          },
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(
+                                  MaterialState.pressed,
+                                )) {
+                                  return Colors.sunset[50]!;
+                                } else {
+                                  return Colors.white[0]!;
+                                }
+                              },
+                            ),
+                          ),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 16,
+                              ),
+                              child: Text(
+                                carreersState,
+                                style: TextStyle(
+                                  color: Colors.gray[90],
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 18,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

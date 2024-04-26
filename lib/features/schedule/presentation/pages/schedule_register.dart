@@ -42,7 +42,6 @@ class _ScheduleRegisterState extends State<ScheduleRegister> {
   ScheduleRegisterBloc addEventBloc = ScheduleRegisterBloc();
   String isError = '';
   String isSuccess = '';
-
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(

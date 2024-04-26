@@ -15,7 +15,7 @@ class TutorModel {
         rate: json['rate'] ?? '',
         uid: json['uid'] ?? '',
         email: json['email'] ?? '',
-        price: json['career'] ?? '',
+        price: json['price'] ?? '',
         description: json['description'] ?? '',
         tutoringClasses:
             (json['tutoringClasses'] as List<dynamic>?)?.cast<String>() ??

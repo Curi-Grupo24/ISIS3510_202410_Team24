@@ -104,7 +104,7 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left<String, dynamic>(
         e is FirebaseAuthException
             ? e.code.tr
-            : 'Estamos teniendo problemas con el inicio de sesión, intentalo más tarde',
+            : 'Estamos teniendo problemas con el envío de correo de recuperación, intentalo más tarde',
       );
     }
   }

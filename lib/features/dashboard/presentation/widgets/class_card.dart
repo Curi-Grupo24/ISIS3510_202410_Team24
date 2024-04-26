@@ -45,6 +45,7 @@ class OtherProductsCard extends StatelessWidget {
                         productName,
                         style: Headings.mH5.copyWith(color: Colors.gray[80]),
                         textAlign: TextAlign.left,
+                        maxLines: 2,
                       ),
                       const Expanded(child: SizedBox()),
                       Center(

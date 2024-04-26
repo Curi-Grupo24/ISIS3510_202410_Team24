@@ -3,9 +3,11 @@ part of com.curi.app.classflow.widgets;
 class MonitorCardDetail extends StatelessWidget {
   const MonitorCardDetail({
     required this.name,
+    required this.tutor,
     super.key,
   });
   final String name;
+  final TutorModel tutor;
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
@@ -80,7 +82,7 @@ class MonitorCardDetail extends StatelessWidget {
                       height: UILayout.medium,
                     ),
                     Text(
-                      '17',
+                      '${tutor.reviews.length}',
                       style: TextStyle(
                         color: Colors.gray[90],
                         fontWeight: FontWeight.bold,
@@ -108,7 +110,7 @@ class MonitorCardDetail extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         Text(
-                          '4,95',
+                          '${tutor.rate}',
                           style: TextStyle(
                             color: Colors.gray[90],
                             fontWeight: FontWeight.bold,
@@ -140,7 +142,7 @@ class MonitorCardDetail extends StatelessWidget {
                       height: UILayout.small,
                     ),
                     Text(
-                      '2',
+                      '1',
                       style: TextStyle(
                         color: Colors.gray[90],
                         fontWeight: FontWeight.bold,

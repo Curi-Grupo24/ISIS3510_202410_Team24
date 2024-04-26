@@ -6,13 +6,24 @@ class FavTutorsCard extends StatelessWidget {
     required this.rate,
     required this.image,
     required this.onTap,
+    this.price = '',
     super.key,
   });
 
   final String name;
   final String rate;
   final String image;
+  final String price;
   final void Function()? onTap;
+
+  String currencyFormat(String value) {
+    try {
+      NumberFormat oCcy = NumberFormat('#,##0.00', 'en_US');
+      return oCcy.format(double.parse(value));
+    } catch (_) {
+      return value;
+    }
+  }
 
   @override
   Widget build(BuildContext context) => GestureDetector(
@@ -61,18 +72,30 @@ class FavTutorsCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    Text(
-                      rate,
-                      style: TextStyle(
-                        color: Colors.gray[70],
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          rate,
+                          style: TextStyle(
+                            color: Colors.gray[70],
+                          ),
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.sunset[50],
+                        ),
+                      ],
+                    ),
+                    if (price.isNotEmpty)
+                      Text(
+                      '\$ ${currencyFormat(price)} /h',
+                        style: TextStyle(
+                          color: Colors.gray[70],
+                        ),
                       ),
-                    ),
-                    Icon(
-                      Icons.star,
-                      color: Colors.sunset[50],
-                    ),
                   ],
                 ),
               ],

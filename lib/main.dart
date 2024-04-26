@@ -1,4 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,8 +10,11 @@ import './core/internazionalization/internationalization.dart';
 import 'core/routes/routes.dart';
 import 'core/ui/theme.dart';
 import 'features/auth/presentation/pages/pages.dart';
+import 'features/notifications/data/firebase_api.dart';
 import 'firebase_options.dart';
 import 'injection_container.dart' as di;
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +26,12 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  PlatformDispatcher.instance.onError = (error, stack){
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+  await FirebaseApi().initNotifications();
   di.init();
   runApp(
     const SafeArea(
@@ -35,6 +46,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) => GetMaterialApp(
+        navigatorKey: navigatorKey,
         title: 'Flutter Demo',
         theme: UITheme.curiThemeData,
         supportedLocales: const <Locale>[

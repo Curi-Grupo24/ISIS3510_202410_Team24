@@ -6,3 +6,10 @@ sealed class ScheduleRegisterEvent extends Equatable {
   @override
   List<Object> get props => <Object>[];
 }
+
+class RegisterEvent extends ScheduleRegisterEvent {
+  const RegisterEvent({
+    required this.eventToAdd,
+  });
+  final Map<String, dynamic> eventToAdd;
+}

@@ -65,7 +65,7 @@ class ClassFlowRepositoryImpl implements ClassFlowRepository {
           jsonEncode(tutorToAddFav.uid),
         ]);
       } else {
-        storeTutors.add(jsonEncode(tutorToAddFav));
+        storeTutors.add(jsonEncode(tutorToAddFav.uid));
         await prefs.setStringList('liked_tutors', storeTutors);
       }
       return Right<String, String>(

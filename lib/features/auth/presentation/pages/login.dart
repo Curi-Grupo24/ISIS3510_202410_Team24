@@ -97,8 +97,17 @@ class _LoginState extends State<Login> {
                             style: Headings.h4.copyWith(color: Colors.gray[90]),
                           ),
                           Spacing.spacingV24,
-                          const Text(
-                            'espacio para logo',
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              child: Image.asset(
+                                'assets/images/LOGO_CURI.png',
+                                // width: 85,
+                                height: 75,
+                              ),
+                            ),
                           ),
                           Spacing.spacingV48,
                           Input(

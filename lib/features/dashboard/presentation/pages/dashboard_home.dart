@@ -34,12 +34,16 @@ class _DashboardHomeState extends State<DashboardHome> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white[0],
-        title: Text(
-          'logo',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.gray[80],
-            fontWeight: FontWeight.w400,
+        title: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8,
+            ),
+            child: Image.asset(
+              'assets/images/LOGO_CURI.png',
+              // width: 85,
+              height: 32,
+            ),
           ),
         ),
         centerTitle: true,
@@ -170,7 +174,8 @@ class _DashboardHomeState extends State<DashboardHome> {
                         title: '''Añade las materias que estás viendo!''',
                         onPressed: () async {
                           String reloadView = '';
-                          reloadView = await Get.toNamed('/add_class_view', arguments: '');
+                          reloadView = await Get.toNamed('/add_class_view',
+                              arguments: '');
                           if (reloadView.isNotEmpty) {
                             setState(() {});
                             dashboardBloc.add(const GetUserInfo());

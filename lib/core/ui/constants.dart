@@ -135,3 +135,14 @@ ButtonStyle get baseButtonStyle => ButtonStyle(
       side: null,
       elevation: MaterialStateProperty.all<double>(0),
     );
+
+Icon like = Icon(
+  Icons.favorite,
+  color: Colors.blooming[20],
+  size: 22,
+);
+Icon unlike = Icon(
+  Icons.favorite_border,
+  color: Colors.white[0],
+  size: 22,
+);

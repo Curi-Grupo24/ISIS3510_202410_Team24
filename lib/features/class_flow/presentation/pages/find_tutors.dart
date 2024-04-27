@@ -13,11 +13,14 @@ class _FindTutorsViewState extends State<FindTutorsView> {
   TextEditingController? controller = TextEditingController();
   String filterRating = 'Calificación';
   String filterPrice = 'Precio';
+  String errorMessageFav = '';
+  String successMessage = '';
   List<TutorModel> tutorsList = <TutorModel>[];
   List<String> possibleFiltersStates = <String>[
     'Menor a mayor',
     'Mayor a menor',
   ];
+  FavTutorsBloc favTutorsBloc = FavTutorsBloc();
 
   @override
   void initState() {
@@ -51,166 +54,206 @@ class _FindTutorsViewState extends State<FindTutorsView> {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: UILayout.medium,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(
-                    height: UILayout.small,
-                  ),
-                  Text(
-                    'Monitores disponibles'.tr,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.gray[90],
-                      fontSize: 20,
+            child: BlocListener<FavTutorsBloc, FavTutorsState>(
+              bloc: favTutorsBloc,
+              listener: (BuildContext context, FavTutorsState state) async {
+                if (state is SaveTutorFavsLoading) {
+                  await showDialog(
+                    context: context,
+                    builder: (BuildContext ctx) => SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: SpinKitRotatingCircle(
+                        color: Colors.sunset[20],
+                        size: 50,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: UILayout.medium,
-                  ),
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      minHeight: 90,
-                      maxHeight: 90,
+                  );
+                } else if (state is SaveTutorFavsError) {
+                  Get.back();
+                  setState(() {
+                    errorMessageFav = state.errorMessage;
+                  });
+                } else if (state is SaveTutorFavsInfoSuccessful) {
+                  Get.back();
+                  setState(() {
+                    successMessage = state.successMessage;
+                  });
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: UILayout.medium,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: UILayout.small,
                     ),
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: tutorsList.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          GestureDetector(
-                        onTap: () {
-                          tutorModalDetail(
-                            context,
-                            name: tutorsList[index].name,
-                            tutor: tutorsList[index],
-                          );
-                        },
-                        child: const SizedBox(
-                          width: 80,
-                          height: 90,
-                          child: CircleAvatar(
-                            radius: 120,
-                            backgroundImage: NetworkImage(
-                              'https://picsum.photos/id/237/200/300',
+                    if (errorMessageFav.isNotEmpty)
+                      WarningMessage(
+                        isError: true,
+                        message: errorMessageFav,
+                        padding: 0,
+                      ),
+                    if (successMessage.isNotEmpty)
+                      WarningMessage(
+                        isSuccess: true,
+                        message: successMessage,
+                        padding: 0,
+                      ),
+                    Text(
+                      'Monitores disponibles'.tr,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.gray[90],
+                        fontSize: 20,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: UILayout.medium,
+                    ),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        minHeight: 90,
+                        maxHeight: 90,
+                      ),
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: tutorsList.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            GestureDetector(
+                          onTap: () {
+                            tutorModalDetail(
+                              context,
+                              name: tutorsList[index].name,
+                              tutor: tutorsList[index],
+                            );
+                          },
+                          child: const SizedBox(
+                            width: 80,
+                            height: 90,
+                            child: CircleAvatar(
+                              radius: 120,
+                              backgroundImage: NetworkImage(
+                                'https://picsum.photos/id/237/200/300',
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      separatorBuilder: (_, int index) => const SizedBox(
-                        width: 8,
+                        separatorBuilder: (_, int index) => const SizedBox(
+                          width: 8,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: UILayout.medium,
-                  ),
-                  SearchInput(
-                    hintText: 'Name',
-                    controller: controller,
-                    onChangedController: (String value) {
-                      // updateFilterDef();
-                    },
-                    paddingInput: const EdgeInsets.all(0),
-                  ),
-                  const SizedBox(
-                    height: UILayout.medium,
-                  ),
-                  Text(
-                    'Filtrar por',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.gray[90],
+                    const SizedBox(
+                      height: UILayout.medium,
                     ),
-                  ),
-                  const SizedBox(
-                    height: UILayout.small,
-                  ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: <Widget>[
-                        if (filterRating != 'Calificación') Text('Calificación'),
-                        SortButton(
-                          text: filterRating,
-                          onPressed: () {
-                            showModalStatesToFilter(
-                              possibleFiltersStates,
-                              'Escoge el filtro de Calificación'.tr,
-                              parentAction: (String value) {
-                                setState(() {
-                                  filterRating = value;
-                                });
-                                // updateFilterDef();
-                              },
+                    SearchInput(
+                      hintText: 'Name',
+                      controller: controller,
+                      onChangedController: (String value) {
+                        // updateFilterDef();
+                      },
+                      paddingInput: const EdgeInsets.all(0),
+                    ),
+                    const SizedBox(
+                      height: UILayout.medium,
+                    ),
+                    Text(
+                      'Filtrar por',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.gray[90],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: UILayout.small,
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: <Widget>[
+                          if (filterRating != 'Calificación')
+                            const Text('Calificación'),
+                          SortButton(
+                            text: filterRating,
+                            onPressed: () {
+                              showModalStatesToFilter(
+                                possibleFiltersStates,
+                                'Escoge el filtro de Calificación'.tr,
+                                parentAction: (String value) {
+                                  setState(() {
+                                    filterRating = value;
+                                  });
+                                  // updateFilterDef();
+                                },
+                              );
+                            },
+                            crossEnabled: filterRating != 'Calificación',
+                            onCrossTapped: () {
+                              setState(() {
+                                filterRating = 'Calificación';
+                              });
+                              // updateFilterDef();
+                            },
+                          ),
+                          const SizedBox(
+                            width: UILayout.small,
+                          ),
+                          if (filterPrice != 'Precio') const Text('Precio'),
+                          SortButton(
+                            text: filterPrice,
+                            onPressed: () {
+                              showModalStatesToFilter(
+                                possibleFiltersStates,
+                                'Escoge el filtro de Precio'.tr,
+                                parentAction: (String value) {
+                                  setState(() {
+                                    filterPrice = value;
+                                  });
+                                  // updateFilterDef();
+                                },
+                              );
+                            },
+                            crossEnabled: filterPrice != 'Precio',
+                            onCrossTapped: () {
+                              setState(() {
+                                filterPrice = 'Precio';
+                              });
+                              // updateFilterDef();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: UILayout.medium,
+                    ),
+                    ...tutorsList.map(
+                      (TutorModel tutor) => Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: UILayout.medium,
+                        ),
+                        child: FavTutorsCard(
+                          name: tutor.name,
+                          rate: tutor.rate ?? '',
+                          price: tutor.price ?? '',
+                          image: 'https://picsum.photos/id/237/200/300',
+                          onTap: () {
+                            tutorModalDetail(
+                              context,
+                              name: tutor.name,
+                              tutor: tutor,
                             );
                           },
-                          crossEnabled: filterRating != 'Calificación',
-                          onCrossTapped: () {
-                            setState(() {
-                              filterRating = 'Calificación';
-                            });
-                            // updateFilterDef();
-                          },
                         ),
-                        const SizedBox(
-                          width: UILayout.small,
-                        ),
-                        if (filterPrice != 'Precio') Text('Precio'),
-                        SortButton(
-                          text: filterPrice,
-                          onPressed: () {
-                            showModalStatesToFilter(
-                              possibleFiltersStates,
-                              'Escoge el filtro de Precio'.tr,
-                              parentAction: (String value) {
-                                setState(() {
-                                  filterPrice = value;
-                                });
-                                // updateFilterDef();
-                              },
-                            );
-                          },
-                          crossEnabled: filterPrice != 'Precio',
-                          onCrossTapped: () {
-                            setState(() {
-                              filterPrice = 'Precio';
-                            });
-                            // updateFilterDef();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: UILayout.medium,
-                  ),
-                  ...tutorsList.map(
-                    (TutorModel tutor) => Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: UILayout.medium,
-                      ),
-                      child: FavTutorsCard(
-                        name: tutor.name,
-                        rate: tutor.rate ?? '',
-                        price: tutor.price ?? '',
-                        image: 'https://picsum.photos/id/237/200/300',
-                        onTap: () {
-                          tutorModalDetail(
-                            context,
-                            name: tutor.name,
-                            tutor: tutor,
-                          );
-                        },
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -229,54 +272,72 @@ class _FindTutorsViewState extends State<FindTutorsView> {
           ),
         ),
         backgroundColor: const Color(0xFFF0ECE9),
-        builder: (BuildContext context) => Column(
+        builder: (BuildContext context) => Stack(
           children: <Widget>[
-            const SizedBox(
-              height: UILayout.small,
-            ),
-            const SizedBox(
-              width: 48,
-              child: Divider(
-                height: 4,
-                thickness: 4,
-              ),
-            ),
-            const SizedBox(
-              height: UILayout.medium,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: UILayout.medium,
-              ),
-              child: MonitorCardDetail(
-                name: name,
-                tutor: tutor,
-              ),
-            ),
-            const SizedBox(
-              height: UILayout.medium,
-            ),
-            Text('Info adicional'),
-            const SizedBox(
-              height: UILayout.medium,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: UILayout.medium,
-              ),
-              child: SunsetButton(
-                text: 'Iniciar chat'.tr,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<dynamic>(
-                      builder: (BuildContext context) => ChatPage(
-                        receiverUserEmail: tutor.email ?? '',
-                        receiverUserID: tutor.uid ?? '',
-                        tutorModel: tutor,
-                      ),
+            InkWell(
+              child: Column(
+                children: <Widget>[
+                  const SizedBox(
+                    height: UILayout.small,
+                  ),
+                  const SizedBox(
+                    width: 48,
+                    child: Divider(
+                      height: 4,
+                      thickness: 4,
                     ),
-                  );
+                  ),
+                  const SizedBox(
+                    height: UILayout.medium,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: UILayout.medium,
+                    ),
+                    child: MonitorCardDetail(
+                      name: name,
+                      tutor: tutor,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: UILayout.medium,
+                  ),
+                  Text('Info adicional'),
+                  const SizedBox(
+                    height: UILayout.medium,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: UILayout.medium,
+                    ),
+                    child: SunsetButton(
+                      text: 'Iniciar chat'.tr,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => ChatPage(
+                              receiverUserEmail: tutor.email ?? '',
+                              receiverUserID: tutor.uid ?? '',
+                              tutorModel: tutor,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(4, 12, 0, 0),
+              child: LikeButton(
+                onPressed: (bool pressed) {
+                  if (pressed) {
+                    favTutorsBloc.add(SaveTutorToFavs(tutorToSave: tutor));
+                  } else {
+                    favTutorsBloc.add(DeleteToFavs(tutorToSave: tutor));
+                  }
                 },
               ),
             ),

@@ -223,8 +223,10 @@ class _ScheduleRegisterState extends State<ScheduleRegister> {
                                       initialEntryMode:
                                           TimePickerEntryMode.inputOnly,
                                       context: context,
-                                      builder: (BuildContext context,
-                                              Widget? child) =>
+                                      builder: (
+                                        BuildContext context,
+                                        Widget? child,
+                                      ) =>
                                           MediaQuery(
                                         data: MediaQuery.of(context).copyWith(
                                           alwaysUse24HourFormat: true,
@@ -295,8 +297,10 @@ class _ScheduleRegisterState extends State<ScheduleRegister> {
                                       initialEntryMode:
                                           TimePickerEntryMode.inputOnly,
                                       context: context,
-                                      builder: (BuildContext context,
-                                              Widget? child) =>
+                                      builder: (
+                                        BuildContext context,
+                                        Widget? child,
+                                      ) =>
                                           MediaQuery(
                                         data: MediaQuery.of(context).copyWith(
                                           alwaysUse24HourFormat: true,

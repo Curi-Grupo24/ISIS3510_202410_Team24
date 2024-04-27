@@ -1,13 +1,16 @@
 library com.curi.app.classeslist.pages;
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart' hide Colors;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
+import '../../../../../injection_container.dart';
 import '../../../../core/constants/smester_constants.dart';
 import '../../../../core/ui/colors_brand.dart';
 import '../../../../core/ui/layout.dart';
+import '../../../../core/analytics/services/analytics_service.dart';
 import '../../../common_widgets/widgets.dart';
 import '../../../dashboard/presentation/bloc/my_classes/my_classes_bloc.dart';
 import '../../../profile_user/presentation/widgets/modal_case.dart';

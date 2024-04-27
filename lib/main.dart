@@ -35,7 +35,7 @@ Future<void> main() async {
     return true;
   };
   await FirebaseApi().initNotifications();
-  NotificationHelper.scheduleNotification(
+  await NotificationHelper.scheduleNotification(
       'Se acerca tu monitoria', 'en 10 minutos empieza la monitoria');
 
   di.init();

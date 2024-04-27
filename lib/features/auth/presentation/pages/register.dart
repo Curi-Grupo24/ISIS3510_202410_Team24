@@ -141,9 +141,16 @@ class _RegisterViewState extends State<RegisterView> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          const Center(
-                            child: Text(
-                              'espacio para logo',
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              child: Image.asset(
+                                'assets/images/LOGO_CURI.png',
+                                // width: 85,
+                                height: 55,
+                              ),
                             ),
                           ),
                           Spacing.spacingV48,
@@ -175,8 +182,8 @@ class _RegisterViewState extends State<RegisterView> {
                               if (!string.endsWith('@uniandes.edu.co') ||
                                   string.length <= 16 ||
                                   string.contains(' ') ||
-                                  string.contains('@@')||
-                                  string.contains('.@')||
+                                  string.contains('@@') ||
+                                  string.contains('.@') ||
                                   string.contains('..')) {
                                 setState(() {
                                   isErrorMail = true;

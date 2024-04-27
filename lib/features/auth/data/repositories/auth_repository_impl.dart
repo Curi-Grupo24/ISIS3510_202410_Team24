@@ -3,7 +3,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import '../../../../core/analytics/services/analytics_service.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../models/user_model.dart';
 import 'users_repository_impl.dart';
@@ -12,6 +14,7 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final AnalyticsService _analyticsService = AnalyticsService();
   static String uid = '';
 
   @override
@@ -47,6 +50,7 @@ class AuthRepositoryImpl implements AuthRepository {
       UsersRepositoryImpl userData = UsersRepositoryImpl();
       Map<String, dynamic> rawData =
           await userData.getUser(uid) ?? <String, dynamic>{};
+      await _analyticsService.setUserProperties(uid);
       UserModel userModel = UserModel.fromJson(rawData);
       return Right<String, UserModel>(userModel);
     } catch (e) {
@@ -73,6 +77,7 @@ class AuthRepositoryImpl implements AuthRepository {
       Map<String, dynamic> rawData =
           await userData.getUser(uid) ?? <String, dynamic>{}
             ..addAll(<String, dynamic>{'email': email});
+          await _analyticsService.setUserProperties(uid);
       UserModel userModel = UserModel.fromJson(rawData);
       return Right<String, UserModel>(userModel);
     } catch (e) {
@@ -99,7 +104,7 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left<String, dynamic>(
         e is FirebaseAuthException
             ? e.code.tr
-            : 'Estamos teniendo problemas con el inicio de sesión, intentalo más tarde',
+            : 'Estamos teniendo problemas con el envío de correo de recuperación, intentalo más tarde',
       );
     }
   }

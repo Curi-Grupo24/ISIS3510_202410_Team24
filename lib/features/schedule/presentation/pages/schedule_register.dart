@@ -42,7 +42,6 @@ class _ScheduleRegisterState extends State<ScheduleRegister> {
   ScheduleRegisterBloc addEventBloc = ScheduleRegisterBloc();
   String isError = '';
   String isSuccess = '';
-
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
@@ -224,8 +223,10 @@ class _ScheduleRegisterState extends State<ScheduleRegister> {
                                       initialEntryMode:
                                           TimePickerEntryMode.inputOnly,
                                       context: context,
-                                      builder: (BuildContext context,
-                                              Widget? child) =>
+                                      builder: (
+                                        BuildContext context,
+                                        Widget? child,
+                                      ) =>
                                           MediaQuery(
                                         data: MediaQuery.of(context).copyWith(
                                           alwaysUse24HourFormat: true,
@@ -296,8 +297,10 @@ class _ScheduleRegisterState extends State<ScheduleRegister> {
                                       initialEntryMode:
                                           TimePickerEntryMode.inputOnly,
                                       context: context,
-                                      builder: (BuildContext context,
-                                              Widget? child) =>
+                                      builder: (
+                                        BuildContext context,
+                                        Widget? child,
+                                      ) =>
                                           MediaQuery(
                                         data: MediaQuery.of(context).copyWith(
                                           alwaysUse24HourFormat: true,
@@ -474,9 +477,9 @@ class _ScheduleRegisterState extends State<ScheduleRegister> {
                                   eventToAdd: <String, dynamic>{
                                     'eventName': eventName,
                                     'initialDate':
-                                        '${selectedDate['number']}/${num.parse(selectedDate['number'] ?? '0') < DateTime.now().day ? DateTime.now().month + 1 : DateTime.now().month}/23 T:$initialTime',
+                                        '2024-0${num.parse(selectedDate['number'] ?? '0') < DateTime.now().day ? DateTime.now().month + 1 : DateTime.now().month}-${selectedDate['number']} $initialTime:04Z',
                                     'endDate':
-                                        '${selectedDate['number']}/${num.parse(selectedDate['number'] ?? '0') < DateTime.now().day ? DateTime.now().month + 1 : DateTime.now().month}/23 T:$endTime',
+                                        '2024-0${num.parse(selectedDate['number'] ?? '0') < DateTime.now().day ? DateTime.now().month + 1 : DateTime.now().month}-${selectedDate['number']} $endTime:04Z',
                                     'description':
                                         eventDescriptionController.text,
                                     'location':

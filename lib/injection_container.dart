@@ -16,7 +16,9 @@ import 'features/auth/presentation/bloc/register_bloc/register_bloc.dart';
 import 'features/class_flow/data/repositories/class_flow_repository_impl.dart';
 import 'features/class_flow/domain/repositories/class_flow_repository.dart';
 import 'features/class_flow/domain/usecases/get_dashboard_class_info.dart';
+import 'features/class_flow/domain/usecases/save_tutor_favs.dart';
 import 'features/class_flow/presentation/bloc/class_dashboard/class_dashboard_bloc.dart';
+import 'features/class_flow/presentation/bloc/fav_tutors/fav_tutors_bloc.dart';
 import 'features/classes_list/data/repositories/classes_repository_impl.dart';
 import 'features/classes_list/domain/repositories/classes_repository.dart';
 import 'features/classes_list/domain/usecases/add_class_usecase.dart';
@@ -81,6 +83,9 @@ void init() {
   sl.registerLazySingleton<ClassDashboardBloc>(
     () => ClassDashboardBloc(),
   );
+  sl.registerLazySingleton<FavTutorsBloc>(
+    () => FavTutorsBloc(),
+  );
 
   //Use Cases
   sl.registerLazySingleton(
@@ -121,6 +126,9 @@ void init() {
   );
   sl.registerLazySingleton(
     () => FetchDashbaordClassInfoUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton(
+    () => AddTutorToFavsUseCase(repository: sl()),
   );
 
   //Repositories
@@ -166,11 +174,12 @@ void init() {
     ),
   );
 
-  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
 
   //Services
   sl.registerLazySingleton(() => AnalyticsService());
   sl.registerLazySingleton(InternetConnectionChecker.new);
+  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
+
   //DataSources
 
   // Core

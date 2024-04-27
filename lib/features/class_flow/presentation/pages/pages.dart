@@ -13,6 +13,7 @@ import '../../../classes_list/presentation/widgets/widgets.dart';
 import '../../../common_widgets/widgets.dart';
 import '../../data/models/tutor_model.dart';
 import '../bloc/class_dashboard/class_dashboard_bloc.dart';
+import '../bloc/fav_tutors/fav_tutors_bloc.dart';
 import '../widgets/widgets.dart';
 
 part './class_dashboard.dart';

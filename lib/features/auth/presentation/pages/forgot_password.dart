@@ -71,9 +71,16 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                     ),
                   ),
                   Spacing.spacingV24,
-                  const Center(
-                    child: Text(
-                      'espacio para logo',
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                      ),
+                      child: Image.asset(
+                        'assets/images/LOGO_CURI.png',
+                        // width: 85,
+                        height: 85,
+                      ),
                     ),
                   ),
                   Spacing.spacingV48,

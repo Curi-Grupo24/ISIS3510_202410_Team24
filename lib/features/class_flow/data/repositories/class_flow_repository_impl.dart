@@ -1,16 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 
+import '../../../../core/network/failures.dart';
+import '../../../../core/network/network_info.dart';
 import '../../domain/repositories/class_flow_repository.dart';
 import '../models/tutor_model.dart';
 
 class ClassFlowRepositoryImpl implements ClassFlowRepository {
-  ClassFlowRepositoryImpl();
+  ClassFlowRepositoryImpl({
+    required this.networkInfo,
+  });
+
+  final NetworkInfo networkInfo;
 
   @override
   Future<Either<String, List<TutorModel>>> fetchClassDashboardInfo({
     required List<String> tutorsIds,
   }) async {
+    if (await networkInfo.isConnected) {
     try {
       List<TutorModel> tutors = <TutorModel>[];
       if (tutorsIds.isNotEmpty) {
@@ -35,6 +42,10 @@ class ClassFlowRepositoryImpl implements ClassFlowRepository {
       );
     } catch (e) {
       return Left<String, List<TutorModel>>(e.toString());
+    }} else{
+      return Left<String, List<TutorModel>>(
+        const NetworkFailure().errorMessage,
+      );
     }
   }
 }

@@ -135,7 +135,8 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: <Widget>[
-                        if (filterRating != 'Calificación') Text('Calificación'),
+                        if (filterRating != 'Calificación')
+                          const Text('Calificación'),
                         SortButton(
                           text: filterRating,
                           onPressed: () {
@@ -161,7 +162,7 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                         const SizedBox(
                           width: UILayout.small,
                         ),
-                        if (filterPrice != 'Precio') Text('Precio'),
+                        if (filterPrice != 'Precio') const Text('Precio'),
                         SortButton(
                           text: filterPrice,
                           onPressed: () {

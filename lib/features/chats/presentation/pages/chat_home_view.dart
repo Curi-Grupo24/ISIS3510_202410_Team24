@@ -51,7 +51,7 @@ class _ChatHomeViewDashboardState extends State<ChatHomeViewDashboard> {
               builder: (BuildContext context) => ChatPage(
                 receiverUserEmail: data['email'],
                 receiverUserID: data['uid'],
-                tutorModel: TutorModel(name: 'name'),
+                tutorModel: TutorModel(name: data['email']),
               ),
             ),
           );

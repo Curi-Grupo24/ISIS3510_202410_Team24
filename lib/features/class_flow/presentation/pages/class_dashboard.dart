@@ -179,8 +179,8 @@ class _ClassDashboardState extends State<ClassDashboard> {
                                     'type': 'prices',
                                   },
                                   arguments: <String, dynamic>{
-                                  'tutors': state.tutorsList,
-                                },
+                                    'tutors': state.tutorsList,
+                                  },
                                 );
                               },
                               child: DecoratedBox(
@@ -236,8 +236,8 @@ class _ClassDashboardState extends State<ClassDashboard> {
                                     'type': 'rating',
                                   },
                                   arguments: <String, dynamic>{
-                                  'tutors': state.tutorsList,
-                                },
+                                    'tutors': state.tutorsList,
+                                  },
                                 );
                               },
                               child: DecoratedBox(
@@ -375,6 +375,25 @@ class _ClassDashboardState extends State<ClassDashboard> {
                     ),
                   );
                 },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: UILayout.medium,
+                vertical: UILayout.small,
+              ),
+              child: OutlinedButton(
+                onPressed: () {},
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Text(
+                    'Agendar monitoría'.tr,
+                    style: TextStyle(
+                      color: Colors.sunset[70],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
             ),
           ],

@@ -174,8 +174,10 @@ class _DashboardHomeState extends State<DashboardHome> {
                         title: '''Añade las materias que estás viendo!''',
                         onPressed: () async {
                           String reloadView = '';
-                          reloadView = await Get.toNamed('/add_class_view',
-                              arguments: '');
+                          reloadView = await Get.toNamed(
+                            '/add_class_view',
+                            arguments: '',
+                          );
                           if (reloadView.isNotEmpty) {
                             setState(() {});
                             dashboardBloc.add(const GetUserInfo());

@@ -326,6 +326,18 @@ class _FindTutorsViewState extends State<FindTutorsView> {
                       },
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: UILayout.medium,
+                      vertical: UILayout.small,
+                    ),
+                    child: OutlinedButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Agendar monitoría'.tr,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

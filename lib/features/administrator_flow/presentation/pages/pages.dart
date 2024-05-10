@@ -8,6 +8,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 
 import '../../../../core/ui/colors_brand.dart';
 import '../../../../core/ui/layout.dart';
+import '../../../class_flow/presentation/widgets/widgets.dart';
 import '../../../classes_list/presentation/widgets/widgets.dart';
 import '../../../common_widgets/widgets.dart';
 import '../../../dashboard/presentation/bloc/dashboard_bloc/dashboard_bloc.dart';

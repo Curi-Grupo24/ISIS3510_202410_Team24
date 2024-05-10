@@ -356,7 +356,7 @@ class _ClassDashboardState extends State<ClassDashboard> {
               const SizedBox(
                 height: UILayout.medium,
               ),
-              Text('Info adicional'),
+              const Text('Info adicional'),
               const SizedBox(
                 height: UILayout.medium,
               ),

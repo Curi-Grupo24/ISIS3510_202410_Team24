@@ -31,7 +31,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<Either<String, String>> addProfilePicture({
-   required Uint8List file,
+    required Uint8List file,
   }) async {
     try {
       FirebaseStorage _storage = FirebaseStorage.instance;
@@ -49,12 +49,23 @@ class ProfileRepositoryImpl implements ProfileRepository {
           .collection('users')
           .doc(userId)
           .update(<String, dynamic>{'profilePicture': downloadUrl});
+
+      DocumentReference<Object> tutorRef =
+          _firestore.collection('tutors_profile').doc(userId);
+      DocumentSnapshot<Object> docSnap = await tutorRef.get();
+
+      if (docSnap.exists) {
+        await _firestore
+            .collection('tutors_profile')
+            .doc(userId)
+            .update(<String, dynamic>{'profilePicture': downloadUrl});
+      }
+
       return Right<String, String>(downloadUrl);
     } catch (e) {
       return Left<String, String>(
         '''Ocurrió un error al subir la foto de perfil :c por ${e.toString()}''',
       );
     }
-
   }
 }

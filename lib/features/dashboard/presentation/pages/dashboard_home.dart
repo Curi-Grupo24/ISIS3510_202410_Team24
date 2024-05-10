@@ -78,7 +78,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                         String shouldReload = '';
                         shouldReload = await Get.toNamed('/profile_user');
                         if (shouldReload.isNotEmpty) {
-                          setState(() {});
+                          dashboardBloc.add(const GetUserInfo());
                         }
                       },
                       child: CircleAvatar(

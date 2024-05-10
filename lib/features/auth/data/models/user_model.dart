@@ -18,7 +18,7 @@ class UserModel {
         email: json['email'] ?? '',
         carreer: json['career'] ?? '',
         studentCode: json['studentCode'] ?? '',
-        profilePicture: json['profilePicture']??'https://cdn.pixabay.com/photo/2018/11/13/22/01/instagram-3814082_1280.png',
+        profilePicture: json['profilePicture']??'https://static.vecteezy.com/system/resources/thumbnails/036/280/651/small_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
         myClasses: (json['myClasses']  as List<dynamic>?) 
             ?.cast<String>() 
             ?? const <String>[],

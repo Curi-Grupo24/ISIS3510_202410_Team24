@@ -149,21 +149,32 @@ class _ProfileUserState extends State<ProfileUser> {
                                     child: photo == null
                                         ? CircleAvatar(
                                             backgroundColor: Colors.ocean[40],
-                                            radius: UILayout.large,
+                                            radius: UILayout.xlarge,
                                             child: const CircleAvatar(
                                               radius: UILayout.xlarge,
                                               backgroundImage: NetworkImage(
-                                                'https://picsum.photos/id/237/200/300',
+                                                'https://cdn.pixabay.com/photo/2018/11/13/22/01/instagram-3814082_1280.png',
                                               ),
                                             ),
                                           )
                                         : SizedBox(
-                                            height: UILayout.xlarge,
-                                            width: UILayout.xlarge,
-                                            child: CircleAvatar(
-                                              radius: UILayout.xlarge,
-                                              child: Image.file(
-                                                File(photo!.path),
+                                            height: 96,
+                                            width: 96,
+                                            child: DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  50,
+                                                ),
+                                                color: Colors.sunset[50],
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                child: Image.file(
+                                                  File(photo!.path),
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
                                             ),
                                           ),

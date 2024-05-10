@@ -37,8 +37,6 @@ class ImagePickerModal extends StatelessWidget {
                     child: SunsetButton(
                       onPressed: cameraMethod,
                       text: 'Cámara',
-                      //   style: TextStyle(color: Colors.sunset[50]),
-                      // ),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -63,9 +61,6 @@ class ImagePickerModal extends StatelessWidget {
                         shadowColor: MaterialStateProperty.all<Color>(
                           Colors.sunset[50]!,
                         ),
-                        // backgroundColor: MaterialStateProperty.all<Color>(
-                        //   Colors.sunset[50]!,
-                        // ),
                       ),
                       onPressed: galleryMethod,
                       child: Column(
@@ -82,11 +77,6 @@ class ImagePickerModal extends StatelessWidget {
                             ),
                           ),
                         ],
-
-                        //   Text(
-                        //     'Galeria',
-                        //     style: TextStyle(color: Colors.sunset[50]),
-                        //   ),
                       ),
                     ),
                   ),

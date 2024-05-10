@@ -6,17 +6,17 @@ class AnalyticsService {
   FirebaseAnalyticsObserver getAnalyticsObserver() =>
       FirebaseAnalyticsObserver(analytics: _analytics);
 
-  Future setUserProperties(String userId) async {
+  Future<dynamic> setUserProperties(String userId) async {
     await _analytics.setUserProperty(name: 'user_id', value: userId);
     //We can set any information we need from our user
   }
 
-  Future setUserFiltersHistory(
-      {String major = 'None',
-      String? specialType = 'None',
-      String semester = 'None',
-      String course_name = 'None'}) async {
-    //major ??= 'None'; specialType ??= 'None'; semester ??= 'None'; course_name ??= 'None';
+  Future<dynamic> setUserFiltersHistory({
+    String major = 'None',
+    String? specialType = 'None',
+    String semester = 'None',
+    String course_name = 'None',
+  }) async {
     await _analytics.logEvent(
       name: 'used_filters',
       parameters: <String, dynamic>{
@@ -28,7 +28,7 @@ class AnalyticsService {
     );
   }
 
-  Future setScheduledHour(String scheduledHour) async {
+  Future<dynamic> setScheduledHour(String scheduledHour) async {
     await _analytics.logEvent(
       name: 'scheduled_hour',
       parameters: <String, dynamic>{
@@ -37,7 +37,7 @@ class AnalyticsService {
     );
   }
 
-  Future setTutorshipByMonth(String month, String courseName) async {
+  Future<dynamic> setTutorshipByMonth(String month, String courseName) async {
     await _analytics.logEvent(
       name: 'course_month',
       parameters: <String, dynamic>{
@@ -47,7 +47,10 @@ class AnalyticsService {
     );
   }
 
-  Future setTutorshipByUser(String course_name, String tutor_name) async {
+  Future<dynamic> setTutorshipByUser(
+    String course_name,
+    String tutor_name,
+  ) async {
     await _analytics.logEvent(
       name: 'scheduled_tutorship',
       parameters: <String, dynamic>{

@@ -6,6 +6,6 @@ class GetAvailableCandidatesUseCase {
   GetAvailableCandidatesUseCase({required this.repository});
   final AvailableCandidatesRepository repository;
 
-  Future<Either<String, String>> call() async =>
+  Future<Either<String, List<Map<String, dynamic>>>> call() async =>
       repository.getAvailableCandidates();
 }

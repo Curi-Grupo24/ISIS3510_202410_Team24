@@ -33,6 +33,44 @@ class _ClassDashboardState extends State<ClassDashboard> {
     );
   }
 
+  Future<void> _launchURL(BuildContext context) async {
+    print("-------------------------------");
+    print("mercado pago");
+    try {
+      await launch(
+        'https://flutter.dev',
+        customTabsOption: CustomTabsOption(
+          toolbarColor: Theme.of(context).primaryColor,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          animation: CustomTabsSystemAnimation.slideIn(),
+          // or user defined animation.
+          extraCustomTabs: const <String>[
+            // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+            'org.mozilla.firefox',
+            // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+            'com.microsoft.emmx',
+          ],
+        ),
+        safariVCOption: SafariViewControllerOption(
+          preferredBarTintColor: Theme.of(context).primaryColor,
+          barCollapsingEnabled: true,
+          entersReaderIfAvailable: false,
+          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+        ),
+      );
+    } catch (e) {
+      // An exception is thrown if browser app is not installed on Android device.
+      debugPrint(e.toString());
+    }
+  }
+
+  void pay() {
+    print("-------------------------------");
+    print("mercado pago");
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(

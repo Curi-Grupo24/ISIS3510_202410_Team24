@@ -64,24 +64,57 @@ class _DashboardHomeState extends State<DashboardHome> {
               const SizedBox(
                 width: 8,
               ),
-              GestureDetector(
-                onTap: () async {
-                  String shouldReload = '';
-                  shouldReload = await Get.toNamed('/profile_user');
-                  if (shouldReload.isNotEmpty) {
-                    setState(() {});
+              BlocBuilder<DashboardBloc, DashboardState>(
+                bloc: dashboardBloc,
+                builder: (BuildContext context, DashboardState state) {
+                  if (state is DashboardLoading) {
+                    return SpinKitRotatingCircle(
+                      color: Colors.sunset[20],
+                      size: 40,
+                    );
+                  } else if (state is DashboardSuccessfull) {
+                    return GestureDetector(
+                      onTap: () async {
+                        String shouldReload = '';
+                        shouldReload = await Get.toNamed('/profile_user');
+                        if (shouldReload.isNotEmpty) {
+                          setState(() {});
+                        }
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Colors.ocean[40],
+                        radius: UILayout.large,
+                        child: CircleAvatar(
+                          radius: UILayout.xlarge,
+                          backgroundImage: NetworkImage(
+                            state.user.profilePicture ??
+                                'https://images.unsplash.com/photo-1524135220673-c731600a1a50?q=80&w=3580&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                          ),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return GestureDetector(
+                      onTap: () async {
+                        String shouldReload = '';
+                        shouldReload = await Get.toNamed('/profile_user');
+                        if (shouldReload.isNotEmpty) {
+                          setState(() {});
+                        }
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Colors.ocean[40],
+                        radius: UILayout.large,
+                        child: const CircleAvatar(
+                          radius: UILayout.xlarge,
+                          backgroundImage: NetworkImage(
+                            'https://images.unsplash.com/photo-1524135220673-c731600a1a50?q=80&w=3580&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                          ),
+                        ),
+                      ),
+                    );
                   }
                 },
-                child: CircleAvatar(
-                  backgroundColor: Colors.ocean[40],
-                  radius: UILayout.large,
-                  child: const CircleAvatar(
-                    radius: UILayout.xlarge,
-                    backgroundImage: NetworkImage(
-                      'https://picsum.photos/id/237/200/300',
-                    ),
-                  ),
-                ),
               ),
               const SizedBox(
                 width: 16,

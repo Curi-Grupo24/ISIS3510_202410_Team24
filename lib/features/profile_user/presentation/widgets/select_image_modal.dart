@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_statements
+
 import 'package:flutter/material.dart' hide Colors;
 import '../../../../core/ui/colors_brand.dart';
 import '../../../common_widgets/widgets.dart';
@@ -10,8 +12,8 @@ class ImagePickerModal extends StatelessWidget {
     super.key,
   });
 
-  final VoidCallback cameraMethod;
-  final VoidCallback galleryMethod;
+  final Future<void> cameraMethod;
+  final Future<void> galleryMethod;
 
   @override
   Widget build(BuildContext context) => ModalCase(
@@ -35,7 +37,9 @@ class ImagePickerModal extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: SunsetButton(
-                      onPressed: cameraMethod,
+                      onPressed: () {
+                        cameraMethod;
+                      },
                       text: 'Cámara',
                     ),
                   ),
@@ -62,7 +66,9 @@ class ImagePickerModal extends StatelessWidget {
                           Colors.sunset[50]!,
                         ),
                       ),
-                      onPressed: galleryMethod,
+                      onPressed: () {
+                        galleryMethod;
+                      },
                       child: Column(
                         children: <Widget>[
                           const SizedBox(

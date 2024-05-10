@@ -40,6 +40,7 @@ import 'features/enroll_as_monitor/domain/usecases/enroll_tutor_usecase.dart';
 import 'features/enroll_as_monitor/presentation/bloc/enroll_bloc/enroll_tutor_bloc.dart';
 import 'features/profile_user/data/respositories/profile_repository_impl.dart';
 import 'features/profile_user/domain/repositories/profile_repository.dart';
+import 'features/profile_user/domain/usecases/add_profile_picture.dart';
 import 'features/profile_user/domain/usecases/get_user_info.dart';
 import 'features/profile_user/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'features/schedule/data/repositories/schedule_repository_impl.dart';
@@ -129,6 +130,9 @@ void init() {
   );
   sl.registerLazySingleton(
     () => AddTutorToFavsUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton(
+    () => AddProfilePictureUseCase(repository: sl()),
   );
 
   //Repositories

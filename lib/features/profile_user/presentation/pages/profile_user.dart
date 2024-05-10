@@ -11,6 +11,7 @@ class _ProfileUserState extends State<ProfileUser> {
   XFile? photo;
   ProfileBloc profileBloc = ProfileBloc();
   String username = '';
+  Map<String, dynamic> userInfo = <String, dynamic>{};
 
   @override
   initState() {
@@ -18,59 +19,41 @@ class _ProfileUserState extends State<ProfileUser> {
     super.initState();
   }
 
-  void onChangedPhoto(XFile? tPhoto) {
+  Future<void> onChangedPhoto(
+    XFile? tPhoto,
+    Map<String, dynamic> userInformation,
+  ) async {
     setState(() {
       photo = tPhoto;
     });
-    // widget.onChangedPhoto(photo);
+    if (tPhoto != null) {
+      Uint8List bytes = await tPhoto.readAsBytes();
+      profileBloc.add(AddProfilePicture(user: userInformation, file: bytes));
+    }
   }
 
-  Future<void> cameraMethod() async {
+  Future<void> cameraMethod(Map<String, dynamic> userInformation) async {
     XFile? pickedImage = await ImageInterface.pickImage(ImageSource.camera);
     setState(() {
       photo = pickedImage;
       Navigator.pop(context);
     });
-    onChangedPhoto(photo);
+    await onChangedPhoto(photo, userInformation);
     if (photo == null) {
       return;
-    } else {
-      // scannedText = await scannedRepository.scannedImage(photo);
-
-      // data = scannedRepository.organizeData(
-      //   scannedRepository.formatText(scannedText!),
-      // );
-
-      // for (int i = 0; i < data!.length; i++) {
-      //   codesControllers.add(TextEditingController());
-      //   viaControllers.add(TextEditingController());
-      // }
-
-      // onChangedCodes(data);
-    }
+    } else {}
   }
 
-  Future<void> galleryMethod() async {
+  Future<void> galleryMethod(Map<String, dynamic> userInformation) async {
     XFile? pickImage = await ImageInterface.pickImage(ImageSource.gallery);
     setState(() {
       photo = pickImage;
       Navigator.pop(context);
     });
-    onChangedPhoto(photo);
+    await onChangedPhoto(photo, userInformation);
     if (photo == null) {
       return;
-    } else {
-      // scannedText = await scannedRepository.scannedImage(photo);
-
-      // data = scannedRepository.organizeData(scannedText!);
-
-      // for (int i = 0; i < data!.length; i++) {
-      //   codesControllers.add(TextEditingController());
-      //   viaControllers.add(TextEditingController());
-      // }
-
-      // onChangedCodes(data);
-    }
+    } else {}
   }
 
   Future<ImageProvider<Object>> xFileToImage(XFile? xFile) async {
@@ -141,12 +124,16 @@ class _ProfileUserState extends State<ProfileUser> {
                                         context: context,
                                         builder: (BuildContext ctx) =>
                                             ImagePickerModal(
-                                          cameraMethod: cameraMethod,
-                                          galleryMethod: galleryMethod,
+                                          cameraMethod:
+                                              cameraMethod(state.user!),
+                                          galleryMethod:
+                                              galleryMethod(state.user!),
                                         ),
                                       );
                                     },
-                                    child: photo == null
+                                    child: photo == null &&
+                                            state.user!['profilePicture'] ==
+                                                null
                                         ? CircleAvatar(
                                             backgroundColor: Colors.ocean[40],
                                             radius: UILayout.xlarge,
@@ -157,27 +144,41 @@ class _ProfileUserState extends State<ProfileUser> {
                                               ),
                                             ),
                                           )
-                                        : SizedBox(
-                                            height: 96,
-                                            width: 96,
-                                            child: DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  50,
+                                        : state.user?['profilePicture'] != null
+                                            ? CircleAvatar(
+                                                backgroundColor:
+                                                    Colors.ocean[40],
+                                                radius: UILayout.xlarge,
+                                                child: CircleAvatar(
+                                                  radius: UILayout.xlarge,
+                                                  backgroundImage: NetworkImage(
+                                                    state.user?[
+                                                        'profilePicture'],
+                                                  ),
                                                 ),
-                                                color: Colors.sunset[50],
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                                child: Image.file(
-                                                  File(photo!.path),
-                                                  fit: BoxFit.cover,
+                                              )
+                                            : SizedBox(
+                                                height: 96,
+                                                width: 96,
+                                                child: DecoratedBox(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      50,
+                                                    ),
+                                                    color: Colors.sunset[50],
+                                                  ),
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                    child: Image.file(
+                                                      File(photo!.path),
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ),
                                   ),
                                 ),
                                 Text(

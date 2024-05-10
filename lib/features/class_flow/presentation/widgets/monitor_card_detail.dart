@@ -33,10 +33,10 @@ class MonitorCardDetail extends StatelessWidget {
                     CircleAvatar(
                       backgroundColor: Colors.ocean[40],
                       radius: UILayout.xlarge,
-                      child: const CircleAvatar(
+                      child: CircleAvatar(
                         radius: UILayout.xlarge,
                         backgroundImage: NetworkImage(
-                          'https://picsum.photos/id/237/200/300',
+                         tutor.profilePicture?? 'https://static.vecteezy.com/system/resources/thumbnails/036/280/651/small_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
                         ),
                       ),
                     ),

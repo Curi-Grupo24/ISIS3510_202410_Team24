@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' hide Colors;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/ui/colors_brand.dart';
 import '../../../../core/ui/layout.dart';

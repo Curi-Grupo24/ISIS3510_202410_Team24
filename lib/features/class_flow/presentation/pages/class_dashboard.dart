@@ -12,6 +12,14 @@ class _ClassDashboardState extends State<ClassDashboard> {
   late ClassModel actualClass;
   List<Map<String, dynamic>> favTutorsList = <Map<String, dynamic>>[];
   ClassDashboardBloc classDashboardBloc = ClassDashboardBloc();
+  String currencyFormat(String value) {
+    try {
+      NumberFormat oCcy = NumberFormat('#,##0.00', 'en_US');
+      return oCcy.format(double.parse(value));
+    } catch (_) {
+      return value;
+    }
+  }
 
   @override
   void initState() {
@@ -329,77 +337,137 @@ class _ClassDashboardState extends State<ClassDashboard> {
         ),
         backgroundColor: const Color(0xFFF0ECE9),
         builder: (BuildContext context) => SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              const SizedBox(
-                height: UILayout.small,
-              ),
-              const SizedBox(
-                width: 48,
-                child: Divider(
-                  height: 4,
-                  thickness: 4,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Column(
+              children: <Widget>[
+                const SizedBox(
+                  height: UILayout.small,
                 ),
-              ),
-              const SizedBox(
-                height: UILayout.medium,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: UILayout.medium,
+                const SizedBox(
+                  width: 48,
+                  child: Divider(
+                    height: 4,
+                    thickness: 4,
+                  ),
                 ),
-                child: MonitorCardDetail(
-                  name: name,
-                  tutor: tutor,
+                const SizedBox(
+                  height: UILayout.medium,
                 ),
-              ),
-              const SizedBox(
-                height: UILayout.medium,
-              ),
-              const Text('Info adicional'),
-              const SizedBox(
-                height: UILayout.medium,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: UILayout.medium,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: UILayout.medium,
+                  ),
+                  child: MonitorCardDetail(
+                    name: name,
+                    tutor: tutor,
+                  ),
                 ),
-                child: SunsetButton(
-                  text: 'Iniciar chat'.tr,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                        builder: (BuildContext context) => ChatPage(
-                          receiverUserEmail: tutor.email ?? '',
-                          receiverUserID: tutor.uid ?? '',
-                          tutorModel: tutor,
+                const SizedBox(
+                  height: UILayout.medium,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Icon(
+                          Icons.table_restaurant_rounded,
+                          color: Colors.sunset[30],
                         ),
                       ),
-                    );
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: UILayout.medium,
-                  vertical: UILayout.small,
-                ),
-                child: OutlinedButton(
-                  onPressed: () {},
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Text(
-                      'Agendar monitoría'.tr,
-                      style: TextStyle(
-                        color: Colors.sunset[70],
+                      const SizedBox(
+                        width: 8,
                       ),
-                      textAlign: TextAlign.center,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 72,
+                        child: Text(
+                          tutor.description ?? '',
+                          style: TextStyle(
+                            color: Colors.gray[80],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Icon(
+                        Icons.access_alarm_outlined,
+                        color: Colors.sunset[30],
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 72,
+                        child: Text(
+                          '\$ ${currencyFormat(tutor.price ?? '')} /h',
+                          style: TextStyle(
+                            color: Colors.gray[80],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: UILayout.medium,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: UILayout.medium,
+                  ),
+                  child: SunsetButton(
+                    text: 'Iniciar chat'.tr,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => ChatPage(
+                            receiverUserEmail: tutor.email ?? '',
+                            receiverUserID: tutor.uid ?? '',
+                            tutorModel: tutor,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: UILayout.medium,
+                    vertical: UILayout.small,
+                  ),
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        'Agendar monitoría'.tr,
+                        style: TextStyle(
+                          color: Colors.sunset[70],
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );

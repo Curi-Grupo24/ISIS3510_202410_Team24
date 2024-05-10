@@ -47,7 +47,6 @@ class FavTutorsCard extends StatelessWidget {
                     radius: UILayout.xlarge,
                     backgroundImage: NetworkImage(
                       image,
-                      // 'https://picsum.photos/id/237/200/300',
                     ),
                   ),
                 ),

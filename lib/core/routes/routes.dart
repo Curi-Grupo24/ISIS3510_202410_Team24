@@ -1,5 +1,6 @@
 import 'package:get/route_manager.dart';
 
+import '../../features/administrator_flow/presentation/pages/pages.dart';
 import '../../features/auth/presentation/pages/pages.dart';
 import '../../features/chats/presentation/pages/pages.dart';
 import '../../features/class_flow/presentation/pages/pages.dart';
@@ -131,6 +132,24 @@ List<GetPage<dynamic>> get getRoutes {
     GetPage<dynamic>(
       name: '/result_enrollment_page',
       page: ResultEnrollmentView.new,
+      transitionDuration: transitionDuration,
+      middlewares: <GetMiddleware>[GetMiddleware()],
+    ),
+    GetPage<dynamic>(
+      name: '/administrator_home',
+      page: AdministratorHome.new,
+      transitionDuration: transitionDuration,
+      middlewares: <GetMiddleware>[GetMiddleware()],
+    ),
+    GetPage<dynamic>(
+      name: '/candidates_list',
+      page: CandidatesList.new,
+      transitionDuration: transitionDuration,
+      middlewares: <GetMiddleware>[GetMiddleware()],
+    ),
+    GetPage<dynamic>(
+      name: '/available_classes',
+      page: AvailableClassesList.new,
       transitionDuration: transitionDuration,
       middlewares: <GetMiddleware>[GetMiddleware()],
     ),

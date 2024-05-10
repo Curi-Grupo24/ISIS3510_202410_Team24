@@ -24,13 +24,18 @@ class NotificationHelper {
       importance: Importance.max,
       priority: Priority.high,
     );
+    DateTime now = DateTime.now();
+    print(now);
+    print(date);
+    int sec = date.difference(now).inSeconds;
     NotificationDetails notificationDetails =
         NotificationDetails(android: androidDetails);
+    print(sec);
     await _notification.zonedSchedule(
         0,
         title,
         body,
-        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 60)),
+        tz.TZDateTime.now(tz.local).add(Duration(seconds: sec)),
         notificationDetails,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,

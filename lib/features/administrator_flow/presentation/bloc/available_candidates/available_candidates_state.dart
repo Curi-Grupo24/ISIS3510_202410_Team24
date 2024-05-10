@@ -17,8 +17,10 @@ class AvailableCandidatesError extends AvailableCandidatesState {
 class AvailableCandidatesSuccessfull extends AvailableCandidatesState {
   const AvailableCandidatesSuccessfull({
     required this.successMessage,
+    required this.candidatesTotal,
   });
   final String successMessage;
+  final List<Map<String, dynamic>> candidatesTotal;
 }
 
 class AvailableCandidatesLoading extends AvailableCandidatesState {

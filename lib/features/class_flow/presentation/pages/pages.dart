@@ -2,6 +2,7 @@ library com.curi.app.classflow.pages;
 
 import 'package:flutter/material.dart' hide Colors;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +18,6 @@ import '../bloc/class_dashboard/class_dashboard_bloc.dart';
 import '../bloc/fav_tutors/fav_tutors_bloc.dart';
 import '../widgets/widgets.dart';
 
-part './class_dashboard.dart';
 part './chat_with_tutor.dart';
+part './class_dashboard.dart';
 part './find_tutors.dart';

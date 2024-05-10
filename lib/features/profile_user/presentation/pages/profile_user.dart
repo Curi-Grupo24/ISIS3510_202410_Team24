@@ -32,6 +32,39 @@ class _ProfileUserState extends State<ProfileUser> {
     }
   }
 
+  Future<void> _launchURL(BuildContext context) async {
+    print("-------------------------------");
+    print("mercado pago");
+    try {
+      await launch(
+        'https://mpago.li/13sbpGd',
+        customTabsOption: CustomTabsOption(
+          toolbarColor: Theme.of(context).primaryColor,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          animation: CustomTabsSystemAnimation.slideIn(),
+          // or user defined animation.
+          extraCustomTabs: const <String>[
+            // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+            'org.mozilla.firefox',
+            // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+            'com.microsoft.emmx',
+          ],
+        ),
+        safariVCOption: SafariViewControllerOption(
+          preferredBarTintColor: Theme.of(context).primaryColor,
+          barCollapsingEnabled: true,
+          entersReaderIfAvailable: false,
+          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+        ),
+      );
+    } catch (e) {
+      // An exception is thrown if browser app is not installed on Android device.
+      debugPrint(e.toString());
+    }
+  }
+
   Future<void> cameraMethod(Map<String, dynamic> userInformation) async {
     XFile? pickedImage = await ImageInterface.pickImage(ImageSource.camera);
     setState(() {
@@ -40,7 +73,7 @@ class _ProfileUserState extends State<ProfileUser> {
     });
     await onChangedPhoto(photo, userInformation);
     if (photo == null) {
-      return;
+      
     } else {}
   }
 
@@ -52,7 +85,7 @@ class _ProfileUserState extends State<ProfileUser> {
     });
     await onChangedPhoto(photo, userInformation);
     if (photo == null) {
-      return;
+    
     } else {}
   }
 
@@ -171,7 +204,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                   child: ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            100),
+                                                            100,),
                                                     child: Image.file(
                                                       File(photo!.path),
                                                       fit: BoxFit.cover,
@@ -278,6 +311,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                 SunsetButton(
                                   text: 'Agendar monitoría'.tr,
                                   backgroundColor: Colors.jelly[40],
+                                  onPressed: () => _launchURL(context),
                                 ),
                                 Spacing.spacingV16,
                               ],

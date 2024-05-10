@@ -17,7 +17,6 @@ class NotificationHelper {
     String body,
     DateTime date,
   ) async {
-    print("----------------------");
     AndroidNotificationDetails androidDetails =
         const AndroidNotificationDetails(
       'important_notification',
@@ -25,18 +24,16 @@ class NotificationHelper {
       importance: Importance.max,
       priority: Priority.high,
     );
-    tz.TZDateTime.from(date, tz.local);
     NotificationDetails notificationDetails =
         NotificationDetails(android: androidDetails);
     await _notification.zonedSchedule(
         0,
         title,
         body,
-        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 1)),
+        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 60)),
         notificationDetails,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle);
-    print("----------------------");
   }
 }

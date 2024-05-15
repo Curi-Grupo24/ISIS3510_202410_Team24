@@ -42,16 +42,15 @@ class CardNotification extends StatelessWidget {
                     const SizedBox(
                       height: 4,
                     ),
-                    RichText(
-                      text: TextSpan(
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width-74,
+                      child: Text(
+                        detail,
                         style: TextStyle(
                           color: Colors.gray[70],
                           fontWeight: FontWeight.w400,
                           fontSize: 12,
                         ),
-                        children: <TextSpan>[
-                          TextSpan(text: detail),
-                        ],
                       ),
                     ),
                   ],

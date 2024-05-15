@@ -6,6 +6,7 @@ class TutorModel {
     this.email = '',
     this.price = '',
     this.description = '',
+    this.profilePicture = '',
     this.tutoringClasses = const <String>[],
     this.reviews = const <String>[],
   });
@@ -16,6 +17,7 @@ class TutorModel {
         uid: json['uid'] ?? '',
         email: json['email'] ?? '',
         price: json['price'] ?? '',
+        profilePicture: json['profilePicture']??'https://static.vecteezy.com/system/resources/thumbnails/036/280/651/small_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
         description: json['description'] ?? '',
         tutoringClasses:
             (json['tutoringClasses'] as List<dynamic>?)?.cast<String>() ??
@@ -30,6 +32,7 @@ class TutorModel {
   final String? email;
   final String? price;
   final String? description;
+  final String? profilePicture;
   final List<String> tutoringClasses;
   final List<String> reviews;
 }

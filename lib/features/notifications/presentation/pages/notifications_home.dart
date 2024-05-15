@@ -10,56 +10,57 @@ import '../widgets/notification_card.dart';
 class NotificationHome extends StatelessWidget {
   const NotificationHome({super.key});
 
-
   @override
   Widget build(BuildContext context) {
-  RemoteMessage? message = Get.arguments?['message']??RemoteMessage();
+    RemoteMessage? message = Get.arguments?['message'] ?? RemoteMessage();
 
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white[0],
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Color(0xFFF3962E),
-            ),
-            onPressed: Get.back,
+      appBar: AppBar(
+        backgroundColor: Colors.white[0],
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Color(0xFFF3962E),
           ),
-          title: const Text(
-            'Notificaciones',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: UILayout.medium,
-              fontWeight: FontWeight.w800,
-              color: Color(0xFF111007),
-            ),
+          onPressed: Get.back,
+        ),
+        title: const Text(
+          'Notificaciones',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: UILayout.medium,
+            fontWeight: FontWeight.w800,
+            color: Color(0xFF111007),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              CardNotification(
-                title: message?.notification?.title?.toString()??'',
-                detail:  message?.notification?.body?.toString()??'',
-                onTap: () {},
-              ),
-              Spacing.spacingV12,
-              CardNotification(
-                title: 'No olvides que puedes ser monitor',
-                detail: 'Puedes entrar a enrolarte como monitor',
-                onTap: () {},
-              ),
-              Spacing.spacingV12,
-              CardNotification(
-                title: 'Has creado tu cuenta exitosamente',
-                detail: 'Gracias por acceder a Curi App',
-                onTap: () {},
-              ),
-              Spacing.spacingV12,
-            ],
-          ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            CardNotification(
+              title: message?.notification?.title?.toString() ??
+                  '''Bienvenido a Curi''',
+              detail: message?.notification?.body?.toString() ??
+                  '''Gracias por unirte a este increíble equipo, esperamos lo disfrutes!''',
+              onTap: () {},
+            ),
+            Spacing.spacingV12,
+            CardNotification(
+              title: 'No olvides que puedes ser monitor',
+              detail: 'Puedes entrar a enrolarte como monitor',
+              onTap: () {},
+            ),
+            Spacing.spacingV12,
+            CardNotification(
+              title: 'Has creado tu cuenta exitosamente',
+              detail: 'Gracias por acceder a Curi App',
+              onTap: () {},
+            ),
+            Spacing.spacingV12,
+          ],
         ),
-      );
+      ),
+    );
   }
 }

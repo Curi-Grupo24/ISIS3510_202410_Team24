@@ -7,6 +7,7 @@ class FavTutorsCard extends StatelessWidget {
     required this.image,
     required this.onTap,
     this.price = '',
+    this.descriptionCard,
     super.key,
   });
 
@@ -15,6 +16,7 @@ class FavTutorsCard extends StatelessWidget {
   final String image;
   final String price;
   final void Function()? onTap;
+  final String? descriptionCard;
 
   String currencyFormat(String value) {
     try {
@@ -47,7 +49,6 @@ class FavTutorsCard extends StatelessWidget {
                     radius: UILayout.xlarge,
                     backgroundImage: NetworkImage(
                       image,
-                      // 'https://picsum.photos/id/237/200/300',
                     ),
                   ),
                 ),
@@ -65,6 +66,13 @@ class FavTutorsCard extends StatelessWidget {
                           color: Colors.gray[80],
                         ),
                       ),
+                      if (descriptionCard != null)
+                        Text(
+                          descriptionCard!,
+                          style: TextStyle(
+                            color: Colors.gray[80],
+                          ),
+                        ),
                       Text(
                         'Ver más de $name'.tr,
                         style: TextStyle(color: Colors.ocean[40]),
@@ -91,7 +99,7 @@ class FavTutorsCard extends StatelessWidget {
                     ),
                     if (price.isNotEmpty)
                       Text(
-                      '\$ ${currencyFormat(price)} /h',
+                        '\$ ${currencyFormat(price)} /h',
                         style: TextStyle(
                           color: Colors.gray[70],
                         ),

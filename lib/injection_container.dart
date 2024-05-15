@@ -5,6 +5,10 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import 'core/analytics/services/analytics_service.dart';
 import 'core/network/network_info.dart';
+import 'features/administrator_flow/data/repositories/available_candidates_repository_impl.dart';
+import 'features/administrator_flow/domain/repositories/available_candidates_repository.dart';
+import 'features/administrator_flow/domain/usecases/get_available_candidates_usecase.dart';
+import 'features/administrator_flow/presentation/bloc/available_candidates/available_candidates_bloc.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
 import 'features/auth/domain/repositories/auth_repository.dart';
 import 'features/auth/domain/usecases/forgot_password_account.dart';
@@ -40,6 +44,7 @@ import 'features/enroll_as_monitor/domain/usecases/enroll_tutor_usecase.dart';
 import 'features/enroll_as_monitor/presentation/bloc/enroll_bloc/enroll_tutor_bloc.dart';
 import 'features/profile_user/data/respositories/profile_repository_impl.dart';
 import 'features/profile_user/domain/repositories/profile_repository.dart';
+import 'features/profile_user/domain/usecases/add_profile_picture.dart';
 import 'features/profile_user/domain/usecases/get_user_info.dart';
 import 'features/profile_user/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'features/schedule/data/repositories/schedule_repository_impl.dart';
@@ -86,6 +91,9 @@ void init() {
   sl.registerLazySingleton<FavTutorsBloc>(
     () => FavTutorsBloc(),
   );
+  sl.registerLazySingleton<AvailableCandidatesBloc>(
+    () => AvailableCandidatesBloc(),
+  );
 
   //Use Cases
   sl.registerLazySingleton(
@@ -130,6 +138,12 @@ void init() {
   sl.registerLazySingleton(
     () => AddTutorToFavsUseCase(repository: sl()),
   );
+  sl.registerLazySingleton(
+    () => AddProfilePictureUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton(
+    () => GetAvailableCandidatesUseCase(repository: sl()),
+  );
 
   //Repositories
   sl.registerLazySingleton<AuthRepository>(
@@ -169,6 +183,12 @@ void init() {
   );
   sl.registerLazySingleton<ClassFlowRepository>(
     () => ClassFlowRepositoryImpl(
+      networkInfo: sl(),
+      // datasource: sl(),
+    ),
+  );
+  sl.registerLazySingleton<AvailableCandidatesRepository>(
+    () => AvailableCandidatesRepositoryImpl(
       networkInfo: sl(),
       // datasource: sl(),
     ),

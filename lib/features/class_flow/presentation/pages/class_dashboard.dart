@@ -12,6 +12,14 @@ class _ClassDashboardState extends State<ClassDashboard> {
   late ClassModel actualClass;
   List<Map<String, dynamic>> favTutorsList = <Map<String, dynamic>>[];
   ClassDashboardBloc classDashboardBloc = ClassDashboardBloc();
+  String currencyFormat(String value) {
+    try {
+      NumberFormat oCcy = NumberFormat('#,##0.00', 'en_US');
+      return oCcy.format(double.parse(value));
+    } catch (_) {
+      return value;
+    }
+  }
 
   @override
   void initState() {
@@ -23,6 +31,44 @@ class _ClassDashboardState extends State<ClassDashboard> {
         availableTutors: actualClass.availableTutors,
       ),
     );
+  }
+
+  Future<void> _launchURL(BuildContext context) async {
+    print("-------------------------------");
+    print("mercado pago");
+    try {
+      await launch(
+        'https://flutter.dev',
+        customTabsOption: CustomTabsOption(
+          toolbarColor: Theme.of(context).primaryColor,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          animation: CustomTabsSystemAnimation.slideIn(),
+          // or user defined animation.
+          extraCustomTabs: const <String>[
+            // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+            'org.mozilla.firefox',
+            // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+            'com.microsoft.emmx',
+          ],
+        ),
+        safariVCOption: SafariViewControllerOption(
+          preferredBarTintColor: Theme.of(context).primaryColor,
+          barCollapsingEnabled: true,
+          entersReaderIfAvailable: false,
+          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+        ),
+      );
+    } catch (e) {
+      // An exception is thrown if browser app is not installed on Android device.
+      debugPrint(e.toString());
+    }
+  }
+
+  void pay() {
+    print("-------------------------------");
+    print("mercado pago");
   }
 
   @override
@@ -101,7 +147,8 @@ class _ClassDashboardState extends State<ClassDashboard> {
                             child: FavTutorsCard(
                               name: tutor.name,
                               rate: tutor.rate ?? '',
-                              image: 'https://picsum.photos/id/237/200/300',
+                              image: tutor.profilePicture ??
+                                  'https://static.vecteezy.com/system/resources/thumbnails/036/280/651/small_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
                               onTap: () {
                                 tutorModalDetail(
                                   context,
@@ -179,8 +226,8 @@ class _ClassDashboardState extends State<ClassDashboard> {
                                     'type': 'prices',
                                   },
                                   arguments: <String, dynamic>{
-                                  'tutors': state.tutorsList,
-                                },
+                                    'tutors': state.tutorsList,
+                                  },
                                 );
                               },
                               child: DecoratedBox(
@@ -236,8 +283,8 @@ class _ClassDashboardState extends State<ClassDashboard> {
                                     'type': 'rating',
                                   },
                                   arguments: <String, dynamic>{
-                                  'tutors': state.tutorsList,
-                                },
+                                    'tutors': state.tutorsList,
+                                  },
                                 );
                               },
                               child: DecoratedBox(
@@ -320,64 +367,146 @@ class _ClassDashboardState extends State<ClassDashboard> {
   }) =>
       showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(19),
           ),
         ),
         backgroundColor: const Color(0xFFF0ECE9),
-        builder: (BuildContext context) => Column(
-          children: <Widget>[
-            const SizedBox(
-              height: UILayout.small,
-            ),
-            const SizedBox(
-              width: 48,
-              child: Divider(
-                height: 4,
-                thickness: 4,
-              ),
-            ),
-            const SizedBox(
-              height: UILayout.medium,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: UILayout.medium,
-              ),
-              child: MonitorCardDetail(
-                name: name,
-                tutor: tutor,
-              ),
-            ),
-            const SizedBox(
-              height: UILayout.medium,
-            ),
-            Text('Info adicional'),
-            const SizedBox(
-              height: UILayout.medium,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: UILayout.medium,
-              ),
-              child: SunsetButton(
-                text: 'Iniciar chat'.tr,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<dynamic>(
-                      builder: (BuildContext context) => ChatPage(
-                        receiverUserEmail: tutor.email ?? '',
-                        receiverUserID: tutor.uid ?? '',
-                        tutorModel: tutor,
+        builder: (BuildContext context) => SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Column(
+              children: <Widget>[
+                const SizedBox(
+                  height: UILayout.small,
+                ),
+                const SizedBox(
+                  width: 48,
+                  child: Divider(
+                    height: 4,
+                    thickness: 4,
+                  ),
+                ),
+                const SizedBox(
+                  height: UILayout.medium,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: UILayout.medium,
+                  ),
+                  child: MonitorCardDetail(
+                    name: name,
+                    tutor: tutor,
+                  ),
+                ),
+                const SizedBox(
+                  height: UILayout.medium,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Icon(
+                          Icons.table_restaurant_rounded,
+                          color: Colors.sunset[30],
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 72,
+                        child: Text(
+                          tutor.description ?? '',
+                          style: TextStyle(
+                            color: Colors.gray[80],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Icon(
+                        Icons.access_alarm_outlined,
+                        color: Colors.sunset[30],
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 72,
+                        child: Text(
+                          '\$ ${currencyFormat(tutor.price ?? '')} /h',
+                          style: TextStyle(
+                            color: Colors.gray[80],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: UILayout.medium,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: UILayout.medium,
+                  ),
+                  child: SunsetButton(
+                    text: 'Iniciar chat'.tr,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => ChatPage(
+                            receiverUserEmail: tutor.email ?? '',
+                            receiverUserID: tutor.uid ?? '',
+                            tutorModel: tutor,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: UILayout.medium,
+                    vertical: UILayout.small,
+                  ),
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        'Agendar monitoría'.tr,
+                        style: TextStyle(
+                          color: Colors.sunset[70],
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       );
 }

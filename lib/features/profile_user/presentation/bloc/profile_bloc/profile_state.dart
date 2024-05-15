@@ -15,8 +15,9 @@ class ProfileError extends ProfileState {
 }
 
 class ProfileSuccessfull extends ProfileState {
-  const ProfileSuccessfull({required this.user});
+  const ProfileSuccessfull({required this.user, this.profilePicture});
   final Map<String, dynamic>? user;
+  final String? profilePicture;
 }
 
 class ProfileLoading extends ProfileState {

@@ -6,15 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 import './core/internazionalization/internationalization.dart';
 import 'core/routes/routes.dart';
 import 'core/ui/theme.dart';
 import 'features/auth/presentation/pages/pages.dart';
 import 'features/notifications/data/firebase_api.dart';
-import 'features/notifications/presentation/widgets/local_notifications.dart';
 import 'firebase_options.dart';
 import 'injection_container.dart' as di;
 

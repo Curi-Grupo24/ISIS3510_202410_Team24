@@ -15,7 +15,8 @@
 //       );
 
 //   String? _getAccountName() =>
-//       _accountNameController.text.isEmpty ? null : _accountNameController.text;
+//       _accountNameController.text.isEmpty ? null : 
+//    _accountNameController.text;
 
 //   Future<void> writeSecureStorage({
 //     required String key,

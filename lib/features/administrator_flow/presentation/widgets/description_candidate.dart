@@ -1,13 +1,17 @@
-part of com.curi.app.classflow.widgets;
+// MonitorCardDetail
+import 'package:flutter/material.dart' hide Colors;
 
-class MonitorCardDetail extends StatelessWidget {
-  const MonitorCardDetail({
+import '../../../../core/ui/colors_brand.dart';
+import '../../../../core/ui/layout.dart';
+
+class CandidatureCardDetail extends StatelessWidget {
+  const CandidatureCardDetail({
     required this.name,
-    required this.tutor,
+    required this.candidature,
     super.key,
   });
   final String name;
-  final TutorModel tutor;
+  final Map<String, dynamic> candidature;
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
@@ -36,7 +40,7 @@ class MonitorCardDetail extends StatelessWidget {
                       child: CircleAvatar(
                         radius: UILayout.xlarge,
                         backgroundImage: NetworkImage(
-                         tutor.profilePicture?? 'https://static.vecteezy.com/system/resources/thumbnails/036/280/651/small_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
+                         candidature['profilePicture']?? 'https://static.vecteezy.com/system/resources/thumbnails/036/280/651/small_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
                         ),
                       ),
                     ),
@@ -82,7 +86,7 @@ class MonitorCardDetail extends StatelessWidget {
                       height: UILayout.medium,
                     ),
                     Text(
-                      '${tutor.reviews.length}',
+                      '${candidature['userCareer']}',
                       style: TextStyle(
                         color: Colors.gray[90],
                         fontWeight: FontWeight.bold,
@@ -90,7 +94,7 @@ class MonitorCardDetail extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Reseñas',
+                      'Carrera actual',
                       style: TextStyle(
                         color: Colors.gray[90],
                         fontWeight: FontWeight.normal,
@@ -109,22 +113,25 @@ class MonitorCardDetail extends StatelessWidget {
                     ),
                     Row(
                       children: <Widget>[
-                        Text(
-                          '${tutor.rate}',
-                          style: TextStyle(
-                            color: Colors.gray[90],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                        Expanded(
+                          child: Text(
+                            '${candidature['userEmail']}',
+                            style: TextStyle(
+                              color: Colors.gray[90],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
+                        SizedBox(width: 4,),
                         Icon(
-                          Icons.star,
+                          Icons.mail,
                           color: Colors.sunset[50],
                         ),
                       ],
                     ),
                     Text(
-                      'Rating',
+                      'Correo de contacto',
                       style: TextStyle(
                         color: Colors.gray[90],
                         fontWeight: FontWeight.normal,

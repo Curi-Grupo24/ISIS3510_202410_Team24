@@ -434,7 +434,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                                             },
                                           ),
                                         ),
-                                        height: 200,
+                                        height: 220,
                                       ),
                                     ),
                                   );

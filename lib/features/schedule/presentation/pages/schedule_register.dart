@@ -477,9 +477,9 @@ class _ScheduleRegisterState extends State<ScheduleRegister> {
                                   eventToAdd: <String, dynamic>{
                                     'eventName': eventName,
                                     'initialDate':
-                                        '2024-0${num.parse(selectedDate['number'] ?? '0') < DateTime.now().day ? DateTime.now().month + 1 : DateTime.now().month}-${selectedDate['number']} $initialTime:04Z',
+                                        '2024-0${num.parse(selectedDate['number'] ?? '0') < DateTime.now().day ? DateTime.now().month + 1 : DateTime.now().month}-${selectedDate['number']} $initialTime:04',
                                     'endDate':
-                                        '2024-0${num.parse(selectedDate['number'] ?? '0') < DateTime.now().day ? DateTime.now().month + 1 : DateTime.now().month}-${selectedDate['number']} $endTime:04Z',
+                                        '2024-0${num.parse(selectedDate['number'] ?? '0') < DateTime.now().day ? DateTime.now().month + 1 : DateTime.now().month}-${selectedDate['number']} $endTime:04',
                                     'description':
                                         eventDescriptionController.text,
                                     'location':

@@ -7,6 +7,7 @@ import 'core/analytics/services/analytics_service.dart';
 import 'core/network/network_info.dart';
 import 'features/administrator_flow/data/repositories/available_candidates_repository_impl.dart';
 import 'features/administrator_flow/domain/repositories/available_candidates_repository.dart';
+import 'features/administrator_flow/domain/usecases/accept_candidature_usecase.dart';
 import 'features/administrator_flow/domain/usecases/get_available_candidates_usecase.dart';
 import 'features/administrator_flow/presentation/bloc/available_candidates/available_candidates_bloc.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
@@ -143,6 +144,9 @@ void init() {
   );
   sl.registerLazySingleton(
     () => GetAvailableCandidatesUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton(
+    () => AcceptCandidateUseCase(repository: sl()),
   );
 
   //Repositories

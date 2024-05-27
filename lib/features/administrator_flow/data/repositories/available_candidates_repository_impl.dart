@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,7 +32,8 @@ class AvailableCandidatesRepositoryImpl
                   doc.data()! as Map<String, dynamic>,
             )
             .toList();
-        List<Map<String, dynamic>> listOfcandidatures = [];
+        List<Map<String, dynamic>> listOfcandidatures =
+            <Map<String, dynamic>>[];
         for (int i = 0; i < allData.length; i++) {
           String userId = allData[i]['user_id'] ?? '';
           UsersRepositoryImpl userData = UsersRepositoryImpl();
@@ -49,10 +52,12 @@ class AvailableCandidatesRepositoryImpl
           Map<String, dynamic> eachCandidate = <String, dynamic>{
             'userName': rawUserData['name'],
             'userEmail': rawUserData['email'],
+            'userUid': userId,
             'userCareer': rawUserData['career'],
             'classname': classToUSe.className,
             'classuid': allData[i]['class_id'],
-            'profilePicture': rawUserData['profilePicture']??'https://static.vecteezy.com/system/resources/thumbnails/036/280/651/small_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
+            'profilePicture': rawUserData['profilePicture'] ??
+                'https://static.vecteezy.com/system/resources/thumbnails/036/280/651/small_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
             'userFirstAnswer': allData[i]['answers'][0],
             'userSecondAnswer': allData[i]['answers'][1],
             'userThirdAnswer': allData[i]['answers'][2],
@@ -65,6 +70,44 @@ class AvailableCandidatesRepositoryImpl
       } catch (e) {
         return Left<String, List<Map<String, dynamic>>>(e.toString());
       }
+    } else {
+      return Left<String, List<Map<String, dynamic>>>(
+        const NetworkFailure().errorMessage,
+      );
+    }
+  }
+
+  @override
+  Future<Either<String, List<Map<String, dynamic>>>> acceptCandidate(
+    Map<String, dynamic> candidate,
+  ) async {
+    if (await networkInfo.isConnected) {
+      CollectionReference<Object?> _collectionRef =
+          FirebaseFirestore.instance.collection('tutor_enrollment');
+      QuerySnapshot<Object?> querySnapshot = await _collectionRef.get();
+      String idCandidate = candidate['userUid'];
+
+      List<Map<String, dynamic>> allData = querySnapshot.docs
+          .map(
+            (QueryDocumentSnapshot<Object?> doc) =>
+                doc.data()! as Map<String, dynamic>,
+          )
+          .toList();
+
+      allData.forEach((Map<String, dynamic> document) {
+        if (document['user_id'] == idCandidate) {
+          // Eliminar el documento encontrado
+          DocumentReference<Object?> docRef =
+              _collectionRef.doc();
+          docRef.delete();
+          print(
+              "Documento con idCandidate $idCandidate eliminado correctamente.");
+        }
+      });
+
+      List<Map<String, dynamic>> listOfcandidatures = <Map<String, dynamic>>[];
+
+      return Right<String, List<Map<String, dynamic>>>(listOfcandidatures);
     } else {
       return Left<String, List<Map<String, dynamic>>>(
         const NetworkFailure().errorMessage,

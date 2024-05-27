@@ -123,74 +123,129 @@ class _CandidatesListState extends State<CandidatesList> {
         isScrollControlled: true,
         backgroundColor: const Color(0xFFF0ECE9),
         builder: (BuildContext context) => SingleChildScrollView(
-          child:  Column(
-                  children: <Widget>[
-                    const SizedBox(
-                      height: UILayout.small,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(
+                  height: UILayout.small,
+                ),
+                const Center(
+                  child: SizedBox(
+                    width: 48,
+                    child: Divider(
+                      height: 4,
+                      thickness: 4,
                     ),
-                    const SizedBox(
-                      width: 48,
-                      child: Divider(
-                        height: 4,
-                        thickness: 4,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: UILayout.medium,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: UILayout.medium,
-                      ),
-                      child: CandidatureCardDetail(
-                        name: name,
-                        candidature: candidate,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: UILayout.medium,
-                    ),
-                    Text('Info adicional'),
-                    const SizedBox(
-                      height: UILayout.medium,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: UILayout.medium,
-                      ),
-                      child: SunsetButton(
-                        text: 'Iniciar chat'.tr,
-                        onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute<dynamic>(
-                          //     builder: (BuildContext context) => ChatPage(
-                          //       receiverUserEmail: tutor.email ?? '',
-                          //       receiverUserID: tutor.uid ?? '',
-                          //       tutorModel: tutor,
-                          //     ),
-                          //   ),
-                          // );
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: UILayout.medium,
-                        vertical: UILayout.small,
-                      ),
-                      child: OutlinedButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Agendar monitoría'.tr,
+                  ),
+                ),
+                const SizedBox(
+                  height: UILayout.medium,
+                ),
+                CandidatureCardDetail(
+                  name: name,
+                  candidature: candidate,
+                ),
+                const SizedBox(
+                  height: UILayout.medium,
+                ),
+                Text(
+                  'Respuestas a preguntas de perfilamiento',
+                  style: TextStyle(
+                    color: Colors.gray[90],
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Text(
+                  '1. ${candidate['userFirstAnswer']}',
+                  style: TextStyle(
+                    color: Colors.gray[90],
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  '2. ${candidate['userSecondAnswer']}',
+                  style: TextStyle(
+                    color: Colors.gray[90],
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  '3. ${candidate['userThirdAnswer']}',
+                  style: TextStyle(
+                    color: Colors.gray[90],
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  'Adicional: ${candidate['userFourthAnswer']}',
+                  style: TextStyle(
+                    color: Colors.gray[90],
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(
+                  height: UILayout.medium,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: UILayout.medium,
+                  ),
+                  child: SunsetButton(
+                    text: 'Aceptar como monitor'.tr,
+                    onPressed: () {
+                      candidatesBloc.add(
+                        AcceptCandidate(
+                          candidate: candidate,
+                        ),
+                      );
+                      Get.back();
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: UILayout.medium,
+                  ),
+                  child: OutlinedButton(
+                    style: const ButtonStyle(
+                      padding: MaterialStatePropertyAll<EdgeInsetsGeometry?>(
+                        EdgeInsets.all(
+                          0,
                         ),
                       ),
                     ),
-                  ],
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(
+                          width: double.infinity,
+                        ),
+                        Text(
+                          'Negar Candidatura'.tr,
+                          style: TextStyle(
+                            color: Colors.gray[70],
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              
-          
-      
+                const SizedBox(
+                  height: UILayout.medium,
+                ),
+              ],
+            ),
+          ),
+        ),
       );
 }

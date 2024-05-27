@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GetMaterialApp(
         navigatorKey: navigatorKey,
-        title: 'Flutter Demo',
+        title: 'Curi-App',
         theme: UITheme.curiThemeData,
         supportedLocales: const <Locale>[
           Locale('en'),
